@@ -1,0 +1,7 @@
+.DS_Store
+.vs/
+v16/
+ProjectSettings.json
+VSWorkspaceState.json
+slnx.sqlite
+.vscode/launch.json
