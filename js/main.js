@@ -37,107 +37,130 @@ var enemyPos = [];
 var homePos = [];
 function validMovesForType(pieceType) {
     var movesList = [];
-    
+    var subList1 = [];
+    var subList2 = [];
+    var subList3 = [];
+    var subList4 = [];
+    var subList5 = [];
+    var subList6 = [];
+    var subList7 = [];
+    var subList8 = [];
  switch(pieceType){
      case PAWN:
-      movesList.push({ col: 0, row:1});
-      movesList.push({ col: 0, row: 2 });
+      movesList.push([{ col: 0, row:1}]);
+      //movesList.push({ col: 0, row: 2 });
     break;
+
     case APAWN:
-       movesList.push({col:0, row:-1});
-       movesList.push({col:0, row:-2});
+       movesList.push([{col:0, row:-1}]);
+       //movesList.push({col:0, row:-2});
     break;
      case KNIGHT:
      case AKNIGHT:
-        movesList.push({col:1, row:2});
-        movesList.push({col:1, row:-2});
-        movesList.push({col:-1, row:-2});
-        movesList.push({col:-1, row:2});
+        movesList.push([{col:1, row:2}]);
+        movesList.push([{col:1, row:-2}]);
+        movesList.push([{col:-1, row:-2}]);
+        movesList.push([{col:-1, row:2}]);
 
-        movesList.push({col:2, row:1});
-        movesList.push({col:2, row:-1});
-        movesList.push({col:-2, row:-1});
-        movesList.push({col:-2, row:1});
+        movesList.push([{col:2, row:1}]);
+        movesList.push([{col:2, row:-1}]);
+        movesList.push([{col:-2, row:-1}]);
+        movesList.push([{col:-2, row:1}]);
          break; 
          break; 
      case ROOK:
      case AROOK:
          for (i = 1; i <= 7; i++) {
-             movesList.push({ col: 0, row: i });
-             movesList.push({ col: 0, row: -i });
-             movesList.push({ col: i, row: 0 });
-             movesList.push({ col: -i, row: 0 });
+             subList1.push({ col: 0, row: i });
+             subList2.push({ col: 0, row: -i });
+             subList3.push({ col: i, row: 0 });
+             subList4.push({ col: -i, row: 0 });
          }
-        
+         movesList = [subList1, subList2, subList3, subList4];
       break;
      case BISHOP:
      case ABISHOP:
          for (i = 1; i <= 7; i++) {
-             movesList.push({ col: i, row: i });
-             movesList.push({ col: -i, row: -i });
-             movesList.push({ col: -i, row: i });
-             movesList.push({ col: i, row: -i });
+             subList1.push({ col: i, row: i });
+             subList2.push({ col: -i, row: -i });
+             subList3.push({ col: -i, row: i });
+             subList4.push({ col: i, row: -i });
          }
+         movesList = [subList1, subList2, subList3, subList4];
     break; 
      case KING:
      case AKING:
-        movesList.push({ col:0, row:1});
-        movesList.push({ col:0, row:-1});
-        movesList.push({ col:1, row:0});
-        movesList.push({ col:-1, row:0});
-        movesList.push({ col:1, row:1});
-        movesList.push({ col:-1, row:-1});
-        movesList.push({ col:1, row:-1});
-        movesList.push({ col:-1, row:1});
+        movesList.push([{col:0, row:1}]);
+        movesList.push([{col:0, row:-1}]);
+        movesList.push([{col:1, row:0}]);
+        movesList.push([{col:-1, row:0}]);
+        movesList.push([{col:1, row:1}]);
+        movesList.push([{col:-1, row:-1}]);
+        movesList.push([{col:1, row:-1}]);
+        movesList.push([{col:-1, row:1}]);
       break;
      case QUEEN:
      case AQUEEN:
          for (i = 1; i <= 7; i++) {
-             movesList.push({ col: i, row: i });
-             movesList.push({ col:-i, row:-i });
-             movesList.push({ col: i, row: 0 });
-             movesList.push({ col:-i, row: 0 });
-             movesList.push({ col: 0, row: i });
-             movesList.push({ col: 0, row:-i });
-             movesList.push({ col:-i, row: i });
-             movesList.push({ col: i, row: -i });
+             subList1.push({ col: i, row: i });
+             subList2.push({ col:-i, row:-i });
+             subList3.push({ col: i, row: 0 });
+             subList4.push({ col:-i, row: 0 });
+             subList5.push({ col: 0, row: i });
+             subList6.push({ col: 0, row:-i });
+             subList7.push({ col:-i, row: i });
+             subList8.push({ col: i, row: -i });
          }
+         movesList = [subList1, subList2, subList3, subList4, subList5, subList6, subList7, subList8];
       break;
  }
  return movesList;
 }
 
 function validMovesFromTile(tileIdx){
-  var selectedPiece = tileGrid[tileIdx];
-  var selectedCol = tileIdx%TILE_COLS;
-  var selectedRow = Math.floor(tileIdx/TILE_COLS);
-  var validMoves = validMovesForType(selectedPiece);
-    
-  for(var i=validMoves.length-1; i>=0; i--){//backwards so we can splice
-    validMoves[i].col+=selectedCol;
-    validMoves[i].row+=selectedRow;
-    if(validMoves[i].col < 0 || validMoves[i].col>=TILE_COLS || 
-        validMoves[i].row < 0 || validMoves[i].row>=TILE_ROWS){
-        validMoves.splice(i, 1);
-        continue; 
-      }
-  //blocking landing on our own pieces
-      var targetIdx = tileCoordToIndex(validMoves[i].col, validMoves[i].row);
-      var targetPiece = tileGrid[targetIdx];
+    var selectedPiece = tileGrid[tileIdx];
+    var selectedCol = tileIdx%TILE_COLS;
+    var selectedRow = Math.floor(tileIdx/TILE_COLS);
+    var validMoves = validMovesForType(selectedPiece);
+    var returnMoves = [];
+    for (var i = validMoves.length - 1; i >= 0; i--) {//backwards so we can splice
+        for (var ii = validMoves[i].length - 1; ii >= 0; ii--) {
+            var moveToConsider = validMoves[i][ii];
+            moveToConsider.col += selectedCol;
+            moveToConsider.row += selectedRow;
+            if (moveToConsider.col < 0 || moveToConsider.col >= TILE_COLS ||
+                moveToConsider.row < 0 || moveToConsider.row >= TILE_ROWS) {
+                //can't go out of bounce
+                continue;
+            }
+            //blocking landing on our own pieces
+            var targetIdx = tileCoordToIndex(moveToConsider.col, moveToConsider.row);
+            var targetPiece = tileGrid[targetIdx];
 
-      if (targetPiece < 0) {
-          if (selectedPiece < 0) {
-              validMoves.splice(i, 1);
-              continue;
-          }
-      } else if (targetPiece > 0) {
-          if (selectedPiece > 0) {
-              validMoves.splice(i, 1);
-              continue;
-          }
-      }    
-   }
-   return validMoves;
+            if (targetPiece < 0) {
+                if (selectedPiece < 0) {
+                    //can't land on our own team
+                    continue;
+                } else {
+                    //Positive team can attack Negative team
+                    returnMoves.push(moveToConsider);
+                    continue;
+                }
+            } else if (targetPiece > 0) {
+                if (selectedPiece > 0) {
+                    //can't land on our own team
+                    continue;
+                } else {
+                   returnMoves.push(moveToConsider);
+                    // Negative team can attack Positive team
+                    continue;
+                } 
+            } else {
+                returnMoves.push(moveToConsider);
+            }
+        }
+    }
+    return returnMoves;
 }
 
 function startGame() {
