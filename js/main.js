@@ -6,8 +6,8 @@ var mouseY = 0;
 var selectedIdx = -1;
 var tileOverIdx = -1;
 
-const TILE_W = 90;
-const TILE_H = 90;
+const TILE_W = 100;
+const TILE_H = 100;
 const TILE_GAP = 1;
 const TILE_COLS = 8;
 const TILE_ROWS = 8;
@@ -33,17 +33,22 @@ const ABISHOP = -3;
 const AKNIGHT = -4;
 const AKING = -5;
 const AQUEEN = -6;
-
+var enemyPos = [];
+var homePos = [];
 function validMovesForType(pieceType) {
-  var movesList = [];
+    var movesList = [];
+    
  switch(pieceType){
-    case PAWN:
-      movesList.push({col:0, row:2});
+     case PAWN:
+      movesList.push({ col: 0, row:1});
+      movesList.push({ col: 0, row: 2 });
     break;
     case APAWN:
-      movesList.push({col:0, row:-2});
+       movesList.push({col:0, row:-1});
+       movesList.push({col:0, row:-2});
     break;
-    case KNIGHT:
+     case KNIGHT:
+     case AKNIGHT:
         movesList.push({col:1, row:2});
         movesList.push({col:1, row:-2});
         movesList.push({col:-1, row:-2});
@@ -53,30 +58,50 @@ function validMovesForType(pieceType) {
         movesList.push({col:2, row:-1});
         movesList.push({col:-2, row:-1});
         movesList.push({col:-2, row:1});
-      break; 
-    case ROOK:
-        movesList.push({col:0, row:7});
-        movesList.push({col:0, row:-7});
-        movesList.push({col:7, row:0});
-        movesList.push({col:-7, row:0});
+         break; 
+         break; 
+     case ROOK:
+     case AROOK:
+         for (i = 1; i <= 7; i++) {
+             movesList.push({ col: 0, row: i });
+             movesList.push({ col: 0, row: -i });
+             movesList.push({ col: i, row: 0 });
+             movesList.push({ col: -i, row: 0 });
+         }
+        
       break;
-    case BISHOP:
-      movesList.push({col:0, row:7});
-      movesList.push({col:0, row:-7});
-      movesList.push({col:7, row:0});
-      movesList.push({col:-7, row:0});
+     case BISHOP:
+     case ABISHOP:
+         for (i = 1; i <= 7; i++) {
+             movesList.push({ col: i, row: i });
+             movesList.push({ col: -i, row: -i });
+             movesList.push({ col: -i, row: i });
+             movesList.push({ col: i, row: -i });
+         }
     break; 
-    case KING:
-        movesList.push({col:0, row:1});
-        movesList.push({col:0, row:-1});
-        movesList.push({col:-1, row:0});
-        movesList.push({col:-1, row:0});
+     case KING:
+     case AKING:
+        movesList.push({ col:0, row:1});
+        movesList.push({ col:0, row:-1});
+        movesList.push({ col:1, row:0});
+        movesList.push({ col:-1, row:0});
+        movesList.push({ col:1, row:1});
+        movesList.push({ col:-1, row:-1});
+        movesList.push({ col:1, row:-1});
+        movesList.push({ col:-1, row:1});
       break;
-    case QUEEN:
-        movesList.push({col:0, row:7});
-        movesList.push({col:0, row:-7});
-        movesList.push({col:7, row:0});
-        movesList.push({col:-7, row:0});
+     case QUEEN:
+     case AQUEEN:
+         for (i = 1; i <= 7; i++) {
+             movesList.push({ col: i, row: i });
+             movesList.push({ col:-i, row:-i });
+             movesList.push({ col: i, row: 0 });
+             movesList.push({ col:-i, row: 0 });
+             movesList.push({ col: 0, row: i });
+             movesList.push({ col: 0, row:-i });
+             movesList.push({ col:-i, row: i });
+             movesList.push({ col: i, row: -i });
+         }
       break;
  }
  return movesList;
@@ -87,16 +112,34 @@ function validMovesFromTile(tileIdx){
   var selectedCol = tileIdx%TILE_COLS;
   var selectedRow = Math.floor(tileIdx/TILE_COLS);
   var validMoves = validMovesForType(selectedPiece);
+    
   for(var i=validMoves.length-1; i>=0; i--){//backwards so we can splice
     validMoves[i].col+=selectedCol;
     validMoves[i].row+=selectedRow;
     if(validMoves[i].col < 0 || validMoves[i].col>=TILE_COLS || 
-      validMoves[i].row < 0 || validMoves[i].row>=TILE_ROWS){
-      validMoves.splice(i,1);
-    }
-  }
-  return validMoves;
+        validMoves[i].row < 0 || validMoves[i].row>=TILE_ROWS){
+        validMoves.splice(i, 1);
+        continue; 
+      }
+  //blocking landing on our own pieces
+      var targetIdx = tileCoordToIndex(validMoves[i].col, validMoves[i].row);
+      var targetPiece = tileGrid[targetIdx];
+
+      if (targetPiece < 0) {
+          if (selectedPiece < 0) {
+              validMoves.splice(i, 1);
+              continue;
+          }
+      } else if (targetPiece > 0) {
+          if (selectedPiece > 0) {
+              validMoves.splice(i, 1);
+              continue;
+          }
+      }    
+   }
+   return validMoves;
 }
+
 function startGame() {
   // these next few lines set up our game logic and render to happen 30 times per second
    setInterval(function() {
@@ -149,7 +192,7 @@ function mousemoved(evt) {
   mouseY = evt.clientY - rect.top - root.scrollTop;
 
   var tileOverCol = Math.floor(mouseX / TILE_W);
-  var tileOverRow = Math.floor(mouseY / TILE_H);    
+  var tileOverRow = Math.floor(mouseY / TILE_H);  
   tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
 }
 
@@ -177,15 +220,14 @@ function drawTiles() {
 
       var idxHere = tileCoordToIndex(eachCol,eachRow);
       var pieceHere = tileGrid[idxHere];
-
       var pieceName = "";
 
       if( pieceHere < 0 ) {
         canvasContext.fillStyle = 'white';
-        pieceName = "Whi.";
+          pieceName = "Whi.";
       } else if( pieceHere > 0 ) {
         canvasContext.fillStyle = 'black';
-        pieceName = "Blk.";
+          pieceName = "Blk.";
       } 
 
       switch(Math.abs(pieceHere)) {
@@ -196,7 +238,7 @@ function drawTiles() {
           canvasContext.drawImage(laborb, tileLeftEdgeX+25, tileTopEdgeY+10);
           break;
           case APAWN:
-            pieceName += "Pawn";
+            pieceName += "APawn";
             canvasContext.drawImage(laborc, tileLeftEdgeX, tileTopEdgeY+10);
             break;
         case ROOK:
@@ -204,7 +246,7 @@ function drawTiles() {
           canvasContext.drawImage(maestrob,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AROOK:
-          pieceName += "Rook";
+          pieceName += "ARook";
           canvasContext.drawImage(maestroc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case BISHOP:
@@ -212,7 +254,7 @@ function drawTiles() {
           canvasContext.drawImage(patricianb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case ABISHOP:
-          pieceName += "Bishop";
+          pieceName += "ABishop";
           canvasContext.drawImage(patricianc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case KNIGHT:
@@ -220,7 +262,7 @@ function drawTiles() {
           canvasContext.drawImage(traderb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AKNIGHT:
-          pieceName += "Knight";
+          pieceName += "AKnight";
           canvasContext.drawImage(traderc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case KING:
@@ -228,7 +270,7 @@ function drawTiles() {
           canvasContext.drawImage(eliteb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AKING:
-          pieceName += "King";
+          pieceName += "AKing";
           canvasContext.drawImage(elitec,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case QUEEN:
@@ -236,7 +278,7 @@ function drawTiles() {
           canvasContext.drawImage(nobleb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AQUEEN:
-          pieceName += "Queen";
+          pieceName += "AQueen";
           canvasContext.drawImage(noblec,  tileLeftEdgeX, tileTopEdgeY);
           break;
       }
