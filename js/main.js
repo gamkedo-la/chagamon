@@ -203,9 +203,22 @@ function mouseclicked(evt) {
 
   if (selectedIdx == tileOverIdx) {
     selectedIdx = -1;
-  } else if(selectedIdx != -1) {
-    tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
-    tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
+  } else if (selectedIdx != -1) {
+    var validMoves = validMovesFromTile(selectedIdx);
+    var moveInList = false;
+    var tileOverCol = tileOverIdx % TILE_COLS;
+    var tileOverRow = Math.floor(tileOverIdx / TILE_COLS);
+    for (var i = 0; i < validMoves.length; i++) {
+      if (validMoves[i].col == tileOverCol && validMoves[i].row == tileOverRow) {
+        moveInList = true;
+        break;
+      }
+    }
+    if (moveInList) {
+      tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
+      tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
+    }
+    
     selectedIdx = -1; // forget selection
   } else if(tileGrid[tileOverIdx] != NO_PIECE ) {
     selectedIdx = tileOverIdx;
