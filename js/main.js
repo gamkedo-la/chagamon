@@ -201,7 +201,9 @@ function mouseclicked(evt) {
     return;
   }
 
-  if(selectedIdx != -1) {
+  if (selectedIdx == tileOverIdx) {
+    selectedIdx = -1;
+  } else if(selectedIdx != -1) {
     tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
     tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
     selectedIdx = -1; // forget selection
