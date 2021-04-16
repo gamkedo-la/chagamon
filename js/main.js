@@ -124,13 +124,13 @@ function validMovesFromTile(tileIdx){
     var validMoves = validMovesForType(selectedPiece);
     var returnMoves = [];
     for (var i = validMoves.length - 1; i >= 0; i--) {//backwards so we can splice
-        for (var ii = validMoves[i].length - 1; ii >= 0; ii--) {
+        for (var ii = 0; ii < validMoves[i].length; ii++) {
             var moveToConsider = validMoves[i][ii];
             moveToConsider.col += selectedCol;
             moveToConsider.row += selectedRow;
             if (moveToConsider.col < 0 || moveToConsider.col >= TILE_COLS ||
                 moveToConsider.row < 0 || moveToConsider.row >= TILE_ROWS) {
-                //can't go out of bounce
+                //can't go out of bound
                 continue;
             }
             //blocking landing on our own pieces
@@ -140,19 +140,23 @@ function validMovesFromTile(tileIdx){
             if (targetPiece < 0) {
                 if (selectedPiece < 0) {
                     //can't land on our own team
+                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } else {
                     //Positive team can attack Negative team
                     returnMoves.push(moveToConsider);
+                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 }
             } else if (targetPiece > 0) {
                 if (selectedPiece > 0) {
                     //can't land on our own team
+                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } else {
                    returnMoves.push(moveToConsider);
                     // Negative team can attack Positive team
+                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } 
             } else {
