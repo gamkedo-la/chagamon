@@ -75,7 +75,7 @@ function validMovesForType(pieceType) {
          break; 
      case ROOK:
      case AROOK:
-         for (i = 1; i <= 7; i++) {
+         for (i = 1; i <= 3; i++) {
              subList1.push({ col: 0, row: i });
              subList2.push({ col: 0, row: -i });
              subList3.push({ col: i, row: 0 });
@@ -85,7 +85,7 @@ function validMovesForType(pieceType) {
       break;
      case BISHOP:
      case ABISHOP:
-         for (i = 1; i <= 7; i++) {
+         for (i = 1; i <= 3; i++) {
              subList1.push({ col: i, row: i });
              subList2.push({ col: -i, row: -i });
              subList3.push({ col: -i, row: i });
