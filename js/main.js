@@ -1,27 +1,28 @@
 var backgroundMusic = new BackgroundMusicClass();
 var Sound = new SoundOverlapsClass("audio/move");
-var showMenu = true;
+var showMenu = false;
 var mouseX = 0;
 var mouseY = 0;
 var selectedIdx = -1;
 var tileOverIdx = -1;
 
-const TILE_W = 80;
-const TILE_H = 80;
+const TILE_W = 72;
+const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
-const TILE_ROWS = 10;
+const TILE_ROWS = 11;
 var tileGrid =
-    [ 0, 4, 1, 0, 0, 0,-1,-4, 0,
-      3, 2, 0, 0, 0, 0, 0,-2,-3,
-      1, 0, 0, 0, 0, 0, 0, 0,-1,
+    [-1,-4,-3, 0, 0, 0, 2, 4, 1,
+     -4, 0, 0, 0, 0, 0, 0, 0, 4,
+     -2, 0, 0, 0, 0, 0, 0, 0, 3,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
-     -1, 0, 0, 0, 0, 0, 0, 0, 1,
-     -3,-2, 0, 0, 0, 0, 0, 2, 3,
-      0,-4,-1, 0, 0, 0, 1, 4, 0];
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      4, 0, 0, 0, 0, 0, 0, 0,-4,
+      3, 0, 0, 0, 0, 0, 0, 0,-3,
+      1, 2, 4, 0, 0, 0,-4,-2,-1];
 const NO_PIECE = 0;
 const PAWN = 1;
 const ROOK = 2;
@@ -49,13 +50,15 @@ function validMovesForType(pieceType) {
     var subList8 = [];
  switch(pieceType){
      case PAWN:
-      movesList.push([{ col: 0, row:1}]);
-      //movesList.push({ col: 0, row: 2 });
-    break;
-
     case APAWN:
-       movesList.push([{col:0, row:-1}]);
-       //movesList.push({col:0, row:-2});
+     movesList.push([{ col: 0, row: 1 }]);
+     movesList.push([{ col: 0, row: -1 }]);
+     movesList.push([{ col: 1, row: 0 }]);
+     movesList.push([{ col: -1, row: 0 }]);
+     movesList.push([{ col: 1, row: 1 }]);
+     movesList.push([{ col: -1, row: -1 }]);
+     movesList.push([{ col: 1, row: -1 }]);
+     movesList.push([{ col: -1, row: 1 }]);
     break;
      case KNIGHT:
      case AKNIGHT:
@@ -253,8 +256,11 @@ function drawTiles() {
     for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
       var tileLeftEdgeX = eachCol * TILE_W;
       var tileTopEdgeY = eachRow * TILE_H;
-
-      if( (eachCol + eachRow) % 2 == 0 ) { // splitting even sums from odd
+      if (eachCol >= 3 && eachCol <= 5 && eachRow >= 4 && eachRow <= 6) {
+        colorRect(tileLeftEdgeX, tileTopEdgeY,
+          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#666888');
+      }
+      else if( (eachCol + eachRow) % 2 == 0 ) { // splitting even sums from odd
         colorRect(tileLeftEdgeX, tileTopEdgeY,
                  TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888' );
       } else {
@@ -278,11 +284,11 @@ function drawTiles() {
         case NO_PIECE:
           break;
         case PAWN:
-          pieceName += "Pawn";
+          pieceName += "Key";
           canvasContext.drawImage(laborb, tileLeftEdgeX+25, tileTopEdgeY+10);
           break;
           case APAWN:
-            pieceName += "APawn";
+            pieceName += "AKey";
             canvasContext.drawImage(laborc, tileLeftEdgeX, tileTopEdgeY+10);
             break;
         case ROOK:
