@@ -6,13 +6,14 @@ var mouseY = 0;
 var selectedIdx = -1;
 var tileOverIdx = -1;
 
+var teamATurn = true;
 const TILE_W = 72;
 const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
 const TILE_ROWS = 11;
 var tileGrid =
-    [-1,-4,-3, 0, 0, 0, 2, 4, 1,
+    [0 ,-4,-3, 0, 0, 0, 2, 4, 0,
      -4, 0, 0, 0, 0, 0, 0, 0, 4,
      -2, 0, 0, 0, 0, 0, 0, 0, 3,
       0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -24,13 +25,13 @@ var tileGrid =
       3, 0, 0, 0, 0, 0, 0, 0,-3,
       1, 2, 4, 0, 0, 0,-4,-2,-1];
 const NO_PIECE = 0;
-const PAWN = 1;
+const KEY = 1;
 const ROOK = 2;
 const BISHOP = 3;
 const KNIGHT = 4;
 const KING = 5;
 const QUEEN = 6;
-const APAWN = -1;
+const AKEY = -1;
 const AROOK = -2;
 const ABISHOP = -3;
 const AKNIGHT = -4;
@@ -49,8 +50,8 @@ function validMovesForType(pieceType) {
     var subList7 = [];
     var subList8 = [];
  switch(pieceType){
-     case PAWN:
-    case APAWN:
+     case KEY:
+    case AKEY:
      movesList.push([{ col: 0, row: 1 }]);
      movesList.push([{ col: 0, row: -1 }]);
      movesList.push([{ col: 1, row: 0 }]);
@@ -220,6 +221,17 @@ function mouseclicked(evt) {
       }
     }
     if (moveInList) {
+      var takenTile = tileGrid[tileOverIdx];
+      if(takenTile != 0)
+      {
+        console.log("Captured Value : " + takenTile );
+        if(takenTile == KEY) {
+          tileGrid[90] = KEY;
+        } else if (takenTile == AKEY) {
+          tileGrid[98] = AKEY;
+        }
+      }
+      teamATurn = !teamATurn;
       tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
       tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
     }
@@ -256,14 +268,21 @@ function drawTiles() {
     for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
       var tileLeftEdgeX = eachCol * TILE_W;
       var tileTopEdgeY = eachRow * TILE_H;
-      if (eachCol >= 3 && eachCol <= 5 && eachRow >= 4 && eachRow <= 6) {
+      if (eachCol == 0  && eachRow == 0) 
+      {
         colorRect(tileLeftEdgeX, tileTopEdgeY,
-          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#666888');
+          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD' );
+      }
+      else  if (eachCol == TILE_COLS-1  && eachRow == 0) 
+      {
+        colorRect(tileLeftEdgeX, tileTopEdgeY,
+          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222' );
       }
       else if( (eachCol + eachRow) % 2 == 0 ) { // splitting even sums from odd
         colorRect(tileLeftEdgeX, tileTopEdgeY,
                  TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888' );
-      } else {
+      } 
+       else {
         colorRect(tileLeftEdgeX, tileTopEdgeY,
                  TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa' );
       }
@@ -274,21 +293,21 @@ function drawTiles() {
 
       if( pieceHere < 0 ) {
         canvasContext.fillStyle = 'white';
-          pieceName = "Whi.";
+          pieceName = "Bis.";
       } else if( pieceHere > 0 ) {
         canvasContext.fillStyle = 'black';
-          pieceName = "Blk.";
+          pieceName = "Cho.";
       } 
 
       switch(Math.abs(pieceHere)) {
         case NO_PIECE:
           break;
-        case PAWN:
+        case KEY:
           pieceName += "Key";
           canvasContext.drawImage(laborb, tileLeftEdgeX+25, tileTopEdgeY+10);
           break;
-          case APAWN:
-            pieceName += "AKey";
+          case AKEY:
+            pieceName += "Key";
             canvasContext.drawImage(laborc, tileLeftEdgeX, tileTopEdgeY+10);
             break;
         case ROOK:
@@ -296,7 +315,7 @@ function drawTiles() {
           canvasContext.drawImage(maestrob,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AROOK:
-          pieceName += "ARook";
+          pieceName += "Rook";
           canvasContext.drawImage(maestroc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case BISHOP:
@@ -304,7 +323,7 @@ function drawTiles() {
           canvasContext.drawImage(patricianb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case ABISHOP:
-          pieceName += "ABishop";
+          pieceName += "Bishop";
           canvasContext.drawImage(patricianc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case KNIGHT:
@@ -312,7 +331,7 @@ function drawTiles() {
           canvasContext.drawImage(traderb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AKNIGHT:
-          pieceName += "AKnight";
+          pieceName += "Knight";
           canvasContext.drawImage(traderc,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case KING:
@@ -320,7 +339,7 @@ function drawTiles() {
           canvasContext.drawImage(eliteb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AKING:
-          pieceName += "AKing";
+          pieceName += "King";
           canvasContext.drawImage(elitec,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case QUEEN:
@@ -328,7 +347,7 @@ function drawTiles() {
           canvasContext.drawImage(nobleb,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AQUEEN:
-          pieceName += "AQueen";
+          pieceName += "Queen";
           canvasContext.drawImage(noblec,  tileLeftEdgeX, tileTopEdgeY);
           break;
       }
@@ -376,9 +395,9 @@ function drawEverything() {
   lineY += lineSkip;
   canvasContext.fillText("Then click spot to move to",rightAreaX,lineY);
   lineY += lineSkip;
-  canvasContext.fillText("Turns and legal moves not enforced.",rightAreaX,lineY);
+  canvasContext.fillText("Next Turn: ",rightAreaX,lineY);
   lineY += lineSkip;
-  canvasContext.fillText("That'd be a good exercise, though!",rightAreaX,lineY);
+  canvasContext.fillText((teamATurn ? "Biscuits" : "Chocolates"),rightAreaX,lineY);
 }
 const FRAMES_PER_SECOND = 30;
 

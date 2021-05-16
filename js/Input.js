@@ -17,10 +17,6 @@ var mouseUp;
 function initInput() {
 	document.addEventListener("mousemove", mousemoved);
 	document.addEventListener("mousedown", mouseclicked);
-	document.addEventListener("mouseup", 
-	function(evt) {
-		mouseUp = menu.mouseunclicked(evt);
-		});
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
 	document.addEventListener("mousemove", 
