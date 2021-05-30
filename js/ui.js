@@ -15,12 +15,10 @@ let mainMenuList =
 	"credits"
 ];
 let helpText =
-	[	"Player should capture undecided pieces and eliminate the other pieces to be able to capture the elite piece.",
-	   "The player start with only a few pieces and can only move one check in either direction until all of the pieces are captured.",
-	   "The player can start capturing the elite/king with his own king unless it's capture by the opponent in which",
-	    "queen/noble bishop/patrician or knight/trader can capture their own king/elite.",
-	   "The game is ended when all undecided pieces are taken and the elite piece has been captured.", 
-	   "As long as the player has their pieces, he/she can get the elite piece back."
+	[	"You should move the small piece(key Piece) in the corner all the way to the other corner ",
+		"If you lose your key piece, it will restart from the first place",
+		"If either player loses all pieces (except the key piece) or the other player reaches the other corner first",
+		"The winner is chosen ",
 	];
 let menuText = [
 	mainMenuList,
