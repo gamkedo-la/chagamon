@@ -20,8 +20,7 @@ function initInput() {
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
 	document.addEventListener("mousemove", 
-		  function(evt) {
-		  mousePos = calculateMousePos(evt);
+		  function(evt) {mousePos = calculateMousePos(evt);
 		  });
   }
   
@@ -104,6 +103,7 @@ function mouseclicked(evt) {
       teamATurn = !teamATurn;
       tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
       tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
+	  console.log("turn over");
     }
     
     selectedIdx = -1; // forget selection
@@ -123,5 +123,17 @@ function mousemoved(evt) {
   var tileOverCol = Math.floor(mouseX / TILE_W);
   var tileOverRow = Math.floor(mouseY / TILE_H);  
   tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
+}
+
+
+function calculateMousePos(evt) {
+  var rect = canvas.getBoundingClientRect(), root = document.documentElement; 
+
+  var mouseX = evt.clientX - rect.left - root.scrollLeft;
+  var mouseY = evt.clientY - rect.top - root.scrollTop;
+ return {
+    x: mouseX,
+    y: mouseY
+  };
 }
 
