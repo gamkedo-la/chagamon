@@ -25,6 +25,8 @@ function initInput() {
 		  });
   }
   
+//keyboard functions
+  
 function setKeyHoldState(thisKey, setTo) {
 	switch (thisKey) {
 	case KEY_LEFT_ARROW:
@@ -57,16 +59,7 @@ function setKeyHoldState(thisKey, setTo) {
 	}
 }
 
-function calculateMousePos(evt) {
-	var rect = canvas.getBoundingClientRect();
-	var root = document.documentElement;
-	var mouseX = evt.clientX - rect.left - root.scrollLeft;
-	var mouseY = evt.clientY - rect.top - root.scrollTop;
-	return {
-		x:mouseX,
-		y:mouseY
-	};
-}
+
 
 function keyPressed(evt) {
 	setKeyHoldState(evt.keyCode, true);
@@ -76,3 +69,59 @@ function keyPressed(evt) {
 function keyReleased(evt) {
 	setKeyHoldState(evt.keyCode, false);
 }
+
+//mouse functions
+
+function mouseclicked(evt) {
+  if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
+    return;
+  }
+
+  if (selectedIdx == tileOverIdx) {
+    selectedIdx = -1;
+  } else if (selectedIdx != -1) {
+    var validMoves = validMovesFromTile(selectedIdx);
+    var moveInList = false;
+    var tileOverCol = tileOverIdx % TILE_COLS;
+    var tileOverRow = Math.floor(tileOverIdx / TILE_COLS);
+    for (var i = 0; i < validMoves.length; i++) {
+      if (validMoves[i].col == tileOverCol && validMoves[i].row == tileOverRow) {
+        moveInList = true;
+        break;
+      }
+    }
+    if (moveInList) {
+      var takenTile = tileGrid[tileOverIdx];
+      if(takenTile != 0)
+      {
+        console.log("Captured Value : " + takenTile );
+        if(takenTile == KEY) {
+          tileGrid[90] = KEY;
+        } else if (takenTile == AKEY) {
+          tileGrid[98] = AKEY;
+        }
+      }
+      teamATurn = !teamATurn;
+      tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
+      tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
+    }
+    
+    selectedIdx = -1; // forget selection
+  } else if(tileGrid[tileOverIdx] != NO_PIECE ) {
+    selectedIdx = tileOverIdx;
+  }
+}
+
+function mousemoved(evt) {
+  var rect = canvas.getBoundingClientRect();
+  var root = document.documentElement;
+
+  // account for the margins, canvas position on page, scroll amount, etc.
+  mouseX = evt.clientX - rect.left - root.scrollLeft;
+  mouseY = evt.clientY - rect.top - root.scrollTop;
+
+  var tileOverCol = Math.floor(mouseX / TILE_W);
+  var tileOverRow = Math.floor(mouseY / TILE_H);  
+  tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
+}
+
