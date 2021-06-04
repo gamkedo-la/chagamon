@@ -6,12 +6,13 @@ const KEY_A = 65;
 const KEY_D = 68;
 const KEY_W = 87;
 const KEY_M = 77;
-
 const KEY_ESC= 27;
 const KEY_TILDE = 192;
 const KEY_PLUS = 61;
 const KEY_MINUS = 173;
 const KEY_T = 84;
+const KEY_R = 82;
+
 var mousePos;
 var mouseUp;
 function initInput() {
@@ -57,7 +58,9 @@ function setKeyHoldState(thisKey, setTo) {
     if (setTo == false) {
       randomMove();
     }
-    break;
+  case KEY_R:
+    resetBoard();
+  break;
 	default:
 		//console.log("Keycode is: " + thisKey);
 	}

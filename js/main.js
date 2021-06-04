@@ -12,18 +12,6 @@ const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
 const TILE_ROWS = 11;
-var tileGrid =
-    [0 ,-4,-3, 0, 0, 0, 3, 4, 0,
-     -4, 0, 0, 0, 0, 0, 0, 0, 4,
-     -2, 0, 0, 0, 0, 0, 0, 0, 2,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      4, 0, 0, 0, 0, 0, 0, 0,-4,
-      3, 0, 0, 0, 0, 0, 0, 0,-3,
-      1, 2, 4, 0, 0, 0,-4,-2,-1];
 const NO_PIECE = 0;
 const KEY = 1;
 const ROOK = 2;
@@ -39,6 +27,22 @@ const AKING = -5;
 const AQUEEN = -6;
 var enemyPos = [];
 var homePos = [];
+var tileGrid = [];
+
+function resetBoard() {
+   tileGrid =
+    [0 ,-4,-3, 0, 0, 0, 3, 4, 0,
+     -4, 0, 0, 0, 0, 0, 0, 0, 4,
+     -2, 0, 0, 0, 0, 0, 0, 0, 2,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0,
+      4, 0, 0, 0, 0, 0, 0, 0,-4,
+      3, 0, 0, 0, 0, 0, 0, 0,-3,
+      1, 2, 4, 0, 0, 0,-4,-2,-1];
+}
 function validMovesForType(pieceType) {
     var movesList = [];
     var subList1 = [];
@@ -393,6 +397,7 @@ const FRAMES_PER_SECOND = 30;
   window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
+    resetBoard();
     initInput();
     loadImages();
   }
