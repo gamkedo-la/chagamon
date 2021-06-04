@@ -76,6 +76,7 @@ function keyReleased(evt) {
 
 //mouse functions
 
+
 function mouseclicked(evt) {
   if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
     return;
@@ -95,20 +96,8 @@ function mouseclicked(evt) {
       }
     }
     if (moveInList) {
-      var takenTile = tileGrid[tileOverIdx];
-      if(takenTile != 0)
-      {
-        console.log("Captured Value : " + takenTile );
-        if(takenTile == KEY) {
-          tileGrid[90] = KEY;
-        } else if (takenTile == AKEY) {
-          tileGrid[98] = AKEY;
-        }
-      }
-      teamATurn = !teamATurn;
-      tileGrid[tileOverIdx] = tileGrid[selectedIdx]; // put the piece here (overwrite)
-      tileGrid[selectedIdx] = NO_PIECE; // clear the spot where it was sitting
-	  console.log("turn over");
+      moveFromToIdx(selectedIdx, tileOverIdx);
+	    console.log("turn over");
     }
     
     selectedIdx = -1; // forget selection

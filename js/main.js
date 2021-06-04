@@ -331,16 +331,41 @@ function drawTiles() {
 function randomMove(){
 
   console.log("taking a random move");
-
+  var moveOptions = [];
   for(var eachCol=0; eachCol<TILE_COLS; eachCol++) {
     for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
       var tileIdx =  tileCoordToIndex(eachCol, eachRow);
       var pieceHere = tileGrid[tileIdx];
       if((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
         console.log(pieceHere);
-      }
+        var validMoves = validMovesFromTile(tileIdx);
+        moveOptions.push({source:tileIdx, movesList:validMoves});
+      }//end of if
+    }//end of for row
+  }//end of for column
+  console.log("Pieces with moves " + moveOptions.length);
+  var randPiece = Math.floor(Math.random() * moveOptions.length);
+  console.log("Piece " + randPiece +  " with moves " + moveOptions[randPiece].movesList.length);
+  var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
+  var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col, 
+    moveOptions[randPiece].movesList[randMove].row);
+  moveFromToIdx(moveOptions[randPiece].source, destIdx);
+}//end of function
+
+function moveFromToIdx(fromIdx, toIdx){
+  var takenTile = tileGrid[toIdx];
+  if(takenTile != 0)
+  {
+    console.log("Captured Value : " + takenTile );
+    if(takenTile == KEY) {
+      tileGrid[90] = KEY;
+    } else if (takenTile == AKEY) {
+      tileGrid[98] = AKEY;
     }
   }
+  tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
+  tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
+  teamATurn = !teamATurn;
 }
 
 function drawEverything() {
