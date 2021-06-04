@@ -328,6 +328,21 @@ function drawTiles() {
   }
 } // end of drawTiles()
 
+function randomMove(){
+
+  console.log("taking a random move");
+
+  for(var eachCol=0; eachCol<TILE_COLS; eachCol++) {
+    for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
+      var tileIdx =  tileCoordToIndex(eachCol, eachRow);
+      var pieceHere = tileGrid[tileIdx];
+      if((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
+        console.log(pieceHere);
+      }
+    }
+  }
+}
+
 function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
 
@@ -347,6 +362,7 @@ function drawEverything() {
   lineY += lineSkip;
   canvasContext.fillText((teamATurn ? "Biscuits" : "Chocolates"),rightAreaX,lineY);
 }
+
 const FRAMES_PER_SECOND = 30;
 
   window.onload = function() {

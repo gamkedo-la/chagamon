@@ -11,7 +11,7 @@ const KEY_ESC= 27;
 const KEY_TILDE = 192;
 const KEY_PLUS = 61;
 const KEY_MINUS = 173;
-
+const KEY_T = 84;
 var mousePos;
 var mouseUp;
 function initInput() {
@@ -53,6 +53,11 @@ function setKeyHoldState(thisKey, setTo) {
 	case KEY_ESC:
 		showMenu = true;
 		break;
+  case KEY_T:
+    if (setTo == false) {
+      randomMove();
+    }
+    break;
 	default:
 		//console.log("Keycode is: " + thisKey);
 	}
