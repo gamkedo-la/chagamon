@@ -1,14 +1,14 @@
 
 var button1 = document.createElement("img");
 var button2 = document.createElement("img");
-var laborb = document.createElement("img");
-var laborc = document.createElement("img");
+var KeyPieceB = document.createElement("img");
+var KeyPieceC = document.createElement("img");
 var patricianb = document.createElement("img");
 var patricianc = document.createElement("img");
 var maestrob = document.createElement("img");
 var maestroc = document.createElement("img");
-var traderb = document.createElement("img");
-var traderc = document.createElement("img");
+var KnightB = document.createElement("img");
+var KnightC = document.createElement("img");
 var nobleb = document.createElement("img");
 var noblec = document.createElement("img");
 var eliteb = document.createElement("img");
@@ -39,14 +39,14 @@ function loadImages() {
   var imageList = [
     {varName:button1, theFile:"accept.png"},
     {varName:button2, theFile:"reject.png"},
-    {varName:laborb, theFile:"laborb.png"},
-    {varName:laborc, theFile:"laborc.png"},
+    {varName:KeyPieceB, theFile:"KeyPieceB.png"},
+    {varName:KeyPieceC, theFile:"KeyPieceC.png"},
     {varName:patricianb, theFile:"patricianb.png"},
     {varName:patricianc, theFile:"patricianc.png"},
     {varName:maestrob, theFile:"maestrob.png"},
     {varName:maestroc, theFile:"maestroc.png"},
-    {varName:traderb, theFile:"traderb.png"},
-    {varName:traderc, theFile:"traderc.png"},
+    {varName:KnightB, theFile:"KnightB.png"},
+    {varName:KnightC, theFile:"KnightC.png"},
     {varName:nobleb, theFile:"nobleb.png"},
     {varName:noblec, theFile:"noblec.png"},
     {varName:eliteb, theFile:"eliteb.png"},

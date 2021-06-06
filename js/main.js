@@ -256,11 +256,11 @@ function drawTiles() {
           break;
         case KEY:
           pieceName += "Key";
-          canvasContext.drawImage(laborb, tileLeftEdgeX+25, tileTopEdgeY+10);
+          canvasContext.drawImage(KeyPieceB, tileLeftEdgeX+15, tileTopEdgeY+10);
           break;
           case AKEY:
             pieceName += "Key";
-            canvasContext.drawImage(laborc, tileLeftEdgeX, tileTopEdgeY+10);
+            canvasContext.drawImage(KeyPieceC, tileLeftEdgeX+15, tileTopEdgeY+10);
             break;
         case ROOK:
           pieceName += "Rook";
@@ -280,11 +280,11 @@ function drawTiles() {
           break;
         case KNIGHT:
           pieceName += "Knight";
-          canvasContext.drawImage(traderb,  tileLeftEdgeX, tileTopEdgeY);
+          canvasContext.drawImage(KnightB,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case AKNIGHT:
           pieceName += "Knight";
-          canvasContext.drawImage(traderc,  tileLeftEdgeX, tileTopEdgeY);
+          canvasContext.drawImage(KnightC,  tileLeftEdgeX, tileTopEdgeY);
           break;
         case KING:
           pieceName += "King";
