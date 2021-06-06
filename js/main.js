@@ -1,5 +1,5 @@
 var backgroundMusic = new BackgroundMusicClass();
-var Sound = new SoundOverlapsClass("audio/move");
+var Sound = new SoundOverlapsClass("audio/piecemoving");
 var showMenu = false;
 var mouseX = 0;
 var mouseY = 0;
@@ -368,6 +368,7 @@ function moveFromToIdx(fromIdx, toIdx){
     }
   }
   tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
+  Sound.play("piecemoving");
   tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
   teamATurn = !teamATurn;
 }

@@ -58,6 +58,7 @@ function setKeyHoldState(thisKey, setTo) {
     if (setTo == false) {
       randomMove();
     }
+    break;
   case KEY_R:
     resetBoard();
   break;
