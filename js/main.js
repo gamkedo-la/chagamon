@@ -6,6 +6,12 @@ var mouseY = 0;
 var selectedIdx = -1;
 var tileOverIdx = -1;
 
+//resetBox Configurations
+var resetBoxX = 900;
+var resetBoxY = 10;
+var resetBoxWidth = 100;
+var resetBoxHeight = 50;
+
 var teamATurn = true;
 const TILE_W = 72;
 const TILE_H = 72;
@@ -30,19 +36,22 @@ var homePos = [];
 var tileGrid = [];
 
 function resetBoard() {
-   tileGrid =
-    [0 ,-4,-3, 0, 0, 0, 3, 4, 0,
-     -4, 0, 0, 0, 0, 0, 0, 0, 4,
-     -2, 0, 0, 0, 0, 0, 0, 0, 2,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0,
-      4, 0, 0, 0, 0, 0, 0, 0,-4,
-      3, 0, 0, 0, 0, 0, 0, 0,-3,
-      1, 2, 4, 0, 0, 0,-4,-2,-1];
+    tileGrid = [0, -4, -3, 0, 0, 0, 3, 4, 0,
+        -4, 0, 0, 0, 0, 0, 0, 0, 4,
+        -2, 0, 0, 0, 0, 0, 0, 0, 2,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        4, 0, 0, 0, 0, 0, 0, 0, -4,
+        3, 0, 0, 0, 0, 0, 0, 0, -3,
+        1, 2, 4, 0, 0, 0, -4, -2, -1
+    ];
 }
+
+
+
 function validMovesForType(pieceType) {
     var movesList = [];
     var subList1 = [];
@@ -53,87 +62,207 @@ function validMovesForType(pieceType) {
     var subList6 = [];
     var subList7 = [];
     var subList8 = [];
- switch(pieceType){
-     case KEY:
-    case AKEY:
-     movesList.push([{ col: 0, row: 1 }]);
-     movesList.push([{ col: 0, row: -1 }]);
-     movesList.push([{ col: 1, row: 0 }]);
-     movesList.push([{ col: -1, row: 0 }]);
-     movesList.push([{ col: 1, row: 1 }]);
-     movesList.push([{ col: -1, row: -1 }]);
-     movesList.push([{ col: 1, row: -1 }]);
-     movesList.push([{ col: -1, row: 1 }]);
-    break;
-     case KNIGHT:
-     case AKNIGHT:
-        movesList.push([{col:1, row:2}]);
-        movesList.push([{col:1, row:-2}]);
-        movesList.push([{col:-1, row:-2}]);
-        movesList.push([{col:-1, row:2}]);
+    switch (pieceType) {
+        case KEY:
+        case AKEY:
+            movesList.push([{
+                col: 0,
+                row: 1
+            }]);
+            movesList.push([{
+                col: 0,
+                row: -1
+            }]);
+            movesList.push([{
+                col: 1,
+                row: 0
+            }]);
+            movesList.push([{
+                col: -1,
+                row: 0
+            }]);
+            movesList.push([{
+                col: 1,
+                row: 1
+            }]);
+            movesList.push([{
+                col: -1,
+                row: -1
+            }]);
+            movesList.push([{
+                col: 1,
+                row: -1
+            }]);
+            movesList.push([{
+                col: -1,
+                row: 1
+            }]);
+            break;
+        case KNIGHT:
+        case AKNIGHT:
+            movesList.push([{
+                col: 1,
+                row: 2
+            }]);
+            movesList.push([{
+                col: 1,
+                row: -2
+            }]);
+            movesList.push([{
+                col: -1,
+                row: -2
+            }]);
+            movesList.push([{
+                col: -1,
+                row: 2
+            }]);
 
-        movesList.push([{col:2, row:1}]);
-        movesList.push([{col:2, row:-1}]);
-        movesList.push([{col:-2, row:-1}]);
-        movesList.push([{col:-2, row:1}]);
-         break; 
-         break; 
-     case ROOK:
-     case AROOK:
-         for (i = 1; i <= 3; i++) {
-             subList1.push({ col: 0, row: i });
-             subList2.push({ col: 0, row: -i });
-             subList3.push({ col: i, row: 0 });
-             subList4.push({ col: -i, row: 0 });
-         }
-         movesList = [subList1, subList2, subList3, subList4];
-      break;
-     case BISHOP:
-     case ABISHOP:
-         for (i = 1; i <= 3; i++) {
-             subList1.push({ col: i, row: i });
-             subList2.push({ col: -i, row: -i });
-             subList3.push({ col: -i, row: i });
-             subList4.push({ col: i, row: -i });
-         }
-         movesList = [subList1, subList2, subList3, subList4];
-    break; 
-     case KING:
-     case AKING:
-        movesList.push([{col:0, row:1}]);
-        movesList.push([{col:0, row:-1}]);
-        movesList.push([{col:1, row:0}]);
-        movesList.push([{col:-1, row:0}]);
-        movesList.push([{col:1, row:1}]);
-        movesList.push([{col:-1, row:-1}]);
-        movesList.push([{col:1, row:-1}]);
-        movesList.push([{col:-1, row:1}]);
-      break;
-     case QUEEN:
-     case AQUEEN:
-         for (i = 1; i <= 7; i++) {
-             subList1.push({ col: i, row: i });
-             subList2.push({ col:-i, row:-i });
-             subList3.push({ col: i, row: 0 });
-             subList4.push({ col:-i, row: 0 });
-             subList5.push({ col: 0, row: i });
-             subList6.push({ col: 0, row:-i });
-             subList7.push({ col:-i, row: i });
-             subList8.push({ col: i, row: -i });
-         }
-         movesList = [subList1, subList2, subList3, subList4, subList5, subList6, subList7, subList8];
-      break;
- }
- return movesList;
+            movesList.push([{
+                col: 2,
+                row: 1
+            }]);
+            movesList.push([{
+                col: 2,
+                row: -1
+            }]);
+            movesList.push([{
+                col: -2,
+                row: -1
+            }]);
+            movesList.push([{
+                col: -2,
+                row: 1
+            }]);
+            break;
+            break;
+        case ROOK:
+        case AROOK:
+            for (i = 1; i <= 3; i++) {
+                subList1.push({
+                    col: 0,
+                    row: i
+                });
+                subList2.push({
+                    col: 0,
+                    row: -i
+                });
+                subList3.push({
+                    col: i,
+                    row: 0
+                });
+                subList4.push({
+                    col: -i,
+                    row: 0
+                });
+            }
+            movesList = [subList1, subList2, subList3, subList4];
+            break;
+        case BISHOP:
+        case ABISHOP:
+            for (i = 1; i <= 3; i++) {
+                subList1.push({
+                    col: i,
+                    row: i
+                });
+                subList2.push({
+                    col: -i,
+                    row: -i
+                });
+                subList3.push({
+                    col: -i,
+                    row: i
+                });
+                subList4.push({
+                    col: i,
+                    row: -i
+                });
+            }
+            movesList = [subList1, subList2, subList3, subList4];
+            break;
+        case KING:
+        case AKING:
+            movesList.push([{
+                col: 0,
+                row: 1
+            }]);
+            movesList.push([{
+                col: 0,
+                row: -1
+            }]);
+            movesList.push([{
+                col: 1,
+                row: 0
+            }]);
+            movesList.push([{
+                col: -1,
+                row: 0
+            }]);
+            movesList.push([{
+                col: 1,
+                row: 1
+            }]);
+            movesList.push([{
+                col: -1,
+                row: -1
+            }]);
+            movesList.push([{
+                col: 1,
+                row: -1
+            }]);
+            movesList.push([{
+                col: -1,
+                row: 1
+            }]);
+            break;
+        case QUEEN:
+        case AQUEEN:
+            for (i = 1; i <= 7; i++) {
+                subList1.push({
+                    col: i,
+                    row: i
+                });
+                subList2.push({
+                    col: -i,
+                    row: -i
+                });
+                subList3.push({
+                    col: i,
+                    row: 0
+                });
+                subList4.push({
+                    col: -i,
+                    row: 0
+                });
+                subList5.push({
+                    col: 0,
+                    row: i
+                });
+                subList6.push({
+                    col: 0,
+                    row: -i
+                });
+                subList7.push({
+                    col: -i,
+                    row: i
+                });
+                subList8.push({
+                    col: i,
+                    row: -i
+                });
+            }
+            movesList = [subList1, subList2, subList3, subList4, subList5, subList6, subList7, subList8];
+            break;
+    }
+    return movesList;
 }
 
-function validMovesFromTile(tileIdx){
+function validMovesFromTile(tileIdx) {
     var selectedPiece = tileGrid[tileIdx];
-    var selectedCol = tileIdx%TILE_COLS;
-    var selectedRow = Math.floor(tileIdx/TILE_COLS);
+    var selectedCol = tileIdx % TILE_COLS;
+    var selectedRow = Math.floor(tileIdx / TILE_COLS);
     var validMoves = validMovesForType(selectedPiece);
     var returnMoves = [];
-    for (var i = validMoves.length - 1; i >= 0; i--) {//backwards so we can splice
+    for (var i = validMoves.length - 1; i >= 0; i--) { //backwards so we can splice
         for (var ii = 0; ii < validMoves[i].length; ii++) {
             var moveToConsider = validMoves[i][ii];
             moveToConsider.col += selectedCol;
@@ -150,25 +279,25 @@ function validMovesFromTile(tileIdx){
             if (targetPiece < 0) {
                 if (selectedPiece < 0) {
                     //can't land on our own team
-                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } else {
                     //Positive team can attack Negative team
                     returnMoves.push(moveToConsider);
-                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 }
             } else if (targetPiece > 0) {
                 if (selectedPiece > 0) {
                     //can't land on our own team
-                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } else {
-                   returnMoves.push(moveToConsider);
+                    returnMoves.push(moveToConsider);
                     // Negative team can attack Positive team
-                    ii = validMoves[i].length;//skipping the rest of inner for loop(to not go through the piece/block)
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
-                } 
+                }
             } else {
                 returnMoves.push(moveToConsider);
             }
@@ -178,229 +307,230 @@ function validMovesFromTile(tileIdx){
 }
 
 function startGame() {
-  // these next few lines set up our game logic and render to happen 30 times per second
-   setInterval(function() {
-     update();
-     }, 1000/FRAMES_PER_SECOND);
-   //backgroundMusic.loopSong("audio/calm");
-   //reset();
- }
- 
- function update() {
-   drawEverything();
-   resizeCanvas();
-   //variableDisplay();
- }
+    // these next few lines set up our game logic and render to happen 30 times per second
+    setInterval(function() {
+        update();
+    }, 1000 / FRAMES_PER_SECOND);
+    //backgroundMusic.loopSong("audio/calm");
+    //reset();
+}
+
+function update() {
+    drawEverything();
+    resizeCanvas();
+    //variableDisplay();
+}
 
 function resizeCanvas() {
- canvas.width = window.innerWidth;
- canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
- if (showMenu == true) {
-   menu.draw();
-   menu.update();
-   } 
-   else {
-   drawEverything();
-   showMenu = false;
-   }
+    if (showMenu == true) {
+        menu.draw();
+        menu.update();
+    } else {
+        drawEverything();
+        showMenu = false;
+    }
 }
 
 
 var canvas, canvasContext;
 
 function tileCoordToIndex(tileCol, tileRow) {
-  return (tileCol + TILE_COLS*tileRow);
+    return (tileCol + TILE_COLS * tileRow);
 }
 
 
 
 function drawTiles() {
-  for(var eachCol=0; eachCol<TILE_COLS; eachCol++) {
-    for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
-      var tileLeftEdgeX = eachCol * TILE_W;
-      var tileTopEdgeY = eachRow * TILE_H;
-      if (eachCol == 0  && eachRow == 0) 
-      {
-        colorRect(tileLeftEdgeX, tileTopEdgeY,
-          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD' );
-      }
-      else  if (eachCol == TILE_COLS-1  && eachRow == 0) 
-      {
-        colorRect(tileLeftEdgeX, tileTopEdgeY,
-          TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222' );
-      }
-      else if( (eachCol + eachRow) % 2 == 0 ) { // splitting even sums from odd
-        colorRect(tileLeftEdgeX, tileTopEdgeY,
-                 TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888' );
-      } 
-       else {
-        colorRect(tileLeftEdgeX, tileTopEdgeY,
-                 TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa' );
-      }
+    for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
+        for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
+            var tileLeftEdgeX = eachCol * TILE_W;
+            var tileTopEdgeY = eachRow * TILE_H;
+            if (eachCol == 0 && eachRow == 0) {
+                colorRect(tileLeftEdgeX, tileTopEdgeY,
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD');
+            } else if (eachCol == TILE_COLS - 1 && eachRow == 0) {
+                colorRect(tileLeftEdgeX, tileTopEdgeY,
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');
+            } else if ((eachCol + eachRow) % 2 == 0) { // splitting even sums from odd
+                colorRect(tileLeftEdgeX, tileTopEdgeY,
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888');
+            } else {
+                colorRect(tileLeftEdgeX, tileTopEdgeY,
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa');
+            }
 
-      var idxHere = tileCoordToIndex(eachCol,eachRow);
-      var pieceHere = tileGrid[idxHere];
-      var pieceName = "";
+            var idxHere = tileCoordToIndex(eachCol, eachRow);
+            var pieceHere = tileGrid[idxHere];
+            var pieceName = "";
 
-      if( pieceHere < 0 ) {
-        canvasContext.fillStyle = 'white';
-          pieceName = "Bis.";
-      } else if( pieceHere > 0 ) {
-        canvasContext.fillStyle = 'black';
-          pieceName = "Cho.";
-      } 
+            if (pieceHere < 0) {
+                canvasContext.fillStyle = 'white';
+                pieceName = "Bis.";
+            } else if (pieceHere > 0) {
+                canvasContext.fillStyle = 'black';
+                pieceName = "Cho.";
+            }
 
-      switch(Math.abs(pieceHere)) {
-        case NO_PIECE:
-          break;
-        case KEY:
-          pieceName += "Key";
-          canvasContext.drawImage(KeyPieceB, tileLeftEdgeX+15, tileTopEdgeY+10);
-          break;
-          case AKEY:
-            pieceName += "Key";
-            canvasContext.drawImage(KeyPieceC, tileLeftEdgeX+15, tileTopEdgeY+10);
-            break;
-        case ROOK:
-          pieceName += "Rook";
-          canvasContext.drawImage(maestrob,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case AROOK:
-          pieceName += "Rook";
-          canvasContext.drawImage(maestroc,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case BISHOP:
-          pieceName += "Bishop";
-          canvasContext.drawImage(patricianb,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case ABISHOP:
-          pieceName += "Bishop";
-          canvasContext.drawImage(patricianc,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case KNIGHT:
-          pieceName += "Knight";
-          canvasContext.drawImage(KnightB,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case AKNIGHT:
-          pieceName += "Knight";
-          canvasContext.drawImage(KnightC,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case KING:
-          pieceName += "King";
-          canvasContext.drawImage(eliteb,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case AKING:
-          pieceName += "King";
-          canvasContext.drawImage(elitec,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case QUEEN:
-          pieceName += "Queen";
-          canvasContext.drawImage(nobleb,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-        case AQUEEN:
-          pieceName += "Queen";
-          canvasContext.drawImage(noblec,  tileLeftEdgeX, tileTopEdgeY);
-          break;
-      }
-      
-      canvasContext.fillText(pieceName,
-                tileLeftEdgeX+TILE_W/2, tileTopEdgeY+TILE_H/2);
+            switch (Math.abs(pieceHere)) {
+                case NO_PIECE:
+                    break;
+                case KEY:
+                    pieceName += "Key";
+                    canvasContext.drawImage(KeyPieceB, tileLeftEdgeX + 15, tileTopEdgeY + 10);
+                    break;
+                case AKEY:
+                    pieceName += "Key";
+                    canvasContext.drawImage(KeyPieceC, tileLeftEdgeX + 15, tileTopEdgeY + 10);
+                    break;
+                case ROOK:
+                    pieceName += "Rook";
+                    canvasContext.drawImage(maestrob, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case AROOK:
+                    pieceName += "Rook";
+                    canvasContext.drawImage(maestroc, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case BISHOP:
+                    pieceName += "Bishop";
+                    canvasContext.drawImage(patricianb, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case ABISHOP:
+                    pieceName += "Bishop";
+                    canvasContext.drawImage(patricianc, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case KNIGHT:
+                    pieceName += "Knight";
+                    canvasContext.drawImage(KnightB, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case AKNIGHT:
+                    pieceName += "Knight";
+                    canvasContext.drawImage(KnightC, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case KING:
+                    pieceName += "King";
+                    canvasContext.drawImage(eliteb, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case AKING:
+                    pieceName += "King";
+                    canvasContext.drawImage(elitec, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case QUEEN:
+                    pieceName += "Queen";
+                    canvasContext.drawImage(nobleb, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+                case AQUEEN:
+                    pieceName += "Queen";
+                    canvasContext.drawImage(noblec, tileLeftEdgeX, tileTopEdgeY);
+                    break;
+            }
 
-      // not a super efficient way to do this, but c'mon, it's a boardgame!
-      // based on exercises you've already done you could optimize this :)
-      if(tileOverIdx == idxHere) {
-        outlineRect(tileLeftEdgeX, tileTopEdgeY,
-                 TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green' );
-      }
-      if(selectedIdx == idxHere) {
-        // cutting extra margin from each edge so it won't overlap mouseover tile
-        outlineRect(tileLeftEdgeX+3, tileTopEdgeY+3,
-                 TILE_W - TILE_GAP-6, TILE_H - TILE_GAP-6, 'yellow' );
-      }
-    } // end of for eachRow
-  } // end of for eachCol
+            canvasContext.fillText(pieceName,
+                tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
 
-  if(selectedIdx != -1){
-    var validMoves = validMovesFromTile(selectedIdx);
-    for(var i=0; i<validMoves.length; i++){
-      var tileLeftEdgeX = validMoves[i].col * TILE_W;
-      var tileTopEdgeY = validMoves[i].row * TILE_H;
-      outlineRect(tileLeftEdgeX+3, tileTopEdgeY+3,
-        TILE_W - TILE_GAP-6, TILE_H - TILE_GAP-6, 'pink' );
+            // not a super efficient way to do this, but c'mon, it's a boardgame!
+            // based on exercises you've already done you could optimize this :)
+            if (tileOverIdx == idxHere) {
+                outlineRect(tileLeftEdgeX, tileTopEdgeY,
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green');
+            }
+            if (selectedIdx == idxHere) {
+                // cutting extra margin from each edge so it won't overlap mouseover tile
+                outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
+                    TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'yellow');
+            }
+        } // end of for eachRow
+    } // end of for eachCol
+
+    if (selectedIdx != -1) {
+        var validMoves = validMovesFromTile(selectedIdx);
+        for (var i = 0; i < validMoves.length; i++) {
+            var tileLeftEdgeX = validMoves[i].col * TILE_W;
+            var tileTopEdgeY = validMoves[i].row * TILE_H;
+            outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
+                TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
+        }
     }
-  }
+
+    drawResetButton();
 } // end of drawTiles()
 
-function randomMove(){
+function randomMove() {
 
-  console.log("taking a random move");
-  var moveOptions = [];
-  for(var eachCol=0; eachCol<TILE_COLS; eachCol++) {
-    for(var eachRow=0; eachRow<TILE_ROWS; eachRow++) {
-      var tileIdx =  tileCoordToIndex(eachCol, eachRow);
-      var pieceHere = tileGrid[tileIdx];
-      if((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
-        console.log(pieceHere);
-        var validMoves = validMovesFromTile(tileIdx);
-        moveOptions.push({source:tileIdx, movesList:validMoves});
-      }//end of if
-    }//end of for row
-  }//end of for column
-  console.log("Pieces with moves " + moveOptions.length);
-  var randPiece = Math.floor(Math.random() * moveOptions.length);
-  console.log("Piece " + randPiece +  " with moves " + moveOptions[randPiece].movesList.length);
-  var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
-  var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col, 
-    moveOptions[randPiece].movesList[randMove].row);
-  moveFromToIdx(moveOptions[randPiece].source, destIdx);
-}//end of function
+    console.log("taking a random move");
+    var moveOptions = [];
+    for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
+        for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
+            var tileIdx = tileCoordToIndex(eachCol, eachRow);
+            var pieceHere = tileGrid[tileIdx];
+            if ((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
+                console.log(pieceHere);
+                var validMoves = validMovesFromTile(tileIdx);
+                moveOptions.push({
+                    source: tileIdx,
+                    movesList: validMoves
+                });
+            } //end of if
+        } //end of for row
+    } //end of for column
+    console.log("Pieces with moves " + moveOptions.length);
+    var randPiece = Math.floor(Math.random() * moveOptions.length);
+    console.log("Piece " + randPiece + " with moves " + moveOptions[randPiece].movesList.length);
+    var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
+    var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col,
+        moveOptions[randPiece].movesList[randMove].row);
+    moveFromToIdx(moveOptions[randPiece].source, destIdx);
+} //end of function
 
-function moveFromToIdx(fromIdx, toIdx){
-  var takenTile = tileGrid[toIdx];
-  if(takenTile != 0)
-  {
-    console.log("Captured Value : " + takenTile );
-    if(takenTile == KEY) {
-      tileGrid[90] = KEY;
-    } else if (takenTile == AKEY) {
-      tileGrid[98] = AKEY;
+function moveFromToIdx(fromIdx, toIdx) {
+    var takenTile = tileGrid[toIdx];
+    if (takenTile != 0) {
+        console.log("Captured Value : " + takenTile);
+        if (takenTile == KEY) {
+            tileGrid[90] = KEY;
+        } else if (takenTile == AKEY) {
+            tileGrid[98] = AKEY;
+        }
     }
-  }
-  tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
-  Sound.play("piecemoving");
-  tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
-  teamATurn = !teamATurn;
+    tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
+    Sound.play("piecemoving");
+    tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
+    teamATurn = !teamATurn;
 }
 
 function drawEverything() {
-  colorRect(0, 0, canvas.width, canvas.height, 'black');
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
 
-  canvasContext.textAlign="center";
-  drawTiles();
-  
-  canvasContext.textAlign="left";
-  canvasContext.fillStyle = 'white';
-  var rightAreaX = TILE_W*TILE_COLS;
-  var lineSkip = 15;
-  var lineY = 20;
-  canvasContext.fillText("Click any piece to select",rightAreaX,lineY);
-  lineY += lineSkip;
-  canvasContext.fillText("Then click spot to move to",rightAreaX,lineY);
-  lineY += lineSkip;
-  canvasContext.fillText("Next Turn: ",rightAreaX,lineY);
-  lineY += lineSkip;
-  canvasContext.fillText((teamATurn ? "Biscuits" : "Chocolates"),rightAreaX,lineY);
+    canvasContext.textAlign = "center";
+    drawTiles();
+
+    canvasContext.textAlign = "left";
+    canvasContext.fillStyle = 'white';
+    var rightAreaX = TILE_W * TILE_COLS;
+    var lineSkip = 15;
+    var lineY = 20;
+    canvasContext.fillText("Click any piece to select", rightAreaX, lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("Then click spot to move to", rightAreaX, lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("Next Turn: ", rightAreaX, lineY);
+    lineY += lineSkip;
+    canvasContext.fillText((teamATurn ? "Biscuits" : "Chocolates"), rightAreaX, lineY);
+}
+
+function drawResetButton(){
+  canvasContext.drawImage(resetButton, resetBoxX, resetBoxY);
+  colorText("Reset", resetBoxX + 50, resetBoxY + 30, 15, "white");
 }
 
 const FRAMES_PER_SECOND = 30;
 
-  window.onload = function() {
+window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
     resetBoard();
     initInput();
     loadImages();
-  }
-  
- 
+}

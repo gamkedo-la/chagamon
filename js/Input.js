@@ -15,6 +15,7 @@ const KEY_R = 82;
 
 var mousePos;
 var mouseUp;
+
 function initInput() {
 	document.addEventListener("mousemove", mousemoved);
 	document.addEventListener("mousedown", mouseclicked);
@@ -82,6 +83,12 @@ function keyReleased(evt) {
 
 
 function mouseclicked(evt) {
+  if (checkBox(mouseX, mouseY, resetBoxX, resetBoxY,resetBoxWidth, resetBoxHeight)){ //reset button
+    resetBoard();
+    console.log("Board Reset");
+    return;
+  };
+  
   if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
     return;
   }
@@ -135,3 +142,20 @@ function calculateMousePos(evt) {
   };
 }
 
+function checkBox(inpX, inpY, xPos, yPos, width, height){
+  let leftSide = xPos;
+  let rightSide = xPos + width;
+  let topSide = yPos;
+  let bottomSide = yPos + height;
+  let inputX = inpX;
+  let inputY = inpY;
+
+  console.log(inputY <= bottomSide)
+
+  if (inputX >= leftSide && inputX <= rightSide && 
+      inputY >= topSide && inputY <= bottomSide){
+        return true;
+  } else {
+    return false;
+  }
+}
