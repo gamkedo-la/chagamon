@@ -57,7 +57,9 @@ function setKeyHoldState(thisKey, setTo) {
 		break;
   case KEY_T:
     if (setTo == false) {
-      randomMove();
+      setInterval(function() {
+        randomMove();
+    }, 1000 / FRAMES_PER_SECOND);
     }
     break;
   case KEY_R:

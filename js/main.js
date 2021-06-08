@@ -517,7 +517,7 @@ function drawEverything() {
     lineY += lineSkip;
     canvasContext.fillText("Next Turn: ", rightAreaX, lineY);
     lineY += lineSkip;
-    canvasContext.fillText((teamATurn ? "Biscuits" : "Chocolates"), rightAreaX, lineY);
+    canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX, lineY);
 }
 
 function drawResetButton(){
