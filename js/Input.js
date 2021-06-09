@@ -30,18 +30,6 @@ function initInput() {
   
 function setKeyHoldState(thisKey, setTo) {
 	switch (thisKey) {
-	case KEY_LEFT_ARROW:
-	case KEY_A: 
-		break;
-	case KEY_RIGHT_ARROW:
-	case KEY_D: 
-		break;
-	case KEY_UP_ARROW:
-	case KEY_SPACE:
-	case KEY_W:
-		break;
-	case KEY_TILDE:
-		break;
 	case KEY_PLUS:
 		radiusIncrease = setTo;
 		break;
@@ -64,6 +52,10 @@ function setKeyHoldState(thisKey, setTo) {
     break;
   case KEY_R:
     resetBoard();
+  break;
+  case KEY_SPACE:
+    console.log(" KEY");
+    scoreBoard();
   break;
 	default:
 		//console.log("Keycode is: " + thisKey);

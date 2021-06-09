@@ -386,10 +386,10 @@ function drawTiles() {
 
             if (pieceHere < 0) {
                 canvasContext.fillStyle = 'white';
-                pieceName = "Bis.";
+                pieceName = "Cho.";
             } else if (pieceHere > 0) {
                 canvasContext.fillStyle = 'black';
-                pieceName = "Cho.";
+                pieceName = "Bis.";
             }
 
             switch (pieceHere) {
@@ -523,6 +523,25 @@ function moveFromToIdx(fromIdx, toIdx) {
     teamATurn = !teamATurn;
 }
 
+function scoreBoard() {
+    var bisPieceScore = 0;
+    var choPieceScore = 0;
+    for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
+        for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
+            var tileLeftEdgeX = eachCol * TILE_W;
+            var tileTopEdgeY = eachRow * TILE_H;
+            var idxHere = tileCoordToIndex(eachCol, eachRow);
+            var pieceHere = tileGrid[idxHere];
+            if (pieceHere > 0 ) {
+                bisPieceScore+=1;   
+            }
+            if (pieceHere < 0 ) {
+                choPieceScore+=1;   
+            }
+        }
+    }
+    console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
+}
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
 
