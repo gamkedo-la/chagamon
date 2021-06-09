@@ -20,6 +20,12 @@ const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
 const TILE_ROWS = 11;
+
+const TILE_KEY_START = 90;
+const TILE_AKEY_START = 98;
+const TILE_KEY_GOAL = TILE_COLS - 1;
+const TILE_AKEY_GOAL = 0;
+
 const NO_PIECE = 0;
 const KEY = 1;
 const ROOK = 2;
@@ -33,6 +39,7 @@ const ABISHOP = -3;
 const AKNIGHT = -4;
 const AKING = -5;
 const AQUEEN = -6;
+
 var enemyPos = [];
 var homePos = [];
 var tileGrid = [];
@@ -53,7 +60,15 @@ function resetBoard() {
             ];
 }
 
-
+function whoWon() {
+    if(tileGrid[TILE_AKEY_GOAL] == AKEY){
+        return -1;   
+    }
+    if (tileGrid[TILE_KEY_GOAL] == KEY) {
+        return 1;
+    }
+    return 0;
+}
 
 function validMovesForType(pieceType) {
     var movesList = [];
@@ -345,18 +360,18 @@ function tileCoordToIndex(tileCol, tileRow) {
 }
 
 
-
 function drawTiles() {
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileLeftEdgeX = eachCol * TILE_W;
             var tileTopEdgeY = eachRow * TILE_H;
-            if (eachCol == 0 && eachRow == 0) {
+            var idxHere = tileCoordToIndex(eachCol, eachRow);
+            if (idxHere == TILE_AKEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
-                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD');
-            } else if (eachCol == TILE_COLS - 1 && eachRow == 0) {
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');//white corner
+            } else if (idxHere == TILE_KEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
-                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD');//black corner
             } else if ((eachCol + eachRow) % 2 == 0) { // splitting even sums from odd
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888');
@@ -365,7 +380,7 @@ function drawTiles() {
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa');
             }
 
-            var idxHere = tileCoordToIndex(eachCol, eachRow);
+            
             var pieceHere = tileGrid[idxHere];
             var pieceName = "";
 
@@ -488,14 +503,18 @@ function randomMove() {
 } //end of function
 
 function moveFromToIdx(fromIdx, toIdx) {
+    if(whoWon() != 0) {
+        console.log("GAME OVER");
+        return;
+    }
     turnCount++;
     var takenTile = tileGrid[toIdx];
     if (takenTile != 0) {
         console.log("Captured Value : " + takenTile);
         if (takenTile == KEY) {
-            tileGrid[90] = KEY;
+            tileGrid[TILE_KEY_START] = KEY;
         } else if (takenTile == AKEY) {
-            tileGrid[98] = AKEY;
+            tileGrid[TILE_AKEY_START] = AKEY;
         }
     }
     tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
@@ -524,6 +543,14 @@ function drawEverything() {
     canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX, lineY);
     lineY += lineSkip;
     canvasContext.fillText("Turn Count: " + turnCount, rightAreaX, lineY);
+    lineY += lineSkip;
+    if(whoWon() == 1) {
+        canvasContext.fillText("Biscuit Team Won", rightAreaX, lineY);
+    }
+    if(whoWon() == -1) {
+        canvasContext.fillText("Chocolate Team Won", rightAreaX, lineY);
+    }
+    
 }
 
 function drawResetButton(){
