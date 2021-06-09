@@ -54,8 +54,9 @@ function setKeyHoldState(thisKey, setTo) {
     resetBoard();
   break;
   case KEY_SPACE:
-    console.log(" KEY");
-    scoreBoard();
+    if (setTo == false) {
+      scoreBoard();
+    }
   break;
 	default:
 		//console.log("Keycode is: " + thisKey);

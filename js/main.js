@@ -526,6 +526,8 @@ function moveFromToIdx(fromIdx, toIdx) {
 function scoreBoard() {
     var bisPieceScore = 0;
     var choPieceScore = 0;
+    var bisKeyDist = 0;
+    var choKeyDist = 0;
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileLeftEdgeX = eachCol * TILE_W;
@@ -533,14 +535,24 @@ function scoreBoard() {
             var idxHere = tileCoordToIndex(eachCol, eachRow);
             var pieceHere = tileGrid[idxHere];
             if (pieceHere > 0 ) {
-                bisPieceScore+=1;   
-            }
+                if(pieceHere == KEY) {
+                    bisKeyDist  = eachRow + Math.abs(eachCol-TILE_KEY_GOAL);
+                } else {
+                    bisPieceScore+=1;  
+                }
+                
+            }//end of Bis Piece
             if (pieceHere < 0 ) {
-                choPieceScore+=1;   
-            }
+                if(pieceHere == AKEY) {
+                    choKeyDist  = eachRow + Math.abs(eachCol-TILE_AKEY_GOAL);
+                } else {
+                    choPieceScore+=1;  
+                }
+            }//end of Cho Piece
         }
     }
     console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
+    console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
 }
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
