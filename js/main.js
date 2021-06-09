@@ -13,6 +13,8 @@ var resetBoxWidth = 100;
 var resetBoxHeight = 50;
 
 var teamATurn = true;
+var turnCount = 0;
+
 const TILE_W = 72;
 const TILE_H = 72;
 const TILE_GAP = 1;
@@ -36,6 +38,7 @@ var homePos = [];
 var tileGrid = [];
 
 function resetBoard() {
+    turnCount = 0;
     tileGrid = [0,-4,-3, 0, 0, 0, 3, 4, 0,
                -4, 0, 0, 0, 0, 0, 0, 0, 4,
                -2, 0, 0, 0, 0, 0, 0, 0, 2,
@@ -485,6 +488,7 @@ function randomMove() {
 } //end of function
 
 function moveFromToIdx(fromIdx, toIdx) {
+    turnCount++;
     var takenTile = tileGrid[toIdx];
     if (takenTile != 0) {
         console.log("Captured Value : " + takenTile);
@@ -518,6 +522,8 @@ function drawEverything() {
     canvasContext.fillText("Next Turn: ", rightAreaX, lineY);
     lineY += lineSkip;
     canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX, lineY);
+    lineY += lineSkip;
+    canvasContext.fillText("Turn Count: " + turnCount, rightAreaX, lineY);
 }
 
 function drawResetButton(){
