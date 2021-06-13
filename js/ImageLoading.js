@@ -4,10 +4,10 @@ var button2 = document.createElement("img");
 var resetButton = document.createElement("img");
 var KeyPieceB = document.createElement("img");
 var KeyPieceC = document.createElement("img");
-var patricianb = document.createElement("img");
-var patricianc = document.createElement("img");
-var maestrob = document.createElement("img");
-var maestroc = document.createElement("img");
+var BishopB = document.createElement("img");
+var BishopC = document.createElement("img");
+var RookB = document.createElement("img");
+var RookC = document.createElement("img");
 var KnightB = document.createElement("img");
 var KnightC = document.createElement("img");
 var nobleb = document.createElement("img");
@@ -44,10 +44,10 @@ function loadImages() {
     {varName:resetButton, theFile:"resetButton.png"},
     {varName:KeyPieceB, theFile:"KeyPieceB.png"},
     {varName:KeyPieceC, theFile:"KeyPieceC.png"},
-    {varName:patricianb, theFile:"patricianb.png"},
-    {varName:patricianc, theFile:"patricianc.png"},
-    {varName:maestrob, theFile:"maestrob.png"},
-    {varName:maestroc, theFile:"maestroc.png"},
+    {varName:BishopB, theFile:"BishopB.png"},
+    {varName:BishopC, theFile:"BishopC.png"},
+    {varName:RookB, theFile:"RookB.png"},
+    {varName:RookC, theFile:"RookC.png"},
     {varName:KnightB, theFile:"KnightB.png"},
     {varName:KnightC, theFile:"KnightC.png"},
     {varName:nobleb, theFile:"nobleb.png"},

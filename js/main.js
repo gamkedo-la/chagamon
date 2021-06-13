@@ -408,19 +408,19 @@ function drawTiles() {
                     break;
                 case ROOK:
                     pieceName += "Rook";
-                    canvasContext.drawImage(maestrob, tileLeftEdgeX, tileTopEdgeY);
+                    canvasContext.drawImage(RookB, tileLeftEdgeX, tileTopEdgeY);
                     break;
                 case AROOK:
                     pieceName += "Rook";
-                    canvasContext.drawImage(maestroc, tileLeftEdgeX, tileTopEdgeY);
+                    canvasContext.drawImage(RookC, tileLeftEdgeX, tileTopEdgeY);
                     break;
                 case BISHOP:
                     pieceName += "Bishop";
-                    canvasContext.drawImage(patricianb, tileLeftEdgeX, tileTopEdgeY);
+                    canvasContext.drawImage(BishopB, tileLeftEdgeX, tileTopEdgeY);
                     break;
                 case ABISHOP:
                     pieceName += "Bishop";
-                    canvasContext.drawImage(patricianc, tileLeftEdgeX, tileTopEdgeY);
+                    canvasContext.drawImage(BishopC, tileLeftEdgeX, tileTopEdgeY);
                     break;
                 case KNIGHT:
                     pieceName += "Knight";
