@@ -1,5 +1,8 @@
 var backgroundMusic = new BackgroundMusicClass();
-var Sound = new SoundOverlapsClass("audio/piecemoving");
+var moveSound = new SoundOverlapsClass("audio/piecemoving", "audio/GameWin","audio/GameLose");
+var winSound = new SoundOverlapsClass("audio/GameWin");
+var loseSound = new SoundOverlapsClass("audio/GameLose");
+
 var showMenu = false;
 var mouseX = 0;
 var mouseY = 0;
@@ -62,7 +65,7 @@ function resetBoard() {
 
 function whoWon() {
     if(tileGrid[TILE_AKEY_GOAL] == AKEY){
-        return -1;   
+        return -1;  
     }
     if (tileGrid[TILE_KEY_GOAL] == KEY) {
         return 1;
@@ -518,9 +521,12 @@ function moveFromToIdx(fromIdx, toIdx) {
         }
     }
     tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
-    Sound.play("piecemoving");
+    moveSound.play();
     tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
     teamATurn = !teamATurn;
+    if(whoWon() != 0) {
+        winSound.play();
+     }
 }
 
 function scoreBoard() {
