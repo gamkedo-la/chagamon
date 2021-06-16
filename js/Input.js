@@ -80,6 +80,7 @@ function keyReleased(evt) {
 function mouseclicked(evt) {
   if (checkBox(mouseX, mouseY, resetBoxX, resetBoxY,resetBoxWidth, resetBoxHeight)){ //reset button
     resetBoard();
+    buttonSound.play();
     console.log("Board Reset");
     return;
   };

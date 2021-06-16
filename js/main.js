@@ -1,7 +1,11 @@
 var backgroundMusic = new BackgroundMusicClass();
-var moveSound = new SoundOverlapsClass("audio/piecemoving", "audio/GameWin","audio/GameLose");
+var moveSound = new SoundOverlapsClass("audio/piecemoving");
 var winSound = new SoundOverlapsClass("audio/GameWin");
 var loseSound = new SoundOverlapsClass("audio/GameLose");
+var selectSound = new SoundOverlapsClass("audio/select");
+var deselectSound = new SoundOverlapsClass("audio/deselect");
+var invalidSound = new SoundOverlapsClass("audio/invalidmove");
+var buttonSound = new SoundOverlapsClass("audio/button");
 
 var showMenu = false;
 var mouseX = 0;
@@ -155,7 +159,6 @@ function validMovesForType(pieceType) {
                 row: 1
             }]);
             break;
-            break;
         case ROOK:
         case AROOK:
             for (i = 1; i <= 3; i++) {
@@ -300,7 +303,7 @@ function validMovesFromTile(tileIdx) {
             if (targetPiece < 0) {
                 if (selectedPiece < 0) {
                     //can't land on our own team
-                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)    
                     continue;
                 } else {
                     //Positive team can attack Negative team
@@ -472,8 +475,8 @@ function drawTiles() {
             var tileTopEdgeY = validMoves[i].row * TILE_H;
             outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
                 TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
-        }
-    }
+        } 
+    } 
 
     drawResetButton();
 } // end of drawTiles()
