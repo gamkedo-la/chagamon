@@ -14,6 +14,10 @@ var nobleb = document.createElement("img");
 var noblec = document.createElement("img");
 var eliteb = document.createElement("img");
 var elitec = document.createElement("img");
+var ChoGoal = document.createElement("img");
+var BisGoal = document.createElement("img");
+var WTile = document.createElement("img");
+var HTile = document.createElement("img");
 var tilePics = [];
 
 
@@ -53,7 +57,11 @@ function loadImages() {
     {varName:nobleb, theFile:"nobleb.png"},
     {varName:noblec, theFile:"noblec.png"},
     {varName:eliteb, theFile:"eliteb.png"},
-    {varName:elitec, theFile:"elitec.png"}
+    {varName:elitec, theFile:"elitec.png"},
+    {varName:ChoGoal, theFile:"ChoGoal.png"},
+    {varName:BisGoal, theFile:"BisGoal.png"},
+    {varName:WTile, theFile:"WTile.png"},
+    {varName:HTile, theFile:"HTile.png"}
     ];
 
   picsToLoad = imageList.length;

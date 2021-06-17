@@ -374,16 +374,20 @@ function drawTiles() {
             var idxHere = tileCoordToIndex(eachCol, eachRow);
             if (idxHere == TILE_AKEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
-                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');//white corner
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');//Chocolate corner
+                    canvasContext.drawImage(ChoGoal, tileLeftEdgeX, tileTopEdgeY,TILE_W - TILE_GAP, TILE_H - TILE_GAP);
             } else if (idxHere == TILE_KEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
-                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD');//black corner
+                    TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#DDDDDD');
+                    canvasContext.drawImage(BisGoal, tileLeftEdgeX, tileTopEdgeY,TILE_W - TILE_GAP, TILE_H - TILE_GAP);//Biscuit corner
             } else if ((eachCol + eachRow) % 2 == 0) { // splitting even sums from odd
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#888888');
+                    canvasContext.drawImage(HTile, tileLeftEdgeX, tileTopEdgeY,TILE_W - TILE_GAP, TILE_H - TILE_GAP);
             } else {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa');
+                    canvasContext.drawImage(WTile, tileLeftEdgeX, tileTopEdgeY,TILE_W - TILE_GAP, TILE_H - TILE_GAP);
             }
 
             
