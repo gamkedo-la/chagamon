@@ -566,6 +566,11 @@ function scoreBoard() {
     }
     console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
     console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
+    const MAXKEYSCORE = 18;
+    var choTotalScore = choPieceScore + (MAXKEYSCORE - choKeyDist);
+    var bisTotalScore = bisPieceScore + (MAXKEYSCORE - bisKeyDist);
+    var choOutcome = choTotalScore - bisTotalScore; 
+    console.log(choOutcome + " board's favors chocolate score"); 
 }
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
