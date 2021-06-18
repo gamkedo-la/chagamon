@@ -89,6 +89,23 @@ function mouseclicked(evt) {
     return;
   }
 
+
+  let selectedPiece = tileGrid[tileOverIdx];
+  let chocolatePiece = false;
+  let biscuitPiece = false;
+  
+  if (selectedPiece > 0) {
+    chocolatePiece = true;
+  } else if (selectedPiece < 0){
+    BiscuitPiece = true;
+  }
+
+  if(teamATurn){
+    if(selectedPiece = chocolatePiece){
+      return;
+    }
+  }
+  
   if (selectedIdx == tileOverIdx) {
     selectedIdx = -1;
   } else if (selectedIdx != -1) {
