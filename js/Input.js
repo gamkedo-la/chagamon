@@ -55,7 +55,7 @@ function setKeyHoldState(thisKey, setTo) {
   break;
   case KEY_SPACE:
     if (setTo == false) {
-      scoreBoard();
+      scoreBoard(tileGrid);
     }
   break;
 	default:
@@ -103,7 +103,7 @@ function mouseclicked(evt) {
       }
     }
     if (moveInList) {
-      moveFromToIdx(selectedIdx, tileOverIdx);
+      moveFromToIdx(selectedIdx, tileOverIdx, tileGrid);
 	    console.log("turn over");
     }
     

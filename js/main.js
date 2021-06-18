@@ -509,34 +509,34 @@ function randomMove() {
     var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
     var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col,
         moveOptions[randPiece].movesList[randMove].row);
-    moveFromToIdx(moveOptions[randPiece].source, destIdx);
+    moveFromToIdx(moveOptions[randPiece].source, destIdx, tileGrid);
 } //end of function
 
-function moveFromToIdx(fromIdx, toIdx) {
+function moveFromToIdx(fromIdx, toIdx, onBoard) {
     if(whoWon() != 0) {
         console.log("GAME OVER");
         return;
     }
     turnCount++;
-    var takenTile = tileGrid[toIdx];
+    var takenTile = onBoard[toIdx];
     if (takenTile != 0) {
         console.log("Captured Value : " + takenTile);
         if (takenTile == KEY) {
-            tileGrid[TILE_KEY_START] = KEY;
+            onBoard[TILE_KEY_START] = KEY;
         } else if (takenTile == AKEY) {
-            tileGrid[TILE_AKEY_START] = AKEY;
+            onBoard[TILE_AKEY_START] = AKEY;
         }
     }
-    tileGrid[toIdx] = tileGrid[fromIdx]; // put the piece here (overwrite)
+    onBoard[toIdx] = onBoard[fromIdx]; // put the piece here (overwrite)
     moveSound.play();
-    tileGrid[fromIdx] = NO_PIECE; // clear the spot where it was sitting
+    onBoard[fromIdx] = NO_PIECE; // clear the spot where it was sitting
     teamATurn = !teamATurn;
     if(whoWon() != 0) {
         winSound.play();
      }
 }
 
-function scoreBoard() {
+function scoreBoard(onBoard) {
     var bisPieceScore = 0;
     var choPieceScore = 0;
     var bisKeyDist = 0;
@@ -546,7 +546,7 @@ function scoreBoard() {
             var tileLeftEdgeX = eachCol * TILE_W;
             var tileTopEdgeY = eachRow * TILE_H;
             var idxHere = tileCoordToIndex(eachCol, eachRow);
-            var pieceHere = tileGrid[idxHere];
+            var pieceHere = onBoard[idxHere];
             if (pieceHere > 0 ) {
                 if(pieceHere == KEY) {
                     bisKeyDist  = eachRow + Math.abs(eachCol-TILE_KEY_GOAL);
