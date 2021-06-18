@@ -494,7 +494,7 @@ function randomMove() {
             var tileIdx = tileCoordToIndex(eachCol, eachRow);
             var pieceHere = tileGrid[tileIdx];
             if ((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
-                console.log(pieceHere);
+                //console.log(pieceHere);
                 var validMoves = validMovesFromTile(tileIdx);
                 moveOptions.push({
                     source: tileIdx,
@@ -520,12 +520,19 @@ function randomMove() {
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
             var moveScore = scoreBoard(moveBoard);
             scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
-            console.log(moveScore, moveOptions[eachPiece].source, moveDest);
+            //console.log(moveScore, moveOptions[eachPiece].source, moveDest);
         }
     }
     console.log(scoredMoves.length + " scored Moves");
-    //moveFromToIdx(moveOptions[randPiece].source, destIdx, tileGrid);
-    //endTurn();
+    scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
+    var bestMove;
+    if(teamATurn ) { 
+        bestMove = scoredMoves[0];
+    } else {
+        bestMove = scoredMoves[scoredMoves.length-1];
+    }
+    moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
+    endTurn();
 } //end of function
 
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
@@ -586,8 +593,9 @@ function scoreBoard(onBoard) {
     //console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
    //console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
     const MAXKEYSCORE = 18;
-    var choTotalScore = choPieceScore + (MAXKEYSCORE - choKeyDist);
-    var bisTotalScore = bisPieceScore + (MAXKEYSCORE - bisKeyDist);
+    const CAPTUREBIAS = 3;
+    var choTotalScore = choPieceScore * CAPTUREBIAS + (MAXKEYSCORE - choKeyDist);
+    var bisTotalScore = bisPieceScore * CAPTUREBIAS + (MAXKEYSCORE - bisKeyDist);
     var choOutcome = choTotalScore - bisTotalScore; 
     //console.log(choOutcome + " board's favors chocolate score"); 
     return choOutcome;
