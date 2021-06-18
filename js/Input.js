@@ -45,9 +45,9 @@ function setKeyHoldState(thisKey, setTo) {
 		break;
   case KEY_T:
     if (setTo == false) {
-      setInterval(function() {
+      //setInterval(function() {
         randomMove();
-    }, 1000 / FRAMES_PER_SECOND);
+    //}, 1000 / FRAMES_PER_SECOND);
     }
     break;
   case KEY_R:
@@ -104,6 +104,7 @@ function mouseclicked(evt) {
     }
     if (moveInList) {
       moveFromToIdx(selectedIdx, tileOverIdx, tileGrid);
+      endTurn();
 	    console.log("turn over");
     }
     

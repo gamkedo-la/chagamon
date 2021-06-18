@@ -503,13 +503,29 @@ function randomMove() {
             } //end of if
         } //end of for row
     } //end of for column
+/*
     console.log("Pieces with moves " + moveOptions.length);
     var randPiece = Math.floor(Math.random() * moveOptions.length);
     console.log("Piece " + randPiece + " with moves " + moveOptions[randPiece].movesList.length);
     var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
     var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col,
         moveOptions[randPiece].movesList[randMove].row);
-    moveFromToIdx(moveOptions[randPiece].source, destIdx, tileGrid);
+*/
+    var scoredMoves = []; 
+    for(var eachPiece = 0; eachPiece < moveOptions.length; eachPiece++){
+        for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
+            var thisMove = moveOptions[eachPiece].movesList[eachMove];
+            var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
+            var moveBoard = tileGrid.slice();//Exact copy of the current board 
+            moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
+            var moveScore = scoreBoard(moveBoard);
+            scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
+            console.log(moveScore, moveOptions[eachPiece].source, moveDest);
+        }
+    }
+    console.log(scoredMoves.length + " scored Moves");
+    //moveFromToIdx(moveOptions[randPiece].source, destIdx, tileGrid);
+    //endTurn();
 } //end of function
 
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
@@ -528,13 +544,16 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
         }
     }
     onBoard[toIdx] = onBoard[fromIdx]; // put the piece here (overwrite)
-    moveSound.play();
     onBoard[fromIdx] = NO_PIECE; // clear the spot where it was sitting
+}
+
+ function endTurn(){
+    moveSound.play();
     teamATurn = !teamATurn;
     if(whoWon() != 0) {
         winSound.play();
      }
-}
+ }
 
 function scoreBoard(onBoard) {
     var bisPieceScore = 0;
@@ -564,13 +583,14 @@ function scoreBoard(onBoard) {
             }//end of Cho Piece
         }
     }
-    console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
-    console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
+    //console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
+   //console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
     const MAXKEYSCORE = 18;
     var choTotalScore = choPieceScore + (MAXKEYSCORE - choKeyDist);
     var bisTotalScore = bisPieceScore + (MAXKEYSCORE - bisKeyDist);
     var choOutcome = choTotalScore - bisTotalScore; 
-    console.log(choOutcome + " board's favors chocolate score"); 
+    //console.log(choOutcome + " board's favors chocolate score"); 
+    return choOutcome;
 }
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
