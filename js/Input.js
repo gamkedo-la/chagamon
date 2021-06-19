@@ -97,11 +97,17 @@ function mouseclicked(evt) {
   if (selectedPiece > 0) {
     chocolatePiece = true;
   } else if (selectedPiece < 0){
-    BiscuitPiece = true;
+    biscuitPiece = true;
   }
 
   if(teamATurn){
     if(selectedPiece = chocolatePiece){
+      return;
+    }
+  }
+  
+  if(!teamATurn){
+    if(selectedPiece = biscuitPiece){
       return;
     }
   }
