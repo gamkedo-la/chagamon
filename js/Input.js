@@ -82,6 +82,7 @@ function mouseclicked(evt) {
     resetBoard();
     buttonSound.play();
     backgroundMusic.restartMusic();
+    teamATurn = false;
     console.log("Board Reset");
     return;
   };

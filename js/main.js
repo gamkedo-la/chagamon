@@ -19,7 +19,7 @@ var resetBoxY = 10;
 var resetBoxWidth = 100;
 var resetBoxHeight = 50;
 
-var teamATurn = true;
+var teamATurn = false;
 var turnCount = 0;
 
 const TILE_W = 72;
@@ -303,7 +303,7 @@ function validMovesFromTile(tileIdx) {
             if (targetPiece < 0) {
                 if (selectedPiece < 0) {
                     //can't land on our own team
-                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)    
+                    ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 } else {
                     //Positive team can attack Negative team
@@ -479,8 +479,8 @@ function drawTiles() {
             var tileTopEdgeY = validMoves[i].row * TILE_H;
             outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
                 TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
-        } 
-    } 
+        }
+    }
 
     drawResetButton();
 } // end of drawTiles()
