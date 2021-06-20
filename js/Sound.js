@@ -33,7 +33,15 @@ function BackgroundMusicClass() {
       musicSound.pause();
     }
   }
+
+  this.restartMusic = function() {
+    if(musicSound != null){
+      musicSound.currentTime = 0;
+      musicSound.play();
+    }
+  }
 }
+
 
 function SoundOverlapsClass(filenameWithPath) { // accepting argument for constructor
   

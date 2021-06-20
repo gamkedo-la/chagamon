@@ -81,6 +81,7 @@ function mouseclicked(evt) {
   if (checkBox(mouseX, mouseY, resetBoxX, resetBoxY,resetBoxWidth, resetBoxHeight)){ //reset button
     resetBoard();
     buttonSound.play();
+    backgroundMusic.restartMusic();
     console.log("Board Reset");
     return;
   };
@@ -104,14 +105,13 @@ function mouseclicked(evt) {
     if(selectedPiece = chocolatePiece){
       return;
     }
-  }
-  
-  if(!teamATurn){
+  } else if (!teamATurn) {
     if(selectedPiece = biscuitPiece){
       return;
-    }
-  }
-  
+    } 
+  } 
+ 
+ 
   if (selectedIdx == tileOverIdx) {
     selectedIdx = -1;
   } else if (selectedIdx != -1) {
