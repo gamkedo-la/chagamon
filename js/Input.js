@@ -103,13 +103,13 @@ function mouseclicked(evt) {
   }
 
   if(teamATurn){
-    if(selectedPiece = chocolatePiece){
+    if(selectedPiece = chocolatePiece && selectedIdx ==-1){
       invalidSound.play();
       return;
     } 
   } 
   if (!teamATurn) {
-    if(selectedPiece = biscuitPiece){
+    if(selectedPiece = biscuitPiece && selectedIdx ==-1){
       invalidSound.play();
       return;
     }
