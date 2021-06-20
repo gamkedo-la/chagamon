@@ -104,15 +104,21 @@ function mouseclicked(evt) {
 
   if(teamATurn){
     if(selectedPiece = chocolatePiece){
-      return;
-    }
-  } else if (!teamATurn) {
-    if(selectedPiece = biscuitPiece){
+      invalidSound.play();
       return;
     } 
   } 
+  if (!teamATurn) {
+    if(selectedPiece = biscuitPiece){
+      invalidSound.play();
+      return;
+    }
+  } 
  
- 
+  if((chocolatePiece || biscuitPiece)){
+    selectSound.play();
+  }
+
   if (selectedIdx == tileOverIdx) {
     selectedIdx = -1;
   } else if (selectedIdx != -1) {
@@ -135,6 +141,9 @@ function mouseclicked(evt) {
     selectedIdx = -1; // forget selection
   } else if(tileGrid[tileOverIdx] != NO_PIECE ) {
     selectedIdx = tileOverIdx;
+  }
+  if (!moveInList && selectedIdx == -1 && selectedIdx != selectedPiece) {
+    deselectSound.play();
   }
 }
 
