@@ -632,8 +632,6 @@ function drawEverything() {
     if(whoWon() == -1) {
         canvasContext.fillText("Chocolate Team Won", rightAreaX, lineY);
     }
-    lineY += lineSkip;
-    canvasContext.fillText("Tutorial", rightAreaX, lineY)
     
 }
 
