@@ -2,6 +2,7 @@
 var button1 = document.createElement("img");
 var button2 = document.createElement("img");
 var resetButton = document.createElement("img");
+var tutorialButton = document.createElement("img")
 var KeyPieceB = document.createElement("img");
 var KeyPieceC = document.createElement("img");
 var BishopB = document.createElement("img");
@@ -46,6 +47,7 @@ function loadImages() {
     {varName:button1, theFile:"accept.png"},
     {varName:button2, theFile:"reject.png"},
     {varName:resetButton, theFile:"resetButton.png"},
+    {varName:tutorialButton, theFile:"tutorialButton.png"},
     {varName:KeyPieceB, theFile:"KeyPieceB.png"},
     {varName:KeyPieceC, theFile:"KeyPieceC.png"},
     {varName:BishopB, theFile:"BishopB.png"},

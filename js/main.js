@@ -16,8 +16,12 @@ var tileOverIdx = -1;
 //resetBox Configurations
 var resetBoxX = 900;
 var resetBoxY = 10;
-var resetBoxWidth = 100;
-var resetBoxHeight = 50;
+var resetBoxWidth, tutorialBoxWidth = 100;
+var resetBoxHeight, tutorialBoxHeight = 50;
+
+//tutorialBox Configurations
+var tutorialBoxX = 900;
+var tutorialBoxY = 50;
 
 var teamATurn = false;
 var turnCount = 0;
@@ -483,6 +487,7 @@ function drawTiles() {
     }
 
     drawResetButton();
+    drawTutorialButton();
 } // end of drawTiles()
 
 function randomMove() {
@@ -627,12 +632,19 @@ function drawEverything() {
     if(whoWon() == -1) {
         canvasContext.fillText("Chocolate Team Won", rightAreaX, lineY);
     }
+    lineY += lineSkip;
+    canvasContext.fillText("Tutorial", rightAreaX, lineY)
     
 }
 
 function drawResetButton(){
   canvasContext.drawImage(resetButton, resetBoxX, resetBoxY);
   colorText("Reset", resetBoxX + 50, resetBoxY + 30, 15, "white");
+}
+
+function drawTutorialButton(){
+  canvasContext.drawImage(tutorialButton, tutorialBoxX, tutorialBoxY);
+  colorText("Tutorial", tutorialBoxX + 50, tutorialBoxY + 30, 15, "white")
 }
 
 const FRAMES_PER_SECOND = 30;
