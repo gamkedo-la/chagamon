@@ -16,12 +16,14 @@ var tileOverIdx = -1;
 //resetBox Configurations
 var resetBoxX = 900;
 var resetBoxY = 10;
-var resetBoxWidth, tutorialBoxWidth = 100;
-var resetBoxHeight, tutorialBoxHeight = 50;
+var resetBoxWidth = 100;
+var resetBoxHeight = 50;
 
 //tutorialBox Configurations
 var tutorialBoxX = 900;
 var tutorialBoxY = 50;
+var tutorialBoxWidth = 100;
+var tutorialBoxHeight = 50;
 
 var teamATurn = false;
 var turnCount = 0;
