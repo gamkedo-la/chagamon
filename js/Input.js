@@ -86,6 +86,14 @@ function mouseclicked(evt) {
     console.log("Board Reset");
     return;
   };
+
+  if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //reset button
+    
+    buttonSound.play();
+    
+    console.log("Launch menu UI");
+    return;
+  };
   
   if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
     return;
