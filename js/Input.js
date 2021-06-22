@@ -12,6 +12,7 @@ const KEY_PLUS = 61;
 const KEY_MINUS = 173;
 const KEY_T = 84;
 const KEY_R = 82;
+const KEY_X = 88;
 
 var mousePos;
 var mouseUp;
@@ -43,6 +44,9 @@ function setKeyHoldState(thisKey, setTo) {
 	case KEY_ESC:
 		showMenu = true;
 		break;
+  case KEY_X:
+    showMenu = false;
+    break; 
   case KEY_T:
     if (setTo == false) {
       //setInterval(function() {
