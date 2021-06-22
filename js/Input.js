@@ -88,10 +88,9 @@ function mouseclicked(evt) {
   };
 
   if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //reset button
-    
-    buttonSound.play();
-    
     console.log("Launch menu UI");
+    showMenu = true;
+    buttonSound.play();
     return;
   };
   
