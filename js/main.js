@@ -615,17 +615,23 @@ function drawEverything() {
 
     canvasContext.textAlign = "left";
     canvasContext.fillStyle = 'white';
-    var rightAreaX = TILE_W * TILE_COLS;
+    
+    let leftIndent = 10;
+    var rightAreaX = TILE_W * TILE_COLS + leftIndent;
+    
+    var lineY = 30;
     var lineSkip = 15;
-    var lineY = 20;
+
     canvasContext.fillText("Click any piece to select", rightAreaX, lineY);
     lineY += lineSkip;
     canvasContext.fillText("Then click spot to move to", rightAreaX, lineY);
-    lineY += lineSkip;
+    lineY += lineSkip*2.5;
     canvasContext.fillText("Next Turn: ", rightAreaX, lineY);
-    lineY += lineSkip;
+    lineY += lineSkip*2;
+    canvasContext.font = "30px Arial";
     canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX, lineY);
-    lineY += lineSkip;
+    lineY += lineSkip*2.5;
+    canvasContext.font = "15px Arial";
     canvasContext.fillText("Turn Count: " + turnCount, rightAreaX, lineY);
     lineY += lineSkip;
     if(whoWon() == 1) {
