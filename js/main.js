@@ -6,6 +6,7 @@ var selectSound = new SoundOverlapsClass("audio/select");
 var deselectSound = new SoundOverlapsClass("audio/deselect");
 var invalidSound = new SoundOverlapsClass("audio/invalidmove");
 var buttonSound = new SoundOverlapsClass("audio/button");
+var startSound = new SoundOverlapsClass("audio/GameStart");
 
 var showMenu = false;
 var mouseX = 0;
@@ -344,6 +345,7 @@ function startGame() {
     setInterval(function() {
         update();
     }, 1000 / FRAMES_PER_SECOND);
+    startSound.play()
     //backgroundMusic.loopSong("audio/calm");
     //reset();
 }
@@ -610,7 +612,7 @@ function endTurn(){
         //menu.winMessage();
      } 
      
-     if(whoWon() == -1 || bisPieceScore<2) {
+     if(whoWon() == -1 || bisPieceScore==1) {
         loseSound.play();
         //menu.loseMessage();
      } 
