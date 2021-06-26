@@ -33,7 +33,7 @@ const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
 const TILE_ROWS = 11;
-
+const decorLength = 31;
 const TILE_KEY_START = 90;
 const TILE_AKEY_START = 98;
 const TILE_KEY_GOAL = TILE_COLS - 1;
@@ -56,6 +56,9 @@ const AQUEEN = -6;
 var enemyPos = [];
 var homePos = [];
 var tileGrid = [];
+
+var bisPieceScore = 0;
+var choPieceScore = 0;
 
 function resetBoard() {
     turnCount = 0;
@@ -375,8 +378,8 @@ function tileCoordToIndex(tileCol, tileRow) {
 function drawTiles() {
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
-            var tileLeftEdgeX = eachCol * TILE_W;
-            var tileTopEdgeY = eachRow * TILE_H;
+            var tileLeftEdgeX = decorLength + eachCol * TILE_W;
+            var tileTopEdgeY = decorLength +eachRow * TILE_H;
             var idxHere = tileCoordToIndex(eachCol, eachRow);
             if (idxHere == TILE_AKEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
@@ -395,7 +398,6 @@ function drawTiles() {
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#aaaaaa');
                     canvasContext.drawImage(WTile, tileLeftEdgeX, tileTopEdgeY,TILE_W - TILE_GAP, TILE_H - TILE_GAP);
             }
-
             
             var pieceHere = tileGrid[idxHere];
             var pieceName = "";
@@ -481,12 +483,13 @@ function drawTiles() {
     if (selectedIdx != -1) {
         var validMoves = validMovesFromTile(selectedIdx);
         for (var i = 0; i < validMoves.length; i++) {
-            var tileLeftEdgeX = validMoves[i].col * TILE_W;
-            var tileTopEdgeY = validMoves[i].row * TILE_H;
+            var tileLeftEdgeX = decorLength + validMoves[i].col * TILE_W;
+            var tileTopEdgeY = decorLength + validMoves[i].row * TILE_H;
             outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
                 TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
         }
     }
+    canvasContext.drawImage(woodDecor, 0, 0);
 
     drawResetButton();
     drawTutorialButton();
@@ -563,8 +566,6 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
 
 
 function scoreBoard(onBoard) {
-    var bisPieceScore = 0;
-    var choPieceScore = 0;
     var bisKeyDist = 0;
     var choKeyDist = 0;
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
@@ -625,7 +626,7 @@ function drawEverything() {
     canvasContext.fillStyle = 'white';
     
     let leftIndent = 10;
-    var rightAreaX = TILE_W * TILE_COLS + leftIndent;
+    var rightAreaX = decorLength*2 + TILE_W * TILE_COLS + leftIndent;
     
     var lineY = 30;
     var lineSkip = 15;
