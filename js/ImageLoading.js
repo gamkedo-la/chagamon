@@ -20,6 +20,7 @@ var BisGoal = document.createElement("img");
 var WTile = document.createElement("img");
 var HTile = document.createElement("img");
 var woodDecor = document.createElement("img");
+var logo = document.createElement("img");
 var tilePics = [];
 
 
@@ -65,7 +66,8 @@ function loadImages() {
     {varName:BisGoal, theFile:"BisGoal.png"},
     {varName:WTile, theFile:"WTile.png"},
     {varName:HTile, theFile:"HTile.png"},
-    {varName:woodDecor, theFile:"WoodDecor.png"}
+    {varName:woodDecor, theFile:"WoodDecor.png"},
+    {varName:logo, theFile:"logo.png"}
     ];
 
   picsToLoad = imageList.length;
