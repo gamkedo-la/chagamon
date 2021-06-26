@@ -561,13 +561,6 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     onBoard[fromIdx] = NO_PIECE; // clear the spot where it was sitting
 }
 
- function endTurn(){
-    moveSound.play();
-    teamATurn = !teamATurn;
-    if(whoWon() != 0) {
-        winSound.play();
-     }
- }
 
 function scoreBoard(onBoard) {
     var bisPieceScore = 0;
@@ -607,6 +600,21 @@ function scoreBoard(onBoard) {
     //console.log(choOutcome + " board's favors chocolate score"); 
     return choOutcome;
 }
+
+function endTurn(){
+    moveSound.play();
+    teamATurn = !teamATurn;
+    if(whoWon() == 1) {
+        winSound.play();
+        //menu.winMessage();
+     } 
+     
+     if(whoWon() == -1 || bisPieceScore<2) {
+        loseSound.play();
+        //menu.loseMessage();
+     } 
+ }
+
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
 
