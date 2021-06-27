@@ -114,8 +114,40 @@ const menu = new function() {
         }
     }
 
-}
+    this.helpMessage = function() {
+        for (let i = 0; i < helpText[current].length; i++) {
+            colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#fffeef');
+            colorText(
+                helpText[current][i],
+                itemsX + 10,
+                topItemY + rowHeight * i + itemsHeight / 1.5,
+                13,
+                "black"
+            );
+        }
+    }
+    
+    this.gameOverMessage = function(isGameOver, hasWon) {
+        console.log(isGameOver, hasWon);
+        this.gameOverBoxColor = hasWon ? "green" : "red";
+        this.gameOverText = hasWon ? "YOU WON" : "YOU LOST";
+        this.gameOverNextText = "CLICK TO GET BACK TO GAME";
 
-const inGameMenu = new function() {
-
+        if (isGameOver){
+            let gameOverBoxWidth = 400;
+            let gameOverBoxHeight = 300;
+            colorRect( 
+                canvas.width/2 - gameOverBoxWidth/2, 
+                canvas.height/2 - gameOverBoxHeight/2, 
+                gameOverBoxWidth,
+                gameOverBoxHeight, 
+                this.gameOverBoxColor
+            );
+            let textAlignWas = ctx.textAlign;
+            ctx.textAlign = "center";
+            colorText(this.gameOverText, canvas.width/2, canvas.height/2, 50, "black");
+            colorText(this.gameOverNextText, canvas.width/2, canvas.height/2 + 80, 18, "black");
+            ctx.textAlign = textAlignWas;
+        }
+    }
 }
