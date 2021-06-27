@@ -504,7 +504,7 @@ function aiMove(boardState, turnNow, movesDeep) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileIdx = tileCoordToIndex(eachCol, eachRow);
             var pieceHere = boardNow[tileIdx];
-            if ((pieceHere > 0 && turnNow) || (pieceHere < 0 && turnNow == false)) {
+            if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
                 //console.log(pieceHere);
                 var validMoves = validMovesFromTile(tileIdx);
                 moveOptions.push({
