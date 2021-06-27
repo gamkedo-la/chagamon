@@ -34,7 +34,7 @@ const TILE_H = 72;
 const TILE_GAP = 1;
 const TILE_COLS = 9;
 const TILE_ROWS = 11;
-const decorLength = 31;
+const FRAME_SIZE = 31;
 const TILE_KEY_START = 90;
 const TILE_AKEY_START = 98;
 const TILE_KEY_GOAL = TILE_COLS - 1;
@@ -380,8 +380,8 @@ function tileCoordToIndex(tileCol, tileRow) {
 function drawTiles() {
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
-            var tileLeftEdgeX = decorLength + eachCol * TILE_W;
-            var tileTopEdgeY = decorLength +eachRow * TILE_H;
+            var tileLeftEdgeX = FRAME_SIZE + (eachCol * TILE_W);
+            var tileTopEdgeY = FRAME_SIZE + (eachRow * TILE_H);
             var idxHere = tileCoordToIndex(eachCol, eachRow);
             if (idxHere == TILE_AKEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
@@ -485,8 +485,8 @@ function drawTiles() {
     if (selectedIdx != -1) {
         var validMoves = validMovesFromTile(selectedIdx);
         for (var i = 0; i < validMoves.length; i++) {
-            var tileLeftEdgeX = decorLength + validMoves[i].col * TILE_W;
-            var tileTopEdgeY = decorLength + validMoves[i].row * TILE_H;
+            var tileLeftEdgeX = FRAME_SIZE + (validMoves[i].col * TILE_W);
+            var tileTopEdgeY = FRAME_SIZE + (validMoves[i].row * TILE_H);
             outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
                 TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
         }
@@ -607,16 +607,18 @@ function scoreBoard(onBoard) {
 function endTurn(){
     moveSound.play();
     teamATurn = !teamATurn;
-    if(whoWon() == 1) {
-        winSound.play();
-        //menu.winMessage();
-     } 
-     
-     if(whoWon() == -1 || bisPieceScore==1) {
-        loseSound.play();
-        //menu.loseMessage();
-     } 
- }
+    if (whoWon() != 0) {
+        if(whoWon() == 1) {
+            winSound.play();
+            menu.winMessage();
+        } 
+        
+        if(whoWon() == -1 || bisPieceScore==1) {
+            loseSound.play();
+            menu.loseMessage();
+        } 
+    }
+}
 
 function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
@@ -628,7 +630,7 @@ function drawEverything() {
     canvasContext.fillStyle = 'white';
     
     let leftIndent = 10;
-    var rightAreaX = decorLength*2 + TILE_W * TILE_COLS + leftIndent;
+    var rightAreaX = FRAME_SIZE*2 + TILE_W * TILE_COLS + leftIndent;
     
     var lineY = 30;
     var lineSkip = 15;

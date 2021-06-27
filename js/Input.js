@@ -91,7 +91,7 @@ function mouseclicked(evt) {
     return;
   };
 
-  if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //reset button
+  if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //tutorial button
     console.log("Launch menu UI");
     showMenu = true;
     buttonSound.play();
@@ -163,20 +163,20 @@ function mousemoved(evt) {
   var root = document.documentElement;
 
   // account for the margins, canvas position on page, scroll amount, etc.
-  mouseX = evt.clientX - rect.left - root.scrollLeft;
-  mouseY = evt.clientY - rect.top - root.scrollTop;
+  mouseX = evt.clientX - rect.left - root.scrollLeft - FRAME_SIZE;
+  mouseY = evt.clientY - rect.top - root.scrollTop - FRAME_SIZE;
 
   var tileOverCol = Math.floor(mouseX / TILE_W);
-  var tileOverRow = Math.floor(mouseY / TILE_H);  
+  var tileOverRow = Math.floor(mouseY / TILE_H);
   tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
 }
 
 
 function calculateMousePos(evt) {
-  var rect = canvas.getBoundingClientRect(), root = document.documentElement; 
+  var rect = canvas.getBoundingClientRect(), root = document.documentElement;
 
-  var mouseX = evt.clientX - rect.left - root.scrollLeft;
-  var mouseY = evt.clientY - rect.top - root.scrollTop;
+  var mouseX = evt.clientX - rect.left - root.scrollLeft - FRAME_SIZE;
+  var mouseY = evt.clientY - rect.top - root.scrollTop - FRAME_SIZE;
  return {
     x: mouseX,
     y: mouseY
