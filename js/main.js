@@ -499,7 +499,6 @@ function drawTiles() {
 
 function aiMove(boardState, turnNow, movesDeep) {
     var boardNow = boardState.slice();//Exact copy of the hypothetical board 
-    console.log("taking a move");
     var moveOptions = [];
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
@@ -531,12 +530,18 @@ function aiMove(boardState, turnNow, movesDeep) {
             var moveBoard = boardNow.slice();//Exact copy of the current board 
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
             
-            var moveScore = scoreBoard(moveBoard);
-            scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
+            if(movesDeep == 0) {
+                var bestCounterMove = aiMove(moveBoard, !turnNow, 1);
+                scoredMoves.push({score:bestCounterMove.score, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
+            } else {
+                var moveScore = scoreBoard(moveBoard);
+                scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
+            }
+            
             //console.log(moveScore, moveOptions[eachPiece].source, moveDest);
         }
     }
-    console.log(scoredMoves.length + " scored Moves");
+   
     scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
     var bestMove;
     if(turnNow) { 
@@ -544,9 +549,14 @@ function aiMove(boardState, turnNow, movesDeep) {
     } else {
         bestMove = scoredMoves[scoredMoves.length-1];
     }
+    console.log(movesDeep +" " + scoredMoves.length + " scored Moves, best:" + bestMove.score);
     if(movesDeep == 0){
         moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
         endTurn();
+
+        return null;
+    } else {
+        return bestMove;
     }
     
 } //end of function
@@ -556,7 +566,6 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
         console.log("GAME OVER");
         return;
     }
-    turnCount++;
     var takenTile = onBoard[toIdx];
     if (takenTile != 0) {
         console.log("Captured Value : " + takenTile);
@@ -603,7 +612,7 @@ function scoreBoard(onBoard) {
     const CAPTUREBIAS = 3;
     var choTotalScore = choPieceScore * CAPTUREBIAS + (MAXKEYSCORE - choKeyDist);
     var bisTotalScore = bisPieceScore * CAPTUREBIAS + (MAXKEYSCORE - bisKeyDist);
-    var choOutcome = choTotalScore - bisTotalScore; 
+    var choOutcome = choTotalScore - bisTotalScore;
     //console.log(choOutcome + " board's favors chocolate score"); 
     return choOutcome;
 }
@@ -611,6 +620,13 @@ function scoreBoard(onBoard) {
 function endTurn(){
     moveSound.play();
     teamATurn = !teamATurn;
+    turnCount++;
+    console.log('----------endTurn---------');
+    if(teamATurn) {
+        console.log('biscuit next');
+    } else {
+        console.log('chocolate next');
+    }
     if (whoWon() != 0) {
         if(whoWon() == 1) {
             winSound.play();
