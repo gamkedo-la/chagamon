@@ -497,15 +497,15 @@ function drawTiles() {
     drawTutorialButton();
 } // end of drawTiles()
 
-function randomMove() {
-
-    console.log("taking a random move");
+function aiMove(boardState, turnNow, movesDeep) {
+    var boardNow = boardState.slice();//Exact copy of the hypothetical board 
+    console.log("taking a move");
     var moveOptions = [];
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileIdx = tileCoordToIndex(eachCol, eachRow);
-            var pieceHere = tileGrid[tileIdx];
-            if ((pieceHere > 0 && teamATurn) || (pieceHere < 0 && teamATurn == false)) {
+            var pieceHere = boardNow[tileIdx];
+            if ((pieceHere > 0 && turnNow) || (pieceHere < 0 && turnNow == false)) {
                 //console.log(pieceHere);
                 var validMoves = validMovesFromTile(tileIdx);
                 moveOptions.push({
@@ -528,8 +528,9 @@ function randomMove() {
         for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
             var thisMove = moveOptions[eachPiece].movesList[eachMove];
             var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
-            var moveBoard = tileGrid.slice();//Exact copy of the current board 
+            var moveBoard = boardNow.slice();//Exact copy of the current board 
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
+            
             var moveScore = scoreBoard(moveBoard);
             scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
             //console.log(moveScore, moveOptions[eachPiece].source, moveDest);
@@ -538,13 +539,16 @@ function randomMove() {
     console.log(scoredMoves.length + " scored Moves");
     scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
     var bestMove;
-    if(teamATurn ) { 
+    if(turnNow) { 
         bestMove = scoredMoves[0];
     } else {
         bestMove = scoredMoves[scoredMoves.length-1];
     }
-    moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
-    endTurn();
+    if(movesDeep == 0){
+        moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
+        endTurn();
+    }
+    
 } //end of function
 
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
@@ -610,12 +614,12 @@ function endTurn(){
     if (whoWon() != 0) {
         if(whoWon() == 1) {
             winSound.play();
-            menu.winMessage();
+            //menu.winMessage();
         } 
         
         if(whoWon() == -1 || bisPieceScore==1) {
             loseSound.play();
-            menu.loseMessage();
+            //menu.loseMessage();
         } 
     }
 }

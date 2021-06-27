@@ -50,7 +50,7 @@ function setKeyHoldState(thisKey, setTo) {
   case KEY_T:
     if (setTo == false) {
       //setInterval(function() {
-        randomMove();
+        aiMove(tileGrid,teamATurn,0);
     //}, 1000 / FRAMES_PER_SECOND);
     }
     break;
