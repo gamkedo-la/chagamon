@@ -7,6 +7,8 @@ var deselectSound = new SoundOverlapsClass("audio/deselect");
 var invalidSound = new SoundOverlapsClass("audio/invalidmove");
 var buttonSound = new SoundOverlapsClass("audio/button");
 var startSound = new SoundOverlapsClass("audio/GameStart");
+var captureSound =  new SoundOverlapsClass("audio/piececaptured");
+var keyRestartSound =  new SoundOverlapsClass("audio/keypiecerestart");
 
 var showMenu = false;
 var mouseX = 0;
@@ -57,7 +59,7 @@ const AQUEEN = -6;
 var enemyPos = [];
 var homePos = [];
 var tileGrid = [];
-
+captured = false;
 var bisPieceScore = 0;
 var choPieceScore = 0;
 
@@ -568,11 +570,14 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     }
     var takenTile = onBoard[toIdx];
     if (takenTile != 0) {
+        captureSound.play();
         console.log("Captured Value : " + takenTile);
         if (takenTile == KEY) {
             onBoard[TILE_KEY_START] = KEY;
+            keyRestartSound.play();
         } else if (takenTile == AKEY) {
             onBoard[TILE_AKEY_START] = AKEY;
+            keyRestartSound.play();
         }
     }
     onBoard[toIdx] = onBoard[fromIdx]; // put the piece here (overwrite)
