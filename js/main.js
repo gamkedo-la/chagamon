@@ -493,10 +493,7 @@ function drawTiles() {
                 TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'pink');
         }
     }
-    canvasContext.drawImage(woodDecor, 0, 0);
-
-    drawResetButton();
-    drawTutorialButton();
+ 
 } // end of drawTiles()
 
 function aiMove(boardState, turnNow, movesDeep) {
@@ -657,6 +654,11 @@ function drawEverything() {
     let leftIndent = 10;
     var rightAreaX = FRAME_SIZE*2 + TILE_W * TILE_COLS + leftIndent;
     
+    canvasContext.drawImage(table, rightAreaX - 10, 0);
+    canvasContext.drawImage(woodDecor, 0, 0);
+    drawResetButton();
+    drawTutorialButton();
+
     var lineY = 30;
     var lineSkip = 15;
 
