@@ -13,6 +13,7 @@ const KEY_MINUS = 173;
 const KEY_T = 84;
 const KEY_R = 82;
 const KEY_X = 88;
+const KEY_Z = 90;
 
 var mousePos;
 var mouseUp;
@@ -62,6 +63,12 @@ function setKeyHoldState(thisKey, setTo) {
       scoreBoard(tileGrid);
     }
   break;
+  case KEY_Z:
+    if (setTo == false) {
+      tileGrid = [0, -4, -3, 0, 0, 0, 3, 4, 0, -4, 0, 0, 0, 0, 0, 0, 0, 4, -2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, -2, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -3, 0, 2, 4, 0, 0, 0, -4, 0, 0];
+      teamATurn = false;
+    }
+    break; 
 	default:
 		//console.log("Keycode is: " + thisKey);
 	}
@@ -191,7 +198,7 @@ function checkBox(inpX, inpY, xPos, yPos, width, height){
   let inputX = inpX;
   let inputY = inpY;
 
-  console.log(inputY <= bottomSide)
+  //console.log(inputY <= bottomSide)
 
   if (inputX >= leftSide && inputX <= rightSide && 
       inputY >= topSide && inputY <= bottomSide){
