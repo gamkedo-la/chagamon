@@ -543,12 +543,12 @@ function aiMove(boardState, turnNow, movesDeep) {
    
     scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
     var bestMove;
-    if(turnNow) { 
+    if(turnNow == false) { 
         bestMove = scoredMoves[0];
     } else {
         bestMove = scoredMoves[scoredMoves.length-1];
     }
-    console.log(movesDeep +" " + scoredMoves.length + " scored Moves, best:" + bestMove.score);
+    console.log(movesDeep +" " + stringMove(tileGrid, bestMove) + "  score:" + bestMove.score + " " + turnNow);
     if(movesDeep == 0){
         moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
         endTurn();
@@ -560,6 +560,49 @@ function aiMove(boardState, turnNow, movesDeep) {
     
 } //end of function
 
+function stringMove(board, move) {
+    var piece = board[move.fromIdx];
+    var pieceName = "";
+    if(piece < 0) {
+        pieceName = "Cho.";
+    } else if (piece > 0){
+        pieceName = "Bis.";
+    }
+    switch (piece) {
+        case NO_PIECE:
+            pieceName += "Empty";
+            break;
+        case KEY: 
+        case AKEY:
+            pieceName += "Key";
+            break;
+        case ROOK:
+        case AROOK:
+            pieceName += "Rook";
+            break;
+        case BISHOP:
+        case ABISHOP:
+            pieceName += "Bishop";
+            break;
+        case KNIGHT:
+        case AKNIGHT:
+            pieceName += "Knight";
+            break;
+        case KING:
+        case AKING:
+            pieceName += "King";
+            break;
+        case QUEEN:
+        case AQUEEN:
+            pieceName += "Queen";
+            break;
+    }
+    var sourceC = move.fromIdx % TILE_COLS;
+    var sourceR = Math.floor(move.fromIdx / TILE_COLS);
+    var destC = move.toIdx % TILE_COLS;
+    var destR = Math.floor(move.toIdx / TILE_COLS);
+   return (pieceName + ":" + sourceC + "," + sourceR + " to " + destC + "," + destR);
+}
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
     if(whoWon() != 0) {
         console.log("GAME OVER");
