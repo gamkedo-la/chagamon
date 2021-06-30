@@ -582,9 +582,11 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
 }
 
 
-function scoreBoard(onBoard) {
+function scoreBoard(onBoard, showDebug = false) {
     var bisKeyDist = 0;
     var choKeyDist = 0;
+    var bisPieceScore = 0;
+    var choPieceScore = 0;
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileLeftEdgeX = eachCol * TILE_W;
@@ -608,8 +610,11 @@ function scoreBoard(onBoard) {
             }//end of Cho Piece
         }
     }
-    //console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
-   //console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
+    if(showDebug){
+        console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
+        console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
+    }
+    
     const MAXKEYSCORE = 18;
     const CAPTUREBIAS = 3;
     var choTotalScore = choPieceScore * CAPTUREBIAS + (MAXKEYSCORE - choKeyDist);
@@ -625,9 +630,9 @@ function endTurn(){
     turnCount++;
     console.log('----------endTurn---------');
     if(teamATurn) {
-        console.log('biscuit next');
-    } else {
         console.log('chocolate next');
+    } else {
+        console.log('biscuit next');
     }
     if (whoWon() != 0) {
         if(whoWon() == 1) {

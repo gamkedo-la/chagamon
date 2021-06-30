@@ -60,7 +60,7 @@ function setKeyHoldState(thisKey, setTo) {
   break;
   case KEY_SPACE:
     if (setTo == false) {
-      scoreBoard(tileGrid);
+      console.log(scoreBoard(tileGrid, true));
     }
   break;
   case KEY_Z:
