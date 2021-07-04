@@ -14,6 +14,7 @@ const KEY_T = 84;
 const KEY_R = 82;
 const KEY_X = 88;
 const KEY_Z = 90;
+const WOOD_DECOR_OFFSET = 31;
 
 var mousePos;
 var mouseUp;
@@ -191,10 +192,10 @@ function calculateMousePos(evt) {
 }
 
 function checkBox(inpX, inpY, xPos, yPos, width, height){
-  let leftSide = xPos;
-  let rightSide = xPos + width;
-  let topSide = yPos;
-  let bottomSide = yPos + height;
+  let leftSide = xPos - WOOD_DECOR_OFFSET;
+  let rightSide = xPos + width - WOOD_DECOR_OFFSET;
+  let topSide = yPos - WOOD_DECOR_OFFSET;
+  let bottomSide = yPos + height - WOOD_DECOR_OFFSET;
   let inputX = inpX;
   let inputY = inpY;
 

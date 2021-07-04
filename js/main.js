@@ -733,12 +733,12 @@ function drawEverything() {
 
 function drawResetButton(){
   canvasContext.drawImage(resetButton, resetBoxX, resetBoxY);
-  colorText("Reset", resetBoxX + 50, resetBoxY + 30, 15, "white");
+  colorText("Reset", resetBoxX + 32, resetBoxY + 30, 15, "white");
 }
 
 function drawTutorialButton(){
   canvasContext.drawImage(tutorialButton, tutorialBoxX, tutorialBoxY);
-  colorText("Tutorial", tutorialBoxX + 50, tutorialBoxY + 30, 15, "white")
+  colorText("Tutorial", tutorialBoxX + 25, tutorialBoxY + 30, 15, "white")
 }
 
 const FRAMES_PER_SECOND = 30;
