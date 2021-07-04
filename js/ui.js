@@ -63,6 +63,14 @@ const menu = new function() {
         this.cursor = 0;
     }
     this.draw = function() {
+        let closeTextHeight = 20
+        colorText(
+            'Press X to close this menu at any time',
+            30,
+            topItemY - (closeTextHeight * 1.5),
+            closeTextHeight,
+            "black"
+        )
         for (let i = 0; i < menuText[current].length; i++) {
             colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#fffeef');
             colorText(
