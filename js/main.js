@@ -30,6 +30,7 @@ var tutorialBoxHeight = 50;
 
 var teamATurn = false;
 var turnCount = 0;
+var isGameOver = false;
 
 const TILE_W = 72;
 const TILE_H = 72;
@@ -678,14 +679,15 @@ function endTurn(){
         console.log('biscuit next');
     }
     if (whoWon() != 0) {
+        isGameOver = true;
         if(whoWon() == 1) {
             winSound.play();
-            //menu.winMessage();
+            hasWon = true;
         } 
         
         if(whoWon() == -1 || bisPieceScore==1) {
             loseSound.play();
-            //menu.loseMessage();
+            hasWon = false;
         } 
     }
 }
@@ -722,11 +724,14 @@ function drawEverything() {
     canvasContext.font = "15px Arial";
     canvasContext.fillText("Turn Count: " + turnCount, rightAreaX, lineY);
     lineY += lineSkip;
+
     if(whoWon() == 1) {
+        menu.gameOverMessage();
         canvasContext.fillText("Biscuit Team Won", rightAreaX, lineY);
     }
-    if(whoWon() == -1) {
+    if(whoWon() == -1 || bisPieceScore==1) {
         canvasContext.fillText("Chocolate Team Won", rightAreaX, lineY);
+        menu.gameOverMessage();
     }
     
 }

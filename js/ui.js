@@ -135,15 +135,14 @@ const menu = new function() {
         }
     }
     
-    this.gameOverMessage = function(isGameOver, hasWon) {
-        console.log(isGameOver, hasWon);
-        this.gameOverBoxColor = hasWon ? "green" : "red";
-        this.gameOverText = hasWon ? "YOU WON" : "YOU LOST";
-        this.gameOverNextText = "CLICK TO GET BACK TO GAME";
+    this.gameOverMessage = function() {
+        this.gameOverBoxColor = hasWon ? "green" : "purple";
+        this.gameOverText = hasWon ? "BISCUIT WON" : "CHOCOLATE WON";
+        this.gameOverNextText = "PRESS RESET TO PLAY AGIIAN";
 
         if (isGameOver){
-            let gameOverBoxWidth = 400;
-            let gameOverBoxHeight = 300;
+            let gameOverBoxWidth = 350;
+            let gameOverBoxHeight = 200;
             colorRect( 
                 canvas.width/2 - gameOverBoxWidth/2, 
                 canvas.height/2 - gameOverBoxHeight/2, 
@@ -151,11 +150,11 @@ const menu = new function() {
                 gameOverBoxHeight, 
                 this.gameOverBoxColor
             );
-            let textAlignWas = ctx.textAlign;
-            ctx.textAlign = "center";
-            colorText(this.gameOverText, canvas.width/2, canvas.height/2, 50, "black");
-            colorText(this.gameOverNextText, canvas.width/2, canvas.height/2 + 80, 18, "black");
-            ctx.textAlign = textAlignWas;
+            let textAlignWas = canvasContext.textAlign;
+            canvasContext.textAlign = "center";
+            colorText(this.gameOverText, canvas.width/2, canvas.height/2, 50, "gold");
+            colorText(this.gameOverNextText, canvas.width/2, canvas.height/2 + 80, 18, "lavender");
+            canvasContext.textAlign = textAlignWas;
         }
     }
 }
