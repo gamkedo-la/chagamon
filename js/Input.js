@@ -111,6 +111,17 @@ function mouseclicked(evt) {
     return;
   };
   
+  if (checkBox(mouseX, mouseY, muteBoxX, muteBoxY, muteBoxWidth, muteBoxHeight)){ //mute button
+    backgroundMusic.startOrStopMusic();
+    buttonSound.play();
+    return;
+  };
+  
+  if (checkBox(mouseX, mouseY, switchBoxX, switchBoxY, switchBoxWidth, switchBoxHeight)){ //switch team button
+    buttonSound.play();
+    return;
+  };
+  
   if(tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
     return;
   }

@@ -1,6 +1,8 @@
 
 var button1 = document.createElement("img");
 var button2 = document.createElement("img");
+var switchButton = document.createElement("img");
+var muteButton = document.createElement("img");
 var menuButton = document.createElement("img");
 var resetButton = document.createElement("img");
 var tutorialButton = document.createElement("img")
@@ -50,6 +52,8 @@ function loadImages() {
   var imageList = [
     {varName:button1, theFile:"accept.png"},
     {varName:button2, theFile:"reject.png"},
+    {varName:switchButton, theFile:"switchButton.png"},
+    {varName:muteButton, theFile:"muteButton.png"},
     {varName:menuButton, theFile:"menuButton.png"},
     {varName:resetButton, theFile:"resetButton.png"},
     {varName:tutorialButton, theFile:"tutorialButton.png"},

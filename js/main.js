@@ -24,7 +24,7 @@ var resetBoxHeight = 50;
 
 //tutorialBox Configurations
 var tutorialBoxX = 910;
-var tutorialBoxY = 120;
+var tutorialBoxY = 320;
 var tutorialBoxWidth = 100;
 var tutorialBoxHeight = 50;
 
@@ -33,6 +33,18 @@ var menuBoxX = 1020;
 var menuBoxY = 80;
 var menuBoxWidth = 100;
 var menuBoxHeight = 50;
+
+//muteBox Configurations
+var muteBoxX = 800;
+var muteBoxY = 700;
+var muteBoxWidth = 100;
+var muteBoxHeight = 50;
+
+//switchBox Configurations
+var switchBoxX = 1020;
+var switchBoxY = 700;
+var switchBoxWidth = 100;
+var switchBoxHeight = 50;
 
 var teamATurn = false;
 var turnCount = 0;
@@ -715,6 +727,8 @@ function drawEverything() {
     drawResetButton();
     drawTutorialButton();
     drawMenuButton();
+    drawMuteButton();
+    drawSwitchButton();
 
     var lineY = 180;
     var lineSkip = 15;
@@ -753,10 +767,19 @@ function drawTutorialButton(){
   colorText("Tutorial", tutorialBoxX + 25, tutorialBoxY + 30, 15, "white")
 }
 
-
 function drawMenuButton(){
     canvasContext.drawImage(menuButton, menuBoxX, menuBoxY);
     colorText("Menu", menuBoxX + 25, menuBoxY + 30, 15, "white")
+}
+
+function drawMuteButton(){
+    canvasContext.drawImage(muteButton, muteBoxX, muteBoxY);
+    colorText("Mute", muteBoxX + 25, muteBoxY + 30, 15, "white")
+}
+
+function drawSwitchButton(){
+    canvasContext.drawImage(switchButton, switchBoxX, switchBoxY);
+    colorText("Switch", switchBoxX + 25, switchBoxY + 30, 15, "white")
 }
 
 const FRAMES_PER_SECOND = 30;
