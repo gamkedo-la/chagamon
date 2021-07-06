@@ -17,8 +17,8 @@ var selectedIdx = -1;
 var tileOverIdx = -1;
 
 //resetBox Configurations
-var resetBoxX = 800;
-var resetBoxY = 80;
+var resetBoxX = 850;
+var resetBoxY = 420;
 var resetBoxWidth = 100;
 var resetBoxHeight = 50;
 
@@ -29,20 +29,20 @@ var tutorialBoxWidth = 100;
 var tutorialBoxHeight = 50;
 
 //menuBox Configurations
-var menuBoxX = 1020;
-var menuBoxY = 80;
+var menuBoxX = 980;
+var menuBoxY = 420;
 var menuBoxWidth = 100;
 var menuBoxHeight = 50;
 
 //muteBox Configurations
-var muteBoxX = 800;
-var muteBoxY = 700;
+var muteBoxX = 850;
+var muteBoxY = 520;
 var muteBoxWidth = 100;
 var muteBoxHeight = 50;
 
 //switchBox Configurations
-var switchBoxX = 1020;
-var switchBoxY = 700;
+var switchBoxX = 980;
+var switchBoxY = 520;
 var switchBoxWidth = 100;
 var switchBoxHeight = 50;
 

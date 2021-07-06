@@ -4,14 +4,15 @@ const menu = new function() {
 
     let itemsX = 240;
     let topItemY = 200;
-    let itemsWidth = 200;
+    let itemsWidth = 350;
     let itemsHeight = 80;
     let rowHeight = 85;
 
-    let mainMenuList = ["play",
-        "help",
-        "mute",
-        "credits"
+    let mainMenuList = ["PLAY",
+        "VS PLAYER",
+        "HELP",
+        "CHNAGE TEAM",
+        "CREDITS"
     ];
     let helpText = ["You should move the small piece(key Piece) in the corner all the way to the other corner ",
         "If you lose your key piece, it will restart from the first place",
@@ -30,10 +31,10 @@ const menu = new function() {
                 colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'grey');
                 colorText(
                     menuText[current][i].toString(),
-                    itemsX + 10,
-                    topItemY + rowHeight * i + itemsHeight / 1.5,
+                    itemsX + 14,
+                    topItemY + rowHeight * i + 4 + itemsHeight / 1.5,
                     45,
-                    "#00ffAA"
+                    "#FFE993"
                 );
             }
             this.mouseunclicked = function() {
@@ -41,16 +42,20 @@ const menu = new function() {
                 for (let i = 0; i < menuText[current].length; i++) {
                     if (selectedItemOnPage === menuText[current][i].toString()) {
                         switch (selectedItemOnPage) {
-                            case "play":
+                            case "PLAY":
                                 showMenu = false;
                                 break;
-                            case 'mute':
-                                backgroundMusic.startOrStopMusic();
+                            case 'VS PLAY':
+                                
                                 break;
-                            case 'help':
+                            case 'HELP':
                                 colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'black');
                                 colorText(menuText[helpText][i].toString(), itemsX + 10, topItemY + rowHeight * i + itemsHeight / 1.5, 45, "#00ffAA");
                                 break;
+                            case 'CHNAGE TEAM':
+                                break;
+                                case 'CREDITS':
+                            break;
                             default:
                                 console.log("unhandeled menu item");
                                 break;
@@ -72,15 +77,16 @@ const menu = new function() {
             "black"
         )
         for (let i = 0; i < menuText[current].length; i++) {
-            colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#fffeef');
+            colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
             colorText(
                 menuText[current][i],
                 itemsX + 10,
                 topItemY + rowHeight * i + itemsHeight / 1.5,
                 40,
-                "black"
+                "gold"
             );
         }
+        canvasContext.drawImage(logo, itemsX, topItemY - rowHeight, itemsWidth, itemsHeight);
     }
     this.setCursorAndCurrentPage = function(cursor = this.cursor) {
         // For now, only allow selection of an option on the main menu page
@@ -141,7 +147,7 @@ const menu = new function() {
         this.gameOverNextText = "PRESS RESET TO PLAY AGIIAN";
 
         if (isGameOver){
-            let gameOverBoxWidth = 350;
+            let gameOverBoxWidth = 400;
             let gameOverBoxHeight = 200;
             colorRect( 
                 canvas.width/2 - gameOverBoxWidth/2, 
