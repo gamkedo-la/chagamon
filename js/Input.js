@@ -100,6 +100,11 @@ function mouseclicked(evt) {
   };
 
   if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //tutorial button
+    buttonSound.play();
+    return;
+  };
+  
+  if (checkBox(mouseX, mouseY, menuBoxX, menuBoxY, menuBoxWidth, menuBoxHeight)){ //menu button
     console.log("Launch menu UI");
     showMenu = true;
     buttonSound.play();

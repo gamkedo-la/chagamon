@@ -17,16 +17,22 @@ var selectedIdx = -1;
 var tileOverIdx = -1;
 
 //resetBox Configurations
-var resetBoxX = 900;
-var resetBoxY = 10;
+var resetBoxX = 800;
+var resetBoxY = 80;
 var resetBoxWidth = 100;
 var resetBoxHeight = 50;
 
 //tutorialBox Configurations
-var tutorialBoxX = 900;
-var tutorialBoxY = 50;
+var tutorialBoxX = 910;
+var tutorialBoxY = 120;
 var tutorialBoxWidth = 100;
 var tutorialBoxHeight = 50;
+
+//menuBox Configurations
+var menuBoxX = 1020;
+var menuBoxY = 80;
+var menuBoxWidth = 100;
+var menuBoxHeight = 50;
 
 var teamATurn = false;
 var turnCount = 0;
@@ -708,29 +714,30 @@ function drawEverything() {
     canvasContext.drawImage(woodDecor, 0, 0);
     drawResetButton();
     drawTutorialButton();
+    drawMenuButton();
 
-    var lineY = 30;
+    var lineY = 180;
     var lineSkip = 15;
-
-    canvasContext.fillText("Click any piece to select", rightAreaX, lineY);
+    var lineIndent = 120;
+    canvasContext.fillText("Click any piece to select", rightAreaX + lineIndent, lineY);
     lineY += lineSkip;
-    canvasContext.fillText("Then click spot to move to", rightAreaX, lineY);
+    canvasContext.fillText("Then click spot to move to", rightAreaX + lineIndent, lineY);
     lineY += lineSkip*2.5;
-    canvasContext.fillText("Next Turn: ", rightAreaX, lineY);
+    canvasContext.fillText("Next Turn: ", rightAreaX + lineIndent, lineY);
     lineY += lineSkip*2;
     canvasContext.font = "30px Arial";
-    canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX, lineY);
+    canvasContext.fillText((teamATurn ? "Chocolates" : "Biscuits"), rightAreaX + lineIndent, lineY);
     lineY += lineSkip*2.5;
     canvasContext.font = "15px Arial";
-    canvasContext.fillText("Turn Count: " + turnCount, rightAreaX, lineY);
+    canvasContext.fillText("Turn Count: " + turnCount, rightAreaX + lineIndent, lineY);
     lineY += lineSkip;
 
     if(whoWon() == 1) {
         menu.gameOverMessage();
-        canvasContext.fillText("Biscuit Team Won", rightAreaX, lineY);
+        canvasContext.fillText("Biscuit Team Won", rightAreaX + lineIndent, lineY);
     }
     if(whoWon() == -1 || bisPieceScore==1) {
-        canvasContext.fillText("Chocolate Team Won", rightAreaX, lineY);
+        canvasContext.fillText("Chocolate Team Won", rightAreaX + lineIndent, lineY);
         menu.gameOverMessage();
     }
     
@@ -744,6 +751,12 @@ function drawResetButton(){
 function drawTutorialButton(){
   canvasContext.drawImage(tutorialButton, tutorialBoxX, tutorialBoxY);
   colorText("Tutorial", tutorialBoxX + 25, tutorialBoxY + 30, 15, "white")
+}
+
+
+function drawMenuButton(){
+    canvasContext.drawImage(menuButton, menuBoxX, menuBoxY);
+    colorText("Menu", menuBoxX + 25, menuBoxY + 30, 15, "white")
 }
 
 const FRAMES_PER_SECOND = 30;
