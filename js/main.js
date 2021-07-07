@@ -1,5 +1,7 @@
 var showGridDebugNum = true;
 
+const AI_MOVES_CONSIDERED = 3; // warning: 4 or more will take very long (no alpha beta pruning)
+
 var backgroundMusic = new BackgroundMusicClass();
 var moveSound = new SoundOverlapsClass("audio/piecemoving");
 var winSound = new SoundOverlapsClass("audio/GameWin");
@@ -540,7 +542,7 @@ function aiMove(boardState, turnNow, movesDeep) {
             } //end of if
         } //end of for row
     } //end of for column
-    console.log("Pieces with moves " + moveOptions.length);
+    // console.log("Pieces with moves " + moveOptions.length);
 /*
     var randPiece = Math.floor(Math.random() * moveOptions.length);
     console.log("Piece " + randPiece + " with moves " + moveOptions[randPiece].movesList.length);
@@ -556,8 +558,8 @@ function aiMove(boardState, turnNow, movesDeep) {
             var moveBoard = boardNow.slice();//Exact copy of the current board 
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
             var moveScore = 0;
-            if(movesDeep == 0) {
-                var bestCounterMove = aiMove(moveBoard, !turnNow, 1);
+            if(movesDeep > 0) {
+                var bestCounterMove = aiMove(moveBoard, !turnNow, movesDeep-1);
                 moveScore = bestCounterMove.score;
                 scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
             } else {
@@ -576,8 +578,8 @@ function aiMove(boardState, turnNow, movesDeep) {
     } else {
         bestMove = scoredMoves[scoredMoves.length-1];
     }
-    console.log(movesDeep +" " + stringMove(tileGrid, bestMove) + "  score:" + bestMove.score + " " + turnNow);
-    if(movesDeep == 0){
+    // console.log(movesDeep +" " + stringMove(tileGrid, bestMove) + "  score:" + bestMove.score + " " + turnNow);
+    if(movesDeep == AI_MOVES_CONSIDERED){
         moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
         endTurn();
 
@@ -638,8 +640,10 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     }
     var takenTile = onBoard[toIdx];
     if (takenTile != 0) {
-        captureSound.play();
-        console.log("Captured Value : " + takenTile);
+        if(onBoard == tileGrid) { // only play sound on actual grid (not positive array compare works?)
+            captureSound.play();
+        }
+        // console.log("Captured Value : " + takenTile);
         if (takenTile == KEY) {
             onBoard[TILE_KEY_START] = KEY;
             keyRestartSound.play();
