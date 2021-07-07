@@ -165,7 +165,7 @@ function mouseclicked(evt) {
   if (selectedIdx == tileOverIdx) {
     selectedIdx = -1;
   } else if (selectedIdx != -1) {
-    var validMoves = validMovesFromTile(selectedIdx);
+    var validMoves = validMovesFromTile(tileGrid ,selectedIdx);
     var moveInList = false;
     var tileOverCol = tileOverIdx % TILE_COLS;
     var tileOverRow = Math.floor(tileOverIdx / TILE_COLS);

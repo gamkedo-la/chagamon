@@ -313,8 +313,8 @@ function validMovesForType(pieceType) {
     return movesList;
 }
 
-function validMovesFromTile(tileIdx) {
-    var selectedPiece = tileGrid[tileIdx];
+function validMovesFromTile(onBoard ,tileIdx) {
+    var selectedPiece = onBoard[tileIdx];
     var selectedCol = tileIdx % TILE_COLS;
     var selectedRow = Math.floor(tileIdx / TILE_COLS);
     var validMoves = validMovesForType(selectedPiece);
@@ -331,7 +331,7 @@ function validMovesFromTile(tileIdx) {
             }
             //blocking landing on our own pieces
             var targetIdx = tileCoordToIndex(moveToConsider.col, moveToConsider.row);
-            var targetPiece = tileGrid[targetIdx];
+            var targetPiece = onBoard[targetIdx];
 
             if (targetPiece < 0) {
                 if (selectedPiece < 0) {
@@ -512,7 +512,7 @@ function drawTiles() {
     } // end of for eachCol
 
     if (selectedIdx != -1) {
-        var validMoves = validMovesFromTile(selectedIdx);
+        var validMoves = validMovesFromTile(tileGrid ,selectedIdx);
         for (var i = 0; i < validMoves.length; i++) {
             var tileLeftEdgeX = FRAME_SIZE + (validMoves[i].col * TILE_W);
             var tileTopEdgeY = FRAME_SIZE + (validMoves[i].row * TILE_H);
@@ -532,7 +532,7 @@ function aiMove(boardState, turnNow, movesDeep) {
             var pieceHere = boardNow[tileIdx];
             if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
                 //console.log(pieceHere);
-                var validMoves = validMovesFromTile(tileIdx);
+                var validMoves = validMovesFromTile(boardNow, tileIdx);
                 moveOptions.push({
                     source: tileIdx,
                     movesList: validMoves
@@ -540,8 +540,8 @@ function aiMove(boardState, turnNow, movesDeep) {
             } //end of if
         } //end of for row
     } //end of for column
-/*
     console.log("Pieces with moves " + moveOptions.length);
+/*
     var randPiece = Math.floor(Math.random() * moveOptions.length);
     console.log("Piece " + randPiece + " with moves " + moveOptions[randPiece].movesList.length);
     var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
@@ -555,12 +555,13 @@ function aiMove(boardState, turnNow, movesDeep) {
             var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
             var moveBoard = boardNow.slice();//Exact copy of the current board 
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
-            
+            var moveScore = 0;
             if(movesDeep == 0) {
                 var bestCounterMove = aiMove(moveBoard, !turnNow, 1);
-                scoredMoves.push({score:bestCounterMove.score, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
+                moveScore = bestCounterMove.score;
+                scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
             } else {
-                var moveScore = scoreBoard(moveBoard);
+                moveScore = scoreBoard(moveBoard);
                 scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
             }
             
