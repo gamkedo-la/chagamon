@@ -605,13 +605,29 @@ function aiMove(boardState, turnNow, movesDeep) {
         }
     }
    
-    scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
+    // no need to fully sort the whole list, we just need highest/lowest value, so scan once in O(n)
+    /*scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
     var bestMove;
     if(turnNow == false) { 
         bestMove = scoredMoves[0];
     } else {
         bestMove = scoredMoves[scoredMoves.length-1];
+    }*/
+    var bestMove = scoredMoves[0];
+    if(turnNow == false) { // biscuit, favor highest
+        for(var i=1;i<scoredMoves.length;i++) { // skip 0 (default best move)
+            if(bestMove.score > scoredMoves[i].score) {
+                bestMove = scoredMoves[i];
+            }
+        }
+    } else { // chocolate, favor lowest
+        for(var i=1;i<scoredMoves.length;i++) { // skip 0 (default best move)
+            if(bestMove.score < scoredMoves[i].score) {
+                bestMove = scoredMoves[i];
+            }
+        }
     }
+
     // console.log(movesDeep +" " + stringMove(tileGrid, bestMove) + "  score:" + bestMove.score + " " + turnNow);
     if(movesDeep == AI_MOVES_CONSIDERED){
         moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);

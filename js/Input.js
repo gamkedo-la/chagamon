@@ -51,9 +51,9 @@ function setKeyHoldState(thisKey, setTo) {
     break; 
   case KEY_T:
     if (setTo == false) {
-      //setInterval(function() {
+      if(aiCurrentlyThinking == AI_THINKING_NO) { // block stacked requests
         aiCurrentlyThinking = AI_THINKING_NEXT_FRAME; // leaves time for visual wait feedback
-    //}, 1000 / FRAMES_PER_SECOND);
+      }
     }
     break;
   case KEY_R:
