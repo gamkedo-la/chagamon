@@ -391,7 +391,8 @@ function startGame() {
     setInterval(function() {
         update();
     }, 1000 / FRAMES_PER_SECOND);
-    startSound.play()
+    
+    // startSound.play() // avoiding soudn until after player interacts
     //backgroundMusic.loopSong("audio/calm");
     //reset();
 }
@@ -666,6 +667,13 @@ function stringMove(board, move) {
     var destR = Math.floor(move.toIdx / TILE_COLS);
    return (pieceName + ":" + sourceC + "," + sourceR + " to " + destC + "," + destR);
 }
+
+function playSoundIfNotJustAI(whichSound,onBoard) {
+    if(onBoard == tileGrid) {
+        whichSound.play();
+    }
+}
+
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
     if(whoWon(onBoard) != WON_NONE) {
         // console.log("MOVE REJECTED, GAME ENDED");
@@ -673,16 +681,14 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     }
     var takenTile = onBoard[toIdx];
     if (takenTile != 0) {
-        if(onBoard == tileGrid) { // only play sound on actual grid (not positive array compare works?)
-            captureSound.play();
-        }
+        playSoundIfNotJustAI(captureSound,onBoard);
         // console.log("Captured Value : " + takenTile);
         if (takenTile == KEY) {
             onBoard[TILE_KEY_START] = KEY;
-            keyRestartSound.play();
+            playSoundIfNotJustAI(keyRestartSound,onBoard);
         } else if (takenTile == AKEY) {
             onBoard[TILE_AKEY_START] = AKEY;
-            keyRestartSound.play();
+            playSoundIfNotJustAI(keyRestartSound,onBoard);
         }
     }
     onBoard[toIdx] = onBoard[fromIdx]; // put the piece here (overwrite)
