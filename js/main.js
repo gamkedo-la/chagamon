@@ -394,7 +394,7 @@ function startGame() {
         update();
     }, 1000 / FRAMES_PER_SECOND);
     
-    // startSound.play() // avoiding soudn until after player interacts
+    // startSound.play() // no sound until after player interacts, so moved into ui.js menu code
     //backgroundMusic.loopSong("audio/calm");
     //reset();
 }

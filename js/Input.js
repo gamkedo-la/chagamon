@@ -16,7 +16,6 @@ const KEY_X = 88;
 const KEY_Z = 90;
 const WOOD_DECOR_OFFSET = 31;
 
-var mousePos;
 var mouseUp;
 
 function initInput() {
@@ -24,9 +23,6 @@ function initInput() {
 	document.addEventListener("mousedown", mouseclicked);
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
-	document.addEventListener("mousemove", 
-		  function(evt) {mousePos = calculateMousePos(evt);
-		  });
   }
   
 //keyboard functions
@@ -96,6 +92,10 @@ function keyReleased(evt) {
 
 
 function mouseclicked(evt) {
+  if(showMenu) {
+    menu.clickOption();
+    return;
+  }
   if (checkBox(mouseX, mouseY, resetBoxX, resetBoxY,resetBoxWidth, resetBoxHeight)){ //reset button
     resetBoard();
     buttonSound.play();
@@ -207,18 +207,6 @@ function mousemoved(evt) {
   var tileOverCol = Math.floor(mouseX / TILE_W);
   var tileOverRow = Math.floor(mouseY / TILE_H);
   tileOverIdx = tileCoordToIndex(tileOverCol,tileOverRow);
-}
-
-
-function calculateMousePos(evt) {
-  var rect = canvas.getBoundingClientRect(), root = document.documentElement;
-
-  var mouseX = evt.clientX - rect.left - root.scrollLeft - FRAME_SIZE;
-  var mouseY = evt.clientY - rect.top - root.scrollTop - FRAME_SIZE;
- return {
-    x: mouseX,
-    y: mouseY
-  };
 }
 
 function checkBox(inpX, inpY, xPos, yPos, width, height){

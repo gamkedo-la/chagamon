@@ -11,7 +11,7 @@ const menu = new function() {
     let mainMenuList = ["PLAY",
         "VS PLAYER",
         "HELP",
-        "CHNAGE TEAM",
+        "CHANGE TEAM",
         "CREDITS"
     ];
     let helpText = ["You should move the small piece(key Piece) in the corner all the way to the other corner ",
@@ -37,33 +37,33 @@ const menu = new function() {
                     "#FFE993"
                 );
             }
-            this.mouseunclicked = function() {
-                //console.log("hello");
-                for (let i = 0; i < menuText[current].length; i++) {
-                    if (selectedItemOnPage === menuText[current][i].toString()) {
-                        switch (selectedItemOnPage) {
-                            case "PLAY":
-                                showMenu = false;
-                                break;
-                            case 'VS PLAY':
-                                
-                                break;
-                            case 'HELP':
-                                colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'black');
-                                colorText(menuText[helpText][i].toString(), itemsX + 10, topItemY + rowHeight * i + itemsHeight / 1.5, 45, "#00ffAA");
-                                break;
-                            case 'CHNAGE TEAM':
-                                break;
-                                case 'CREDITS':
-                            break;
-                            default:
-                                console.log("unhandeled menu item");
-                                break;
-                        }
+        }
+    }
 
-                    }
+    this.clickOption = function() {
+        const selectedItemOnPage = menuText[current][this.cursor];
+        console.log("clicked on menu: " + selectedItemOnPage);
+        switch (selectedItemOnPage) {
+            case "PLAY":
+                showMenu = false;
+                startSound.play();
+                break;
+            case 'VS PLAY':
+                
+                break;
+            case 'HELP':
+                for(var i=0;i<helpText.length;i++) {
+                    colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'black');
+                    colorText(helpText[i].toString(), itemsX + 10, topItemY + rowHeight * i + itemsHeight / 1.5, 45, "#00ffAA");
                 }
-            }
+                break;
+            case 'CHANGE TEAM':
+                break;
+                case 'CREDITS':
+            break;
+            default:
+                console.log("unhandeled menu item");
+                break;
         }
         this.cursor = 0;
     }
