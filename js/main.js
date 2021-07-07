@@ -668,7 +668,7 @@ function stringMove(board, move) {
 }
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
     if(whoWon(onBoard) != WON_NONE) {
-        console.log("MOVE REJECTED, GAME ENDED");
+        // console.log("MOVE REJECTED, GAME ENDED");
         return;
     }
     var takenTile = onBoard[toIdx];
