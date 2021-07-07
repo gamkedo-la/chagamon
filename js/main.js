@@ -1,5 +1,3 @@
-var showGridDebugNum = true;
-
 const AI_MOVES_CONSIDERED = 3; // warning: 4 or more will take very long (no alpha beta pruning)
 
 var backgroundMusic = new BackgroundMusicClass();
@@ -85,6 +83,25 @@ var tileGrid = [];
 captured = false;
 var bisPieceScore = 0;
 var choPieceScore = 0;
+
+// One frame delay between starting AI and the AI running, used to display somehow that it's thinking
+const AI_THINKING_NO = 0;
+const AI_THINKING_NEXT_FRAME = 1;
+const AI_THINKING_PROCESSING = 2;
+var aiCurrentlyThinking = AI_THINKING_NO;
+
+var showGridDebugNum = false; // helpful for AI logs
+
+function drawAIMessage() {
+    var messageBoxX = 150;
+    var messageBoxY = 335;
+    canvasContext.globalAlpha = 0.35;
+    canvasContext.fillStyle = "white";
+    canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
+    canvasContext.globalAlpha = 1.0;
+    canvasContext.fillStyle = "black";
+    canvasContext.fillText("Thinking of next move...",messageBoxX+30,messageBoxY+25);
+}
 
 function resetBoard() {
     turnCount = 0;
@@ -376,8 +393,20 @@ function startGame() {
 }
 
 function update() {
-    drawEverything();
-    resizeCanvas();
+    switch(aiCurrentlyThinking) {
+        case AI_THINKING_NO:
+            resizeCanvas();
+            break;
+        case AI_THINKING_NEXT_FRAME:
+            drawAIMessage();
+            aiCurrentlyThinking = AI_THINKING_PROCESSING;
+            break;
+        case AI_THINKING_PROCESSING:
+            aiMove(tileGrid,teamATurn,AI_MOVES_CONSIDERED);
+            aiCurrentlyThinking = AI_THINKING_NO;
+            break;
+        
+    }
     //variableDisplay();
 }
 
@@ -703,12 +732,6 @@ function endTurn(){
     moveSound.play();
     teamATurn = !teamATurn;
     turnCount++;
-    console.log('----------endTurn---------');
-    if(teamATurn) {
-        console.log('chocolate next');
-    } else {
-        console.log('biscuit next');
-    }
     if (whoWon() != 0) {
         isGameOver = true;
         if(whoWon() == 1) {

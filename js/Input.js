@@ -52,7 +52,7 @@ function setKeyHoldState(thisKey, setTo) {
   case KEY_T:
     if (setTo == false) {
       //setInterval(function() {
-        aiMove(tileGrid,teamATurn,AI_MOVES_CONSIDERED);
+        aiCurrentlyThinking = AI_THINKING_NEXT_FRAME; // leaves time for visual wait feedback
     //}, 1000 / FRAMES_PER_SECOND);
     }
     break;
