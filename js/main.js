@@ -560,15 +560,14 @@ function drawTiles() {
 } // end of drawTiles()
 
 function aiMove(boardState, turnNow, movesDeep) {
-    var boardNow = boardState.slice();//Exact copy of the hypothetical board 
     var moveOptions = [];
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileIdx = tileCoordToIndex(eachCol, eachRow);
-            var pieceHere = boardNow[tileIdx];
+            var pieceHere = boardState[tileIdx];
             if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
                 //console.log(pieceHere);
-                var validMoves = validMovesFromTile(boardNow, tileIdx);
+                var validMoves = validMovesFromTile(boardState, tileIdx);
                 moveOptions.push({
                     source: tileIdx,
                     movesList: validMoves
@@ -589,7 +588,7 @@ function aiMove(boardState, turnNow, movesDeep) {
         for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
             var thisMove = moveOptions[eachPiece].movesList[eachMove];
             var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
-            var moveBoard = boardNow.slice();//Exact copy of the current board 
+            var moveBoard = boardState.slice(); // copy of the current board to apply possible move to
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
             var moveScore = 0;
             if(movesDeep > 0) {
