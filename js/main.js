@@ -77,6 +77,10 @@ const AKNIGHT = -4;
 const AKING = -5;
 const AQUEEN = -6;
 
+const WON_BISCUIT = 1;
+const WON_NONE = 0;
+const WON_CHOCOLATE = -1;
+
 var enemyPos = [];
 var homePos = [];
 var tileGrid = [];
@@ -119,14 +123,14 @@ function resetBoard() {
             ];
 }
 
-function whoWon() {
-    if(tileGrid[TILE_AKEY_GOAL] == AKEY){
-        return -1;  
+function whoWon(onBoard) {
+    if(onBoard[TILE_AKEY_GOAL] == AKEY){
+        return WON_CHOCOLATE;  
     }
-    if (tileGrid[TILE_KEY_GOAL] == KEY) {
-        return 1;
+    if (onBoard[TILE_KEY_GOAL] == KEY) {
+        return WON_BISCUIT;
     }
-    return 0;
+    return WON_NONE;
 }
 
 function validMovesForType(pieceType) {
@@ -663,8 +667,8 @@ function stringMove(board, move) {
    return (pieceName + ":" + sourceC + "," + sourceR + " to " + destC + "," + destR);
 }
 function moveFromToIdx(fromIdx, toIdx, onBoard) {
-    if(whoWon() != 0) {
-        console.log("GAME OVER");
+    if(whoWon(onBoard) != WON_NONE) {
+        console.log("MOVE REJECTED, GAME ENDED");
         return;
     }
     var takenTile = onBoard[toIdx];
@@ -691,6 +695,14 @@ function scoreBoard(onBoard, showDebug = false) {
     var choKeyDist = 0;
     var bisPieceScore = 0;
     var choPieceScore = 0;
+
+    var victor = whoWon(onBoard);
+    if(victor == WON_BISCUIT) {
+        return -9999999;// very bad for chocolate
+    } else if(victor == WON_CHOCOLATE) {
+        return 9999999;// very good for chocolate
+    }
+
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileLeftEdgeX = eachCol * TILE_W;
@@ -714,7 +726,7 @@ function scoreBoard(onBoard, showDebug = false) {
             }//end of Cho Piece
         }
     }
-    if(showDebug){
+    if(showDebug){ // warning: there will be a TON of this unless AI_MOVES_CONSIDERED is very low
         console.log("choScore " + choPieceScore + " " +  "bisScore " + bisPieceScore);
         console.log("choKey Steps  " + choKeyDist + " " +  "bisKey Steps " + bisKeyDist);
     }
@@ -732,14 +744,15 @@ function endTurn(){
     moveSound.play();
     teamATurn = !teamATurn;
     turnCount++;
-    if (whoWon() != 0) {
+    var victor = whoWon(tileGrid);
+    if (victor != WON_NONE) {
         isGameOver = true;
-        if(whoWon() == 1) {
+        if(victor == WON_BISCUIT) {
             winSound.play();
             hasWon = true;
         } 
         
-        if(whoWon() == -1 || bisPieceScore==1) {
+        if(victor == WON_CHOCOLATE) {
             loseSound.play();
             hasWon = false;
         } 
@@ -782,11 +795,12 @@ function drawEverything() {
     canvasContext.fillText("Turn Count: " + turnCount, rightAreaX + lineIndent, lineY);
     lineY += lineSkip;
 
-    if(whoWon() == 1) {
+    var victor = whoWon(tileGrid);
+    if(victor == WON_BISCUIT) {
         menu.gameOverMessage();
         canvasContext.fillText("Biscuit Team Won", rightAreaX + lineIndent, lineY);
     }
-    if(whoWon() == -1 || bisPieceScore==1) {
+    if(victor == WON_CHOCOLATE) {
         canvasContext.fillText("Chocolate Team Won", rightAreaX + lineIndent, lineY);
         menu.gameOverMessage();
     }
