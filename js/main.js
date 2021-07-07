@@ -1,3 +1,5 @@
+var showGridDebugNum = true;
+
 var backgroundMusic = new BackgroundMusicClass();
 var moveSound = new SoundOverlapsClass("audio/piecemoving");
 var winSound = new SoundOverlapsClass("audio/GameWin");
@@ -400,7 +402,6 @@ function tileCoordToIndex(tileCol, tileRow) {
     return (tileCol + TILE_COLS * tileRow);
 }
 
-
 function drawTiles() {
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
@@ -502,6 +503,10 @@ function drawTiles() {
                 // cutting extra margin from each edge so it won't overlap mouseover tile
                 outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
                     TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, 'yellow');
+            }
+            if(showGridDebugNum) {
+                canvasContext.fillStyle = "white";
+                canvasContext.fillText(eachCol+","+eachRow, tileLeftEdgeX+10, tileTopEdgeY+TILE_H-7);
             }
         } // end of for eachRow
     } // end of for eachCol
