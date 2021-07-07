@@ -394,6 +394,9 @@ function resizeCanvas() {
 var canvas, canvasContext;
 
 function tileCoordToIndex(tileCol, tileRow) {
+    if(tileCol<0 || tileCol>=TILE_COLS || tileRow<0 || tileRow>=TILE_ROWS) {
+        return -1; // out of bounds
+    }
     return (tileCol + TILE_COLS * tileRow);
 }
 
