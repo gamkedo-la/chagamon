@@ -1,4 +1,6 @@
-const AI_MOVES_CONSIDERED = 3; // warning: 4 or more will take very long (no alpha beta pruning)
+// warning: 4 or more will take very long (no alpha beta pruning)
+const AI_MOVES_CONSIDERED = 3; // set to 2 for quicker misc testing or AI console logging, but 3 is playable
+var showAIConsoleLogs = false;
 
 var backgroundMusic = new BackgroundMusicClass();
 var moveSound = new SoundOverlapsClass("audio/piecemoving");
@@ -592,8 +594,19 @@ function aiMove(boardState, turnNow, movesDeep) {
             moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
             var moveScore = 0;
             if(movesDeep > 0) {
-                var bestCounterMove = aiMove(moveBoard, !turnNow, movesDeep-1);
-                moveScore = bestCounterMove.score;
+                var victor = whoWon(moveBoard);
+                if(victor == WON_NONE) {
+                    var bestCounterMove = aiMove(moveBoard, !turnNow, movesDeep-1);
+                    moveScore = bestCounterMove.score;
+                } else {
+                    moveScore = scoreBoard(moveBoard); // terminal, game winning, no counter possible
+                    // prefer a win in fewer moves by tipping the huge win bonus in direction the team favors
+                    if(turnNow) {
+                        moveScore += movesDeep;
+                    } else {
+                        moveScore -= movesDeep;
+                    }
+                }
                 scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
             } else {
                 moveScore = scoreBoard(moveBoard);
@@ -626,8 +639,9 @@ function aiMove(boardState, turnNow, movesDeep) {
             }
         }
     }
-
-    // console.log(movesDeep +" " + stringMove(tileGrid, bestMove) + "  score:" + bestMove.score + " " + turnNow);
+    if(showAIConsoleLogs) {
+       console.log(movesDeep +" " + stringMove(boardState, bestMove) + "  score:" + bestMove.score + " " + (turnNow ? "cho" : "bis"));
+    }
     if(movesDeep == AI_MOVES_CONSIDERED){
         moveFromToIdx(bestMove.fromIdx, bestMove.toIdx, tileGrid);
         endTurn();
@@ -753,7 +767,7 @@ function scoreBoard(onBoard, showDebug = false) {
     }
     
     const MAXKEYSCORE = 18;
-    const CAPTUREBIAS = 3;
+    const CAPTUREBIAS = 3; // could try this as 2, now that AI can plan more moves ahead
     var choTotalScore = choPieceScore * CAPTUREBIAS + (MAXKEYSCORE - choKeyDist);
     var bisTotalScore = bisPieceScore * CAPTUREBIAS + (MAXKEYSCORE - bisKeyDist);
     var choOutcome = choTotalScore - bisTotalScore;
@@ -765,6 +779,7 @@ function endTurn(){
     moveSound.play();
     teamATurn = !teamATurn;
     turnCount++;
+    //console.log("==end of turn "+turnCount+"==");
     var victor = whoWon(tileGrid);
     if (victor != WON_NONE) {
         isGameOver = true;
