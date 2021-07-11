@@ -107,6 +107,7 @@ function mouseclicked(evt) {
 
   if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //tutorial button
     buttonSound.play();
+    showMenu = true;
     return;
   };
   

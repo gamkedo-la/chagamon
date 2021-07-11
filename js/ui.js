@@ -7,6 +7,9 @@ const menu = new function() {
     let itemsWidth = 350;
     let itemsHeight = 80;
     let rowHeight = 85;
+    let helpTextBoxWidth = 1000;
+
+    let showHelpText = false;
 
     let mainMenuList = ["PLAY",
         "VS PLAYER",
@@ -18,6 +21,7 @@ const menu = new function() {
         "If you lose your key piece, it will restart from the first place",
         "If either player loses all pieces (except the key piece) or the other player reaches the other corner first",
         "The winner is chosen ",
+        "Close help text"
     ];
     let menuText = [
         mainMenuList,
@@ -49,17 +53,16 @@ const menu = new function() {
                 startSound.play();
                 break;
             case 'VS PLAY':
-                
                 break;
             case 'HELP':
-                for(var i=0;i<helpText.length;i++) {
-                    colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'black');
-                    colorText(helpText[i].toString(), itemsX + 10, topItemY + rowHeight * i + itemsHeight / 1.5, 45, "#00ffAA");
-                }
+                current = 1;
                 break;
             case 'CHANGE TEAM':
                 break;
             case 'CREDITS':
+                break;
+            case 'Close help text':
+                current = 0;
                 break;
             default:
                 console.log("unhandeled menu item");
@@ -67,26 +70,59 @@ const menu = new function() {
         }
         this.cursor = 0;
     }
+    this.drawHelpText = function() {
+        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * helpText.length * 1.5, 'black');
+        for(var i=0;i< (helpText.length-1) ;i++) {
+            colorText(
+                helpText[i].toString(), 
+                50, 
+                topItemY + rowHeight * i + itemsHeight / 1.5, 
+                15, 
+                "#00ffAA");
+        }
+        //draw close button in bottom right hand corner
+        colorRect(
+            helpTextBoxWidth - 320,
+            topItemY + rowHeight * (helpText.length + 0.5), 
+            200, 
+            rowHeight / 2,
+            'white'
+        )
+        colorText(
+            helpText[helpText.length - 1].toString(),
+            helpTextBoxWidth - 300,
+            topItemY + rowHeight * (helpText.length + 1), 
+            15, 
+            'red')
+    }
+
     this.draw = function() {
         let closeTextHeight = 20
         colorText(
             'Press X to close this menu at any time',
             30,
             closeTextHeight,
-            // topItemY - (closeTextHeight * 1.5),
             closeTextHeight,
             "black"
         )
-        for (let i = 0; i < menuText[current].length; i++) {
-            colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
-            colorText(
-                menuText[current][i],
-                itemsX + 10,
-                topItemY + rowHeight * i + itemsHeight / 1.5,
-                40,
-                "gold"
-            );
+
+        if(current == 0){
+            for (let i = 0; i < menuText[current].length; i++) {
+                colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
+                colorText(
+                    menuText[current][i],
+                    itemsX + 10,
+                    topItemY + rowHeight * i + itemsHeight / 1.5,
+                    40,
+                    "gold"
+                );
+            }
         }
+
+        if(current == 1){
+            this.drawHelpText();
+        }
+
         canvasContext.drawImage(logo, itemsX, topItemY - rowHeight, itemsWidth, itemsHeight);
     }
     this.setCursorAndCurrentPage = function(cursor = this.cursor) {
@@ -102,6 +138,7 @@ const menu = new function() {
         // Set the cursor at the first option of the new screen
         this.checkState();
         //selectionSFX.play();
+
     };
 
     this.menuMouse = function() {
@@ -129,19 +166,6 @@ const menu = new function() {
         }
     }
 
-    this.helpMessage = function() {
-        for (let i = 0; i < helpText[current].length; i++) {
-            colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#fffeef');
-            colorText(
-                helpText[current][i],
-                itemsX + 10,
-                topItemY + rowHeight * i + itemsHeight / 1.5,
-                13,
-                "black"
-            );
-        }
-    }
-    
     this.gameOverMessage = function() {
         this.gameOverBoxColor = hasWon ? "green" : "purple";
         this.gameOverText = hasWon ? "BISCUIT WON" : "CHOCOLATE WON";
