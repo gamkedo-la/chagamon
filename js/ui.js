@@ -1,5 +1,4 @@
 const menu = new function() {
-    let current = 0;
     let cursor = 0;
 
     let itemsX = 240;
@@ -21,7 +20,7 @@ const menu = new function() {
         "If you lose your key piece, it will restart from the first place",
         "If either player loses all pieces (except the key piece) or the other player reaches the other corner first",
         "The winner is chosen ",
-        "Close help text"
+        "Click anywhere to return to menu"
     ];
     let menuText = [
         mainMenuList,
@@ -29,12 +28,12 @@ const menu = new function() {
     ];
 
     this.checkState = function() {
-        const selectedItemOnPage = menuText[current][this.cursor];
-        for (let i = 0; i < menuText[current].length; i++) {
-            if (selectedItemOnPage === menuText[current][i].toString()) {
+        const selectedItemOnPage = menuText[currentMenu][this.cursor];
+        for (let i = 0; i < menuText[currentMenu].length; i++) {
+            if (selectedItemOnPage === menuText[currentMenu][i].toString()) {
                 colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, 'grey');
                 colorText(
-                    menuText[current][i].toString(),
+                    menuText[currentMenu][i].toString(),
                     itemsX + 14,
                     topItemY + rowHeight * i + 4 + itemsHeight / 1.5,
                     45,
@@ -45,8 +44,13 @@ const menu = new function() {
     }
 
     this.clickOption = function() {
-        const selectedItemOnPage = menuText[current][this.cursor];
+        const selectedItemOnPage = menuText[currentMenu][this.cursor];
         console.log("clicked on menu: " + selectedItemOnPage);
+
+        if (helpText.includes(selectedItemOnPage)){
+            currentMenu = 0;
+        }
+
         switch (selectedItemOnPage) {
             case "PLAY":
                 showMenu = false;
@@ -55,14 +59,11 @@ const menu = new function() {
             case 'VS PLAY':
                 break;
             case 'HELP':
-                current = 1;
+                currentMenu = 1;
                 break;
             case 'CHANGE TEAM':
                 break;
             case 'CREDITS':
-                break;
-            case 'Close help text':
-                current = 0;
                 break;
             default:
                 console.log("unhandeled menu item");
@@ -71,8 +72,8 @@ const menu = new function() {
         this.cursor = 0;
     }
     this.drawHelpText = function() {
-        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * helpText.length * 1.5, 'black');
-        for(var i=0;i< (helpText.length-1) ;i++) {
+        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * helpText.length * 1.5, "grey");
+        for(var i=0;i< helpText.length ;i++) {
             colorText(
                 helpText[i].toString(), 
                 50, 
@@ -80,20 +81,6 @@ const menu = new function() {
                 15, 
                 "#00ffAA");
         }
-        //draw close button in bottom right hand corner
-        colorRect(
-            helpTextBoxWidth - 320,
-            topItemY + rowHeight * (helpText.length + 0.5), 
-            200, 
-            rowHeight / 2,
-            'white'
-        )
-        colorText(
-            helpText[helpText.length - 1].toString(),
-            helpTextBoxWidth - 300,
-            topItemY + rowHeight * (helpText.length + 1), 
-            15, 
-            'red')
     }
 
     this.draw = function() {
@@ -106,11 +93,11 @@ const menu = new function() {
             "black"
         )
 
-        if(current == 0){
-            for (let i = 0; i < menuText[current].length; i++) {
+        if(currentMenu == 0){
+            for (let i = 0; i < menuText[currentMenu].length; i++) {
                 colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
                 colorText(
-                    menuText[current][i],
+                    menuText[currentMenu][i],
                     itemsX + 10,
                     topItemY + rowHeight * i + itemsHeight / 1.5,
                     40,
@@ -119,7 +106,7 @@ const menu = new function() {
             }
         }
 
-        if(current == 1){
+        if(currentMenu == 1){
             this.drawHelpText();
         }
 
@@ -127,7 +114,7 @@ const menu = new function() {
     }
     this.setCursorAndCurrentPage = function(cursor = this.cursor) {
         // For now, only allow selection of an option on the main menu page
-        if (current !== 0) {
+        if (currentMenu !== 0) {
             return;
         }
 
@@ -142,8 +129,8 @@ const menu = new function() {
     };
 
     this.menuMouse = function() {
-        const selectedItemOnPage = menuText[current][this.cursor];
-        for (let i = 0; i < menuText[current].length; i++) {
+        const selectedItemOnPage = menuText[currentMenu][this.cursor];
+        for (let i = 0; i < menuText[currentMenu].length; i++) {
             if (
                 //mouseX > itemsX - 350 && mousePosX + itemsWidth &&
                 mouseY > topItemY + i * rowHeight &&
@@ -157,11 +144,11 @@ const menu = new function() {
         this.menuMouse();
         // Position arrow at last option on screen
         if (this.cursor < 0) {
-            this.cursor = menuText[current].length - 1;
+            this.cursor = menuText[currentMenu].length - 1;
         }
 
         // Position arrow at first option on screen
-        if (this.cursor >= menuText[current].length) {
+        if (this.cursor >= menuText[currentMenu].length) {
             this.cursor = 0;
         }
     }

@@ -15,6 +15,7 @@ var captureSound =  new SoundOverlapsClass("audio/piececaptured");
 var keyRestartSound =  new SoundOverlapsClass("audio/keypiecerestart");
 
 var showMenu = false;
+var currentMenu = 0;
 var mouseX = 0;
 var mouseY = 0;
 var selectedIdx = -1;
