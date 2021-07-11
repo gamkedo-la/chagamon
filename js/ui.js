@@ -59,8 +59,8 @@ const menu = new function() {
                 break;
             case 'CHANGE TEAM':
                 break;
-                case 'CREDITS':
-            break;
+            case 'CREDITS':
+                break;
             default:
                 console.log("unhandeled menu item");
                 break;
@@ -72,7 +72,8 @@ const menu = new function() {
         colorText(
             'Press X to close this menu at any time',
             30,
-            topItemY - (closeTextHeight * 1.5),
+            closeTextHeight,
+            // topItemY - (closeTextHeight * 1.5),
             closeTextHeight,
             "black"
         )
