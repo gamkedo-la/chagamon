@@ -1,5 +1,9 @@
 // warning: 4 or more will take very long (no alpha beta pruning)
 const AI_MOVES_CONSIDERED = 3; // set to 2 for quicker misc testing or AI console logging, but 3 is playable
+const BISCUIT_WIN = -99999;
+const CHOCOLATE_WIN = 99999;
+const NEGATIVE_INFINITY = -999999;
+const POSITIVE_INFINITY = 999999;
 var showAIConsoleLogs = false;
 
 var backgroundMusic = new BackgroundMusicClass();
@@ -581,8 +585,55 @@ function drawTiles() {
     }
  
 } // end of drawTiles()
-
-function aiMove(boardState, turnNow, movesDeep) {
+function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
+    var victor = whoWon(node);
+    if (depth == 0 || victor != WON_NONE) {
+        return scoreBoard(node);
+    }
+    var value;
+    var nodeChildren = movesForBoard(node, maximizingPlayer);
+    if (maximizingPlayer) {
+        value = NEGATIVE_INFINITY;
+        //should we flatten all moves/pieces into one list for moveOptions
+        for(var eachPiece = 0; eachPiece < moveOptions.length; eachPiece++){
+            for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
+                var thisMove = moveOptions[eachPiece].movesList[eachMove];
+                var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
+                var moveBoard = boardState.slice(); // copy of the current board to apply possible move to
+                moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
+                value = Math.max(value, alphaBeta(moveBoard,depth-1, alpha, beta, false));
+                if (value >= beta) {
+                    break;
+                }
+                alpha = Math.max(alpha, value);
+            }
+            if (value >= beta) {//bail not just on one piece but all pieces?
+                break;
+            }
+        }
+        return value;
+    } else {
+        value = POSITIVE_INFINITY;
+        for(var eachPiece = 0; eachPiece < moveOptions.length; eachPiece++){
+            for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
+                var thisMove = moveOptions[eachPiece].movesList[eachMove];
+                var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
+                var moveBoard = boardState.slice(); // copy of the current board to apply possible move to
+                moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
+                value = Math.min(value, alphaBeta(moveBoard,depth-1, alpha, beta, true));
+                if (value <= alpha) {
+                    break;
+                }
+                beta = Math.min(beta, value);
+            }
+            if (value <= alpha) {//bail not just on one piece but all pieces?
+                break;
+            }
+        }
+        return value;
+    }
+}
+function movesForBoard(boardState, turnNow) {
     var moveOptions = [];
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
@@ -598,6 +649,10 @@ function aiMove(boardState, turnNow, movesDeep) {
             } //end of if
         } //end of for row
     } //end of for column
+    return moveOptions;
+}
+function aiMove(boardState, turnNow, movesDeep) {
+    var moveOptions = movesForBoard(boardState, turnNow);
     // console.log("Pieces with moves " + moveOptions.length);
 /*
     var randPiece = Math.floor(Math.random() * moveOptions.length);
@@ -745,7 +800,6 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     onBoard[fromIdx] = NO_PIECE; // clear the spot where it was sitting
 }
 
-
 function scoreBoard(onBoard, showDebug = false) {
     var bisKeyDist = 0;
     var choKeyDist = 0;
@@ -754,9 +808,9 @@ function scoreBoard(onBoard, showDebug = false) {
 
     var victor = whoWon(onBoard);
     if(victor == WON_BISCUIT) {
-        return -9999999;// very bad for chocolate
+        return BISCUIT_WIN;// very bad for chocolate
     } else if(victor == WON_CHOCOLATE) {
-        return 9999999;// very good for chocolate
+        return CHOCOLATE_WIN;// very good for chocolate
     }
 
     for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
