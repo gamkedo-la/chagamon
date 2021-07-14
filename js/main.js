@@ -95,6 +95,8 @@ var choPieceScore = 0;
 const AI_THINKING_NO = 0;
 const AI_THINKING_NEXT_FRAME = 1;
 const AI_THINKING_PROCESSING = 2;
+const STARTING_TURN = 3;
+const STARTING_TURN_NEXT_FRAME = 4;
 var aiCurrentlyThinking = AI_THINKING_NO;
 
 var showGridDebugNum = false; // helpful for AI logs
@@ -108,6 +110,16 @@ function drawAIMessage() {
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "black";
     canvasContext.fillText("Thinking of next move...",messageBoxX+30,messageBoxY+25);
+}
+
+function drawPlayerMessage() {
+    var messageBoxX = 150;
+    var messageBoxY = 335;
+    canvasContext.fillStyle = "cyan";
+    canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
+    canvasContext.globalAlpha = 1.0;
+    canvasContext.fillStyle = "black";
+    canvasContext.fillText("Player's turn...",messageBoxX+30,messageBoxY+25);
 }
 
 function resetBoard() {
@@ -411,8 +423,16 @@ function update() {
             break;
         case AI_THINKING_PROCESSING:
             aiMove(tileGrid,teamATurn,AI_MOVES_CONSIDERED);
-            aiCurrentlyThinking = AI_THINKING_NO;
+            aiCurrentlyThinking = STARTING_TURN;
             break;
+        case STARTING_TURN:
+                drawPlayerMessage();
+            aiCurrentlyThinking = STARTING_TURN_NEXT_FRAME;
+            break;
+        case STARTING_TURN_NEXT_FRAME:
+            setTimeout(1000);
+            aiCurrentlyThinking = AI_THINKING_NO;
+        break;
         
     }
     //variableDisplay();
