@@ -120,13 +120,14 @@ function mouseclicked(evt) {
   };
   
   if (checkBox(mouseX, mouseY, muteBoxX, muteBoxY, muteBoxWidth, muteBoxHeight)){ //mute button
-    backgroundMusic.startOrStopMusic();
     buttonSound.play();
+    backgroundMusic.startOrStopMusic();
     return;
   };
   
   if (checkBox(mouseX, mouseY, switchBoxX, switchBoxY, switchBoxWidth, switchBoxHeight)){ //switch team button
     buttonSound.play();
+    teamATurn = !teamATurn;
     return;
   };
   

@@ -62,6 +62,7 @@ const menu = new function() {
                 currentMenu = 1;
                 break;
             case 'CHANGE TEAM':
+                teamATurn = true;
                 break;
             case 'CREDITS':
                 break;
