@@ -114,6 +114,7 @@ function drawAIMessage() {
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "black";
     canvasContext.fillText("Thinking of next move...",messageBoxX+30,messageBoxY+25);
+    
 }
 
 function drawPlayerMessage() {
@@ -397,7 +398,17 @@ function validMovesFromTile(onBoard ,tileIdx) {
                     ii = validMoves[i].length; //skipping the rest of inner for loop(to not go through the piece/block)
                     continue;
                 }
-            } else {
+            }
+            if ((targetIdx == TILE_AKEY_GOAL || targetIdx == TILE_KEY_GOAL)) {
+                if (selectedPiece != KEY && selectedPiece != AKEY) {
+                    ii = validMoves[i].length;
+                    continue;
+                }  else {
+                    returnMoves.push(moveToConsider);
+                    ii = validMoves[i].length; //skipp
+                    continue;
+                }
+            }  else {
                 returnMoves.push(moveToConsider);
             }
         }
@@ -559,6 +570,9 @@ function drawTiles() {
             // not a super efficient way to do this, but c'mon, it's a boardgame!
             // based on exercises you've already done you could optimize this :)
             if (tileOverIdx == idxHere) {
+                canvasContext.fillStyle = 'yellow';
+                canvasContext.fillText(pieceName,
+                    tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
                 outlineRect(tileLeftEdgeX, tileTopEdgeY,
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green');
             }
@@ -650,6 +664,7 @@ function movesForBoard(boardState, turnNow) {
         } //end of for row
     } //end of for column
     return moveOptions;
+    
 }
 function aiMove(boardState, turnNow, movesDeep) {
     var moveOptions = movesForBoard(boardState, turnNow);

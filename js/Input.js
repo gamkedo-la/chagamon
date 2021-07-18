@@ -146,14 +146,6 @@ function mouseclicked(evt) {
     biscuitPiece = true;
   }
 
-  if ((tileOverIdx == TILE_AKEY_GOAL || tileOverIdx == TILE_KEY_GOAL) && selectedIdx ==-1) {
-    if ((selectedPiece != KEY || selectedPiece != KEY)) {
-      console.log(selectedPiece);
-        invalidSound.play();
-        return; 
-    }
-  }
-
   if(teamATurn){
     if(selectedPiece = chocolatePiece && selectedIdx ==-1){
       invalidSound.play();
