@@ -955,7 +955,7 @@ function drawMuteButton(){
 
 function drawSwitchButton(){
     canvasContext.drawImage(switchButton, switchBoxX, switchBoxY);
-    colorText("Switch", switchBoxX + 25, switchBoxY + 30, 15, "white")
+    colorText("Pass turn", switchBoxX + 25, switchBoxY + 30, 15, "white")
 }
 
 const FRAMES_PER_SECOND = 30;
