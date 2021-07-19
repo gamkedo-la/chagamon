@@ -102,6 +102,7 @@ const AI_THINKING_PROCESSING = 2;
 const STARTING_TURN = 3;
 const STARTING_TURN_NEXT_FRAME = 4;
 var aiCurrentlyThinking = AI_THINKING_NO;
+var framesToShowMessage = 0;
 
 var showGridDebugNum = false; // helpful for AI logs
 
@@ -112,7 +113,7 @@ function drawAIMessage() {
     canvasContext.fillStyle = "white";
     canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
     canvasContext.globalAlpha = 1.0;
-    canvasContext.fillStyle = "black";
+    canvasContext.fillStyle = "yellow";
     canvasContext.fillText("Thinking of next move...",messageBoxX+30,messageBoxY+25);
     
 }
@@ -120,10 +121,11 @@ function drawAIMessage() {
 function drawPlayerMessage() {
     var messageBoxX = 150;
     var messageBoxY = 335;
+    canvasContext.globalAlpha = 0.35;
     canvasContext.fillStyle = "cyan";
     canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
     canvasContext.globalAlpha = 1.0;
-    canvasContext.fillStyle = "black";
+    canvasContext.fillStyle = "gold";
     canvasContext.fillText("Player's turn...",messageBoxX+30,messageBoxY+25);
 }
 
@@ -441,11 +443,13 @@ function update() {
             aiCurrentlyThinking = STARTING_TURN;
             break;
         case STARTING_TURN:
-                drawPlayerMessage();
-            aiCurrentlyThinking = STARTING_TURN_NEXT_FRAME;
+            if (setTimeout(function() {
+                framesToShowMessage = 20;
+            }, 500)) {
+                aiCurrentlyThinking = STARTING_TURN_NEXT_FRAME;
+            }
             break;
         case STARTING_TURN_NEXT_FRAME:
-            setTimeout(1000);
             aiCurrentlyThinking = AI_THINKING_NO;
         break;
         
@@ -905,6 +909,10 @@ function drawEverything() {
     drawMuteButton();
     drawSwitchButton();
 
+    if(framesToShowMessage > 0) {
+        framesToShowMessage--;
+        drawPlayerMessage();
+    }
     var lineY = 180;
     var lineSkip = 15;
     var lineIndent = 120;
