@@ -568,8 +568,13 @@ function drawTiles() {
                     break;
             }
 
-            canvasContext.fillText(pieceName,
-                tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+            //canvasContext.fillText(pieceName,
+                //tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+            if (tileOverIdx != idxHere) {
+                canvasContext.fillStyle = 'yellow';
+                canvasContext.fillText(pieceName.charAt(0),
+                    tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+            }
 
             // not a super efficient way to do this, but c'mon, it's a boardgame!
             // based on exercises you've already done you could optimize this :)
