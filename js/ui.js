@@ -56,13 +56,12 @@ const menu = new function() {
                 showMenu = false;
                 startSound.play();
                 break;
-            case 'VS PLAY':
-                break;
             case 'HELP':
                 currentMenu = 1;
                 break;
             case 'CHANGE TEAM':
-                teamATurn = true;
+                teamATurn = !teamATurn;
+                framesToShowMessage = 30;
                 break;
             case 'CREDITS':
                 break;
@@ -110,7 +109,10 @@ const menu = new function() {
         if(currentMenu == 1){
             this.drawHelpText();
         }
-
+        if(framesToShowMessage > 0) {
+            framesToShowMessage--;
+            drawWhichTeamMessage();
+        }
         canvasContext.drawImage(logo, itemsX, topItemY - rowHeight, itemsWidth, itemsHeight);
     }
     this.setCursorAndCurrentPage = function(cursor = this.cursor) {

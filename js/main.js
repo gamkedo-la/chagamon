@@ -131,6 +131,17 @@ function drawPlayerMessage() {
     canvasContext.fillText("Player's turn...",messageBoxX+30,messageBoxY+25);
 }
 
+function drawWhichTeamMessage() {
+    var messageBoxX = 150;
+    var messageBoxY = 335;
+    canvasContext.globalAlpha = 0.35;
+    canvasContext.fillStyle = "purple";
+    canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
+    canvasContext.globalAlpha = 1.0;
+    canvasContext.fillStyle = "gold";
+    canvasContext.fillText(teamATurn ? "Player is team Chocolate" : "Player is team Biscuit",messageBoxX+30,messageBoxY+25);  
+}
+
 function resetBoard() {
     turnCount = 0;
     tileGrid = [0, 4, 3, 0, 0, 0,-3,-4, 0,
@@ -573,7 +584,7 @@ function drawTiles() {
             //canvasContext.fillText(pieceName,
                 //tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
             if (tileGrid[idxHere] != 0 && tileOverIdx != idxHere ) {
-                colorCircle(tileLeftEdgeX + TILE_W / 2 ,  tileTopEdgeY + TILE_H / 2 + 5, 10, 'purple')
+                colorCircle(tileLeftEdgeX + TILE_W / 2 ,  tileTopEdgeY + TILE_H / 2 + 4, 8, 'purple')
             }
             if (tileOverIdx != idxHere) {
                 canvasContext.font = "14px Times new roman";
