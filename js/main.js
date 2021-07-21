@@ -522,11 +522,11 @@ function drawTiles() {
                     break;
                 case KEY:
                     pieceName += "Key";
-                    canvasContext.drawImage(KeyPieceB, tileLeftEdgeX + 15, tileTopEdgeY + 10);
+                    canvasContext.drawImage(KeyPieceB, tileLeftEdgeX +  17, tileTopEdgeY + 10);
                     break;
                 case AKEY:
                     pieceName += "Key";
-                    canvasContext.drawImage(KeyPieceC, tileLeftEdgeX + 15, tileTopEdgeY + 10);
+                    canvasContext.drawImage(KeyPieceC, tileLeftEdgeX + 17, tileTopEdgeY + 10);
                     break;
                 case ROOK:
                     pieceName += "Rook";
@@ -572,10 +572,14 @@ function drawTiles() {
 
             //canvasContext.fillText(pieceName,
                 //tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+            if (tileGrid[idxHere] != 0 && tileOverIdx != idxHere ) {
+                colorCircle(tileLeftEdgeX + TILE_W / 2 ,  tileTopEdgeY + TILE_H / 2 + 5, 10, 'purple')
+            }
             if (tileOverIdx != idxHere) {
-                canvasContext.fillStyle = 'yellow';
+                canvasContext.font = "14px Times new roman";
+                canvasContext.fillStyle = 'gold';
                 canvasContext.fillText(pieceName.charAt(0),
-                    tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+                    tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 1.8 + 5);
             }
 
             // not a super efficient way to do this, but c'mon, it's a boardgame!
