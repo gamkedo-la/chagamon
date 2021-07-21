@@ -829,6 +829,9 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
     if (takenTile != 0) {
         playSoundIfNotJustAI(captureSound,onBoard);
         // console.log("Captured Value : " + takenTile);
+        if (takenTile == KEY && onBoard[TILE_KEY_START] == KEY || takenTile == AKEY && onBoard[TILE_KEY_START] == KEY) {
+            return;
+        }
         if (takenTile == KEY) {
             onBoard[TILE_KEY_START] = KEY;
             playSoundIfNotJustAI(keyRestartSound,onBoard);
