@@ -133,7 +133,7 @@ function drawPlayerMessage() {
     canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "gold";
-    canvasContext.fillText("Next it's " + (teamATurn ? "Chocolate":"Biscuit") + "'s turn",messageBoxX+30,messageBoxY+25);
+    canvasContext.fillText("It's now " + (teamATurn ? "Chocolate":"Biscuit") + "'s turn",messageBoxX+30,messageBoxY+25);
 }
 
 function drawWhichTeamMessage() {
@@ -471,7 +471,7 @@ function update() {
             aiCurrentlyThinking = STARTING_TURN;
             break;
         case STARTING_TURN:
-            framesToShowMessage = 20;
+            framesToShowMessage = 30;
             aiCurrentlyThinking = AI_THINKING_NO;
             break;
         case STARTING_TURN_NEXT_FRAME:
@@ -1046,7 +1046,7 @@ function drawMenuButton(){
 
 function drawMuteButton(){
     canvasContext.drawImage(muteButton, muteBoxX, muteBoxY);
-    colorText("Mute", muteBoxX + 25, muteBoxY + 30, 15, "white")
+    colorText((muteAll ? "Unmute" : "Mute"), muteBoxX + 25, muteBoxY + 30, 15, "white")
 }
 
 function drawSwitchButton(){

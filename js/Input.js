@@ -121,6 +121,7 @@ function mouseclicked(evt) {
   };
   
   if (checkBox(mouseX, mouseY, muteBoxX, muteBoxY, muteBoxWidth, muteBoxHeight)){ //mute button
+    muteAll = !muteAll;
     buttonSound.play();
     backgroundMusic.startOrStopMusic();
     return;

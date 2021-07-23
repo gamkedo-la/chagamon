@@ -1,4 +1,5 @@
 var audioFormat;
+var muteAll = false;
 
 function setFormat() {
   var audio = new Audio();
@@ -26,6 +27,9 @@ function BackgroundMusicClass() {
   }
   
   this.startOrStopMusic = function() {
+    if(musicSound == null || musicSound == undefined) {
+      return;
+    }
     if(musicSound.paused) {
       musicSound.play();
       showCredits = false;
@@ -54,6 +58,11 @@ function SoundOverlapsClass(filenameWithPath) { // accepting argument for constr
   var altSoundTurn = false;
   
   this.play = function() { // not "var ", keeping "this.", as we need it exposed!
+    if(muteAll) {
+      console.log("skipping sound play dude to muteAll status");
+      return;
+    }
+
     if(altSoundTurn) { // note: no "this." before altSoundTurn since "var" local/private
       altSound.currentTime = 0;
       altSound.play();
