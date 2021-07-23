@@ -22,10 +22,17 @@ const menu = new function() {
         "The winner is chosen ",
         "Click anywhere to return to menu"
     ];
+    let creditsText = ["credits text will go here"
+    ];
     let menuText = [
         mainMenuList,
         helpText,
+        creditsText
     ];
+    const MENU_PAGE_MAIN = 0;
+    const MENU_PAGE_HELP = 1;
+    const MENU_PAGE_CREDITS = 2;
+    let currentMenu = MENU_PAGE_MAIN;
 
     this.checkState = function() {
         const selectedItemOnPage = menuText[currentMenu][this.cursor];
@@ -47,23 +54,22 @@ const menu = new function() {
         const selectedItemOnPage = menuText[currentMenu][this.cursor];
         console.log("clicked on menu: " + selectedItemOnPage);
 
-        if (helpText.includes(selectedItemOnPage)){
-            currentMenu = 0;
-        }
-
-        switch (selectedItemOnPage) {
+        if (currentMenu != MENU_PAGE_MAIN){
+            currentMenu = MENU_PAGE_MAIN;
+        } else switch (selectedItemOnPage) {
             case "PLAY":
                 showMenu = false;
                 startSound.play();
                 break;
             case 'HELP':
-                currentMenu = 1;
+                currentMenu = MENU_PAGE_HELP;
                 break;
             case 'CHANGE TEAM':
                 teamATurn = !teamATurn;
                 framesToShowMessage = 30;
                 break;
             case 'CREDITS':
+                currentMenu = MENU_PAGE_CREDITS;
                 break;
             default:
                 console.log("unhandeled menu item");
@@ -83,6 +89,18 @@ const menu = new function() {
         }
     }
 
+    this.drawCredits = function() {
+        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * creditsText.length * 1.5, "grey");
+        for(var i=0;i< creditsText.length ;i++) {
+            colorText(
+                creditsText[i].toString(), 
+                50, 
+                topItemY + rowHeight * i + itemsHeight / 1.5, 
+                15, 
+                "#00ffAA");
+        }
+    }
+
     this.draw = function() {
         let closeTextHeight = 20
         colorText(
@@ -93,22 +111,27 @@ const menu = new function() {
             "black"
         )
 
-        if(currentMenu == 0){
-            for (let i = 0; i < menuText[currentMenu].length; i++) {
-                colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
-                colorText(
-                    menuText[currentMenu][i],
-                    itemsX + 10,
-                    topItemY + rowHeight * i + itemsHeight / 1.5,
-                    40,
-                    "gold"
-                );
-            }
+        switch(currentMenu) {
+            case MENU_PAGE_MAIN:
+                for (let i = 0; i < menuText[currentMenu].length; i++) {
+                    colorRect(itemsX, topItemY + rowHeight * i, itemsWidth, itemsHeight, '#6b0dad');
+                    colorText(
+                        menuText[currentMenu][i],
+                        itemsX + 10,
+                        topItemY + rowHeight * i + itemsHeight / 1.5,
+                        40,
+                        "gold"
+                    );
+                }
+                break;
+            case MENU_PAGE_HELP:
+                this.drawHelpText();
+                break;
+            case MENU_PAGE_CREDITS:
+                this.drawCredits();
+                break;
         }
 
-        if(currentMenu == 1){
-            this.drawHelpText();
-        }
         if(framesToShowMessage > 0) {
             framesToShowMessage--;
             drawWhichTeamMessage();
