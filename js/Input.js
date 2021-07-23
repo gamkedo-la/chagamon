@@ -100,7 +100,6 @@ function mouseclicked(evt) {
     resetBoard();
     buttonSound.play();
     backgroundMusic.restartMusic();
-    teamATurn = false;
     console.log("Board Reset");
     return;
   };
@@ -108,13 +107,15 @@ function mouseclicked(evt) {
   if (checkBox(mouseX, mouseY, tutorialBoxX, tutorialBoxY,tutorialBoxWidth, tutorialBoxHeight)){ //tutorial button
     buttonSound.play();
     showMenu = true;
-    currentMenu = 1;
+    aiCurrentlyThinking = AI_THINKING_NO;
+    currentMenu = MENU_PAGE_HELP;
     return;
   };
   
   if (checkBox(mouseX, mouseY, menuBoxX, menuBoxY, menuBoxWidth, menuBoxHeight)){ //menu button
     console.log("Launch menu UI");
     showMenu = true;
+    aiCurrentlyThinking = AI_THINKING_NO;
     buttonSound.play();
     return;
   };

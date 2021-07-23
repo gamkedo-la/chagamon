@@ -19,7 +19,6 @@ var captureSound =  new SoundOverlapsClass("audio/piececaptured");
 var keyRestartSound =  new SoundOverlapsClass("audio/keypiecerestart");
 
 var showMenu = false;
-var currentMenu = 0;
 var mouseX = 0;
 var mouseY = 0;
 var selectedIdx = -1;
@@ -55,6 +54,10 @@ var switchBoxY = 520;
 var switchBoxWidth = 100;
 var switchBoxHeight = 50;
 
+const AI_PLAY_NONE = -1;
+const AI_PLAY_BIS = 0;
+const AI_PLAY_CHO = 1;
+var aiTeam = AI_PLAY_CHO;
 var teamATurn = false;
 var turnCount = 0;
 var isGameOver = false;
@@ -88,6 +91,8 @@ const WON_BISCUIT = 1;
 const WON_NONE = 0;
 const WON_CHOCOLATE = -1;
 
+const FRAMES_PER_SECOND = 24;
+
 var enemyPos = [];
 var homePos = [];
 var tileGrid = [];
@@ -116,7 +121,7 @@ function drawAIMessage() {
     canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "yellow";
-    canvasContext.fillText("Thinking of next move...",messageBoxX+30,messageBoxY+25);
+    canvasContext.fillText("Computer is planning next move...",messageBoxX+30,messageBoxY+25);
     
 }
 
@@ -128,22 +133,23 @@ function drawPlayerMessage() {
     canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "gold";
-    canvasContext.fillText("Player's turn...",messageBoxX+30,messageBoxY+25);
+    canvasContext.fillText("Next it's " + (teamATurn ? "Chocolate":"Biscuit") + "'s turn",messageBoxX+30,messageBoxY+25);
 }
 
 function drawWhichTeamMessage() {
     var messageBoxX = 150;
     var messageBoxY = 335;
-    canvasContext.globalAlpha = 0.35;
+    canvasContext.globalAlpha = 0.95;
     canvasContext.fillStyle = "purple";
-    canvasContext.fillRect(messageBoxX,messageBoxY,410,40);
+    canvasContext.fillRect(messageBoxX,messageBoxY-40,510,100);
     canvasContext.globalAlpha = 1.0;
     canvasContext.fillStyle = "gold";
-    canvasContext.fillText(teamATurn ? "Player is team Chocolate" : "Player is team Biscuit",messageBoxX+30,messageBoxY+25);  
+    canvasContext.fillText(aiTeam == AI_PLAY_CHO ? "Player is team Biscuit" : "Player is team Chocolate",messageBoxX+30,messageBoxY+25);  
 }
 
 function resetBoard() {
     turnCount = 0;
+    teamATurn = false;
     tileGrid = [0, 4, 3, 0, 0, 0,-3,-4, 0,
                 4, 0, 0, 0, 0, 0, 0, 0,-4,
                 2, 0, 0, 0, 0, 0, 0, 0,-2,
@@ -443,9 +449,18 @@ function startGame() {
 }
 
 function update() {
-    switch(aiCurrentlyThinking) {
+    if (showMenu) {
+        menu.draw();
+        menu.update();
+    } else switch(aiCurrentlyThinking) {
         case AI_THINKING_NO:
             resizeCanvas();
+            drawEverything();
+            // ai takes next turn
+            if( (teamATurn == false && aiTeam == AI_PLAY_BIS) || 
+                (teamATurn == true && aiTeam == AI_PLAY_CHO)) {
+                aiCurrentlyThinking = AI_THINKING_NEXT_FRAME;
+            }
             break;
         case AI_THINKING_NEXT_FRAME:
             drawAIMessage();
@@ -456,15 +471,12 @@ function update() {
             aiCurrentlyThinking = STARTING_TURN;
             break;
         case STARTING_TURN:
-            if (setTimeout(function() {
-                framesToShowMessage = 20;
-            }, 500)) {
-                aiCurrentlyThinking = STARTING_TURN_NEXT_FRAME;
-            }
+            framesToShowMessage = 20;
+            aiCurrentlyThinking = AI_THINKING_NO;
             break;
         case STARTING_TURN_NEXT_FRAME:
             aiCurrentlyThinking = AI_THINKING_NO;
-        break;
+            break;
         
     }
     //variableDisplay();
@@ -473,14 +485,6 @@ function update() {
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    if (showMenu == true) {
-        menu.draw();
-        menu.update();
-    } else {
-        drawEverything();
-        showMenu = false;
-    }
 }
 
 
@@ -1049,8 +1053,6 @@ function drawSwitchButton(){
     canvasContext.drawImage(switchButton, switchBoxX, switchBoxY);
     colorText("Pass turn", switchBoxX + 25, switchBoxY + 30, 15, "white")
 }
-
-const FRAMES_PER_SECOND = 30;
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');

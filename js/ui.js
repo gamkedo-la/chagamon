@@ -1,3 +1,9 @@
+const MENU_PAGE_MAIN = 0;
+const MENU_PAGE_HELP = 1;
+const MENU_PAGE_CREDITS = 2;
+
+let currentMenu = MENU_PAGE_MAIN; // outside of class for how help is accessed from game
+
 const menu = new function() {
     let cursor = 0;
 
@@ -10,16 +16,17 @@ const menu = new function() {
 
     let showHelpText = false;
 
-    let mainMenuList = ["PLAY",
-        "VS PLAYER",
-        "HELP",
+    let mainMenuList = ["VS COMPUTER",
+        "VS HUMAN",
+        "HOW TO PLAY",
         "CHANGE TEAM",
         "CREDITS"
     ];
-    let helpText = ["You should move the small piece(key Piece) in the corner all the way to the other corner ",
-        "If you lose your key piece, it will restart from the first place",
-        "If either player loses all pieces (except the key piece) or the other player reaches the other corner first",
-        "The winner is chosen ",
+    let helpText = ["To win, move your small Key Piece from your corner all the way to the opposite corner. ",
+        "If you lose your Key Piece, it will reset back to the start place.",
+        "Avoid losing all your non-Key pieces and stop the other player from reaching their corner first.",
+        "Game piece movements are inspired by chess but have less range.",
+        " ",
         "Click anywhere to return to menu"
     ];
     let creditsText = ["credits text will go here"
@@ -29,10 +36,6 @@ const menu = new function() {
         helpText,
         creditsText
     ];
-    const MENU_PAGE_MAIN = 0;
-    const MENU_PAGE_HELP = 1;
-    const MENU_PAGE_CREDITS = 2;
-    let currentMenu = MENU_PAGE_MAIN;
 
     this.checkState = function() {
         const selectedItemOnPage = menuText[currentMenu][this.cursor];
@@ -57,15 +60,28 @@ const menu = new function() {
         if (currentMenu != MENU_PAGE_MAIN){
             currentMenu = MENU_PAGE_MAIN;
         } else switch (selectedItemOnPage) {
-            case "PLAY":
+            case "VS COMPUTER":
+                if(aiTeam == AI_PLAY_NONE) {
+                    aiTeam = AI_PLAY_BIS;
+                }
                 showMenu = false;
                 startSound.play();
                 break;
-            case 'HELP':
+            case "VS HUMAN":
+                aiTeam = AI_PLAY_NONE;
+                showMenu = false;
+                startSound.play();
+                break;
+            case 'HOW TO PLAY':
                 currentMenu = MENU_PAGE_HELP;
                 break;
             case 'CHANGE TEAM':
-                teamATurn = !teamATurn;
+                if(aiTeam != AI_PLAY_CHO) {
+                    aiTeam = AI_PLAY_CHO;
+                } else {
+                    aiTeam = AI_PLAY_BIS;
+                }
+
                 framesToShowMessage = 30;
                 break;
             case 'CREDITS':
@@ -78,15 +94,28 @@ const menu = new function() {
         this.cursor = 0;
     }
     this.drawHelpText = function() {
-        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * helpText.length * 1.5, "grey");
+        var drawX = 50;
+        var helpItemHeight = 20;
+        var helpItemTop = topItemY+50;
+        colorRect(0, 0, canvas.width, canvas.height, "#444444");
         for(var i=0;i< helpText.length ;i++) {
             colorText(
                 helpText[i].toString(), 
-                50, 
-                topItemY + rowHeight * i + itemsHeight / 1.5, 
+                drawX, 
+                helpItemTop + helpItemHeight * i, 
                 15, 
                 "#00ffAA");
         }
+        var drawY = helpItemTop + helpItemHeight * (helpText.length);
+        var textOffY = 40;
+        var goalOffX = 180;
+        canvasContext.drawImage(KeyPieceB, drawX, drawY+10);
+        colorText("wins by reaching", drawX+50, drawY+textOffY, 15, "#00ffAA");
+        canvasContext.drawImage(BisGoal, drawX+goalOffX, drawY);
+        drawY += 100;
+        canvasContext.drawImage(KeyPieceC, drawX, drawY+10);
+        colorText("wins by reaching", drawX+50, drawY+textOffY, 15, "#00ffAA");
+        canvasContext.drawImage(ChoGoal, drawX+goalOffX, drawY);
     }
 
     this.drawCredits = function() {
@@ -103,12 +132,18 @@ const menu = new function() {
 
     this.draw = function() {
         let closeTextHeight = 20
+
+        canvasContext.globalAlpha = 0.05;
+        canvasContext.fillStyle = "#222222";
+        canvasContext.fillRect(0,0,canvas.width,canvas.height);
+        canvasContext.globalAlpha = 1.0;
+
         colorText(
-            'Press X to close this menu at any time',
+            'X key will close this menu',
             30,
             closeTextHeight,
             closeTextHeight,
-            "black"
+            "#dddddd"
         )
 
         switch(currentMenu) {
@@ -156,17 +191,21 @@ const menu = new function() {
 
     this.menuMouse = function() {
         const selectedItemOnPage = menuText[currentMenu][this.cursor];
+        var offsetY = 30;
         for (let i = 0; i < menuText[currentMenu].length; i++) {
             if (
                 //mouseX > itemsX - 350 && mousePosX + itemsWidth &&
-                mouseY > topItemY + i * rowHeight &&
-                mouseY < topItemY + i * rowHeight + itemsHeight
+                mouseY > topItemY + i * rowHeight - offsetY &&
+                mouseY < topItemY + i * rowHeight + itemsHeight - offsetY
             ) {
                 this.setCursorAndCurrentPage(i);
             }
         }
     };
     this.update = function() {
+        if(framesToShowMessage > 0) {
+            return;
+        }
         this.menuMouse();
         // Position arrow at last option on screen
         if (this.cursor < 0) {
