@@ -18,7 +18,7 @@ var startSound = new SoundOverlapsClass("audio/GameStart");
 var captureSound =  new SoundOverlapsClass("audio/piececaptured");
 var keyRestartSound =  new SoundOverlapsClass("audio/keypiecerestart");
 
-var showMenu = false;
+var showMenu = true;
 var mouseX = 0;
 var mouseY = 0;
 var selectedIdx = -1;
@@ -454,7 +454,6 @@ function update() {
         menu.update();
     } else switch(aiCurrentlyThinking) {
         case AI_THINKING_NO:
-            resizeCanvas();
             drawEverything();
             // ai takes next turn
             if( (teamATurn == false && aiTeam == AI_PLAY_BIS) || 
@@ -481,12 +480,6 @@ function update() {
     }
     //variableDisplay();
 }
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
 
 var canvas, canvasContext;
 

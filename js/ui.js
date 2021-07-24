@@ -12,7 +12,7 @@ const menu = new function() {
     let itemsWidth = 350;
     let itemsHeight = 80;
     let rowHeight = 85;
-    let helpTextBoxWidth = 1000;
+    let helpTextBoxWidth = 930;
 
     let showHelpText = false;
 
@@ -29,7 +29,15 @@ const menu = new function() {
         " ",
         "Click anywhere to return to menu"
     ];
-    let creditsText = ["credits text will go here"
+    let creditsText = ["Vaan Hope Khani: Project lead, original board game design, core gameplay, computer player AI and related optimizations, piece art,",
+	"table art, win and lose conditions, sounds", " ",
+"Farah Rizal: Tutorial integration, menu toggle, instruction improvements, tooltip correction", " ",
+"Vince McKeown: Input refactor, UI fixes, reset button, button graphic, turn change", " ",
+"Chris DeLeon: Debug display, goal tile contrast change, AI help, turn menu options", " ",
+"Patrick McKeown: Dashboard layout update", " ",
+"Filipe Dottori: Team letter indicator", " ",
+" ",
+"Game developed by members in HomeTeamGameDev.com Outpost Community"
     ];
     let menuText = [
         mainMenuList,
@@ -55,7 +63,7 @@ const menu = new function() {
 
     this.clickOption = function() {
         const selectedItemOnPage = menuText[currentMenu][this.cursor];
-        console.log("clicked on menu: " + selectedItemOnPage);
+        // console.log("clicked on menu: " + selectedItemOnPage);
 
         if (currentMenu != MENU_PAGE_MAIN){
             currentMenu = MENU_PAGE_MAIN;
@@ -119,12 +127,14 @@ const menu = new function() {
     }
 
     this.drawCredits = function() {
-        colorRect(0, topItemY, helpTextBoxWidth, itemsHeight * creditsText.length * 1.5, "grey");
+		var creditsHeight = 20;
+		var creditsTopItemY = topItemY + creditsHeight;
+        colorRect(40, topItemY, helpTextBoxWidth, creditsHeight * (creditsText.length+1), "grey");
         for(var i=0;i< creditsText.length ;i++) {
             colorText(
                 creditsText[i].toString(), 
                 50, 
-                topItemY + rowHeight * i + itemsHeight / 1.5, 
+                creditsTopItemY + creditsHeight * i, 
                 15, 
                 "#00ffAA");
         }

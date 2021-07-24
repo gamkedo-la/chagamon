@@ -198,8 +198,8 @@ function mousemoved(evt) {
   var root = document.documentElement;
 
   // account for the margins, canvas position on page, scroll amount, etc.
-  mouseX = evt.clientX - rect.left - root.scrollLeft - FRAME_SIZE;
-  mouseY = evt.clientY - rect.top - root.scrollTop - FRAME_SIZE;
+  mouseX = evt.clientX - rect.left - FRAME_SIZE;
+  mouseY = evt.clientY - rect.top - FRAME_SIZE;
 
   var tileOverCol = Math.floor(mouseX / TILE_W);
   var tileOverRow = Math.floor(mouseY / TILE_H);
