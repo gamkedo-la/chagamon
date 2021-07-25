@@ -460,6 +460,8 @@ function update() {
             }
             break;
         case AI_THINKING_NEXT_FRAME:
+            tileOverIdx = selectedIdx = -1; // remove highlights before graphics freeze
+            drawEverything();
             drawAIMessage();
             aiCurrentlyThinking = AI_THINKING_PROCESSING;
             break;
@@ -609,7 +611,17 @@ function drawTiles() {
         } // end of for eachRow
     } // end of for eachCol
 
-    if (selectedIdx != -1) {
+    if(tileOverIdx != -1 && tileOverIdx != selectedIdx) { // show moves of moused over piece
+        var validMoves = validMovesFromTile(tileGrid ,tileOverIdx);
+        for (var i = 0; i < validMoves.length; i++) {
+            var tileLeftEdgeX = FRAME_SIZE + (validMoves[i].col * TILE_W);
+            var tileTopEdgeY = FRAME_SIZE + (validMoves[i].row * TILE_H);
+            outlineRect(tileLeftEdgeX + 3, tileTopEdgeY + 3,
+                TILE_W - TILE_GAP - 6, TILE_H - TILE_GAP - 6, '#bb7777');
+        }
+    }
+
+    if (selectedIdx != -1) { // show options you can use for the selected piece
         var validMoves = validMovesFromTile(tileGrid ,selectedIdx);
         for (var i = 0; i < validMoves.length; i++) {
             var tileLeftEdgeX = FRAME_SIZE + (validMoves[i].col * TILE_W);
