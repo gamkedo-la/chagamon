@@ -139,7 +139,7 @@ function mouseclicked(evt) {
 
   var victor = whoWon(tileGrid);
   if (victor != WON_NONE) { // disallow piece interactions if game was won or lost
-    selectedPiece = tileOverIdx = -1;
+    tileOverIdx = -1;
     return;
   }
 
