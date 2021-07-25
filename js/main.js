@@ -462,7 +462,6 @@ function update() {
         case AI_THINKING_NEXT_FRAME:
             tileOverIdx = selectedIdx = -1; // remove highlights before graphics freeze
             drawEverything();
-            drawAIMessage();
             aiCurrentlyThinking = AI_THINKING_PROCESSING;
             break;
         case AI_THINKING_PROCESSING:
@@ -996,7 +995,10 @@ function drawEverything() {
     drawMuteButton();
     drawSwitchButton();
 
-    if(framesToShowMessage > 0) {
+    if(aiCurrentlyThinking == AI_THINKING_NEXT_FRAME) {
+        drawAIMessage();
+        framesToShowMessage = 0; // overrides/interrupts lingering player message
+    } else if(framesToShowMessage > 0) {
         framesToShowMessage--;
         drawPlayerMessage();
     }
