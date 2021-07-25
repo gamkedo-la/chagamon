@@ -392,7 +392,7 @@ function validMovesFromTile(onBoard ,tileIdx) {
                 continue;
             }
             //blocking landing on our own pieces
-            var targetIdx = tileCoordToIndex(moveToConsider.col, moveToConsider.row);
+            var targetIdx = (moveToConsider.col + TILE_COLS * moveToConsider.row);
             var targetPiece = onBoard[targetIdx];
 
             if (targetPiece < 0) {
@@ -494,7 +494,7 @@ function drawTiles() {
         for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
             var tileLeftEdgeX = FRAME_SIZE + (eachCol * TILE_W);
             var tileTopEdgeY = FRAME_SIZE + (eachRow * TILE_H);
-            var idxHere = tileCoordToIndex(eachCol, eachRow);
+            var idxHere = (eachCol + TILE_COLS * eachRow);
             if (idxHere == TILE_AKEY_GOAL) {
                 colorRect(tileLeftEdgeX, tileTopEdgeY,
                     TILE_W - TILE_GAP, TILE_H - TILE_GAP, '#222222');//Chocolate corner
@@ -632,29 +632,6 @@ function drawTiles() {
  
 } // end of drawTiles()
 
-function flattenedMovesForBoard(boardState, turnNow) {
-    var moveOptions = [];
-    for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
-        for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
-            var tileIdx = tileCoordToIndex(eachCol, eachRow);
-            var pieceHere = boardState[tileIdx];
-            if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
-                //console.log(pieceHere);
-                var validMoves = validMovesFromTile(boardState, tileIdx);
-                for (var eachMove=0; eachMove<validMoves.length; eachMove++) {
-                    moveOptions.push({source:tileIdx,destC: validMoves[eachMove].col,destR:validMoves[eachMove].row});
-                }
-               /* moveOptions.push({
-                    source: tileIdx,
-                    movesList: validMoves
-                });*/
-            } //end of if
-        } //end of for row
-    } //end of for column
-    return moveOptions;
-    
-}
-
 function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
     var victor = whoWon(node);
     if (depth == 0 || victor != WON_NONE) {
@@ -668,14 +645,32 @@ function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
         return returnScore;
     }
     var value;
-    var nodeChildren = flattenedMovesForBoard(node, maximizingPlayer);
+    
+    // flattened move list
+    var nodeChildren = []; // source index only
+    var nodeChildrenDestIdx = [];
+    var movesAddedNextIdx = 0;
+    // moveOptions.length = 45;
+    for (var tileIdx = 0; tileIdx < TILE_COLS * TILE_ROWS; tileIdx++) {
+        var pieceHere = node[tileIdx];
+        if ((pieceHere > 0 && maximizingPlayer == false) || (pieceHere < 0 && maximizingPlayer)) {
+            //console.log(pieceHere);
+            var validMoves = validMovesFromTile(node, tileIdx);
+            for (var eachMove=0; eachMove<validMoves.length; eachMove++) {
+                // moveOptions.push({source:tileIdx,destC: validMoves[eachMove].col,destR:validMoves[eachMove].row});
+                nodeChildren[movesAddedNextIdx] = tileIdx;
+                nodeChildrenDestIdx[movesAddedNextIdx] = validMoves[eachMove].col + TILE_COLS * validMoves[eachMove].row;
+                movesAddedNextIdx++;
+            }
+        } //end of if
+    } //end of for tile index
+
+
     if (maximizingPlayer) {
         value = NEGATIVE_INFINITY;
         for(var eachMove = 0; eachMove < nodeChildren.length; eachMove++){
-            var thisMove = nodeChildren[eachMove];
-            var moveDest = tileCoordToIndex(thisMove.destC, thisMove.destR);
             var moveBoard = node.slice(); // copy of the current board to apply possible move to
-            moveFromToIdx(thisMove.source, moveDest, moveBoard);
+            moveFromToIdx(nodeChildren[eachMove], nodeChildrenDestIdx[eachMove], moveBoard);
             value = Math.max(value, alphaBeta(moveBoard,depth-1, alpha, beta, false));
             alpha = Math.max(alpha, value);
             if (value >= beta) {
@@ -686,10 +681,8 @@ function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
     } else {
         value = POSITIVE_INFINITY;
         for(var eachMove = 0; eachMove < nodeChildren.length; eachMove++){
-            var thisMove = nodeChildren[eachMove];
-            var moveDest = tileCoordToIndex(thisMove.destC, thisMove.destR);
             var moveBoard = node.slice(); // copy of the current board to apply possible move to
-            moveFromToIdx(thisMove.source, moveDest, moveBoard);
+            moveFromToIdx(nodeChildren[eachMove], nodeChildrenDestIdx[eachMove], moveBoard);
             value = Math.min(value, alphaBeta(moveBoard,depth-1, alpha, beta, true));
             beta = Math.min(beta, value);
             if (value <= alpha) {
@@ -702,37 +695,47 @@ function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
 }
 function movesForBoard(boardState, turnNow) {
     var moveOptions = [];
-    for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
-        for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
-            var tileIdx = tileCoordToIndex(eachCol, eachRow);
-            var pieceHere = boardState[tileIdx];
-            if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
-                //console.log(pieceHere);
-                var validMoves = validMovesFromTile(boardState, tileIdx);
-                moveOptions.push({
-                    source: tileIdx,
-                    movesList: validMoves
-                });
-            } //end of if
-        } //end of for row
-    } //end of for column
+    for (var tileIdx = 0; tileIdx < TILE_ROWS * TILE_COLS; tileIdx++) {
+        var pieceHere = boardState[tileIdx];
+        if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
+            //console.log(pieceHere);
+            var validMoves = validMovesFromTile(boardState, tileIdx);
+            moveOptions.push({
+                source: tileIdx,
+                movesList: validMoves
+            });
+        } //end of if
+    } //end of for idx
     return moveOptions;
-    
 }
 
 function aiMoveAB(boardState, turnNow, movesDeep) {
-    var moveOptions = movesForBoard(boardState, turnNow);
+    // flattened move list
+    var nodeChildren = []; // source index only
+    var nodeChildrenDestIdx = [];
+    var movesAddedNextIdx = 0;
+    // moveOptions.length = 45;
+    for (var tileIdx = 0; tileIdx < TILE_COLS * TILE_ROWS; tileIdx++) {
+        var pieceHere = boardState[tileIdx];
+        if ((pieceHere > 0 && turnNow == false) || (pieceHere < 0 && turnNow)) {
+            //console.log(pieceHere);
+            var validMoves = validMovesFromTile(boardState, tileIdx);
+            for (var eachMove=0; eachMove<validMoves.length; eachMove++) {
+                // moveOptions.push({source:tileIdx,destC: validMoves[eachMove].col,destR:validMoves[eachMove].row});
+                nodeChildren[movesAddedNextIdx] = tileIdx;
+                nodeChildrenDestIdx[movesAddedNextIdx] = validMoves[eachMove].col + TILE_COLS * validMoves[eachMove].row;
+                movesAddedNextIdx++;
+            }
+        } //end of if
+    } //end of for tile index
+
     var scoredMoves = []; 
-    for(var eachPiece = 0; eachPiece < moveOptions.length; eachPiece++){
-        for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
-            var thisMove = moveOptions[eachPiece].movesList[eachMove];
-            var moveDest = tileCoordToIndex(thisMove.col, thisMove.row);
-            var moveBoard = boardState.slice(); // copy of the current board to apply possible move to
-            moveFromToIdx(moveOptions[eachPiece].source, moveDest, moveBoard);
-            var moveScore = alphaBeta(moveBoard, movesDeep, NEGATIVE_INFINITY, POSITIVE_INFINITY, !turnNow);
-            scoredMoves.push({score:moveScore, fromIdx:moveOptions[eachPiece].source, toIdx:moveDest});
-        }
+    for(var eachMove = 0; eachMove < nodeChildren.length; eachMove++){
+        var moveBoard = boardState.slice(); // copy of the current board to apply possible move to
+        moveFromToIdx(nodeChildren[eachMove], nodeChildrenDestIdx[eachMove], moveBoard);
+        scoredMoves.push({score:alphaBeta(moveBoard, movesDeep, NEGATIVE_INFINITY, POSITIVE_INFINITY, !turnNow), fromIdx:nodeChildren[eachMove], toIdx:nodeChildrenDestIdx[eachMove]});
     }
+
     var bestMove = scoredMoves[0];
     if(turnNow == false) { // biscuit, favor highest
         for(var i=1;i<scoredMoves.length;i++) { // skip 0 (default best move)
@@ -751,16 +754,11 @@ function aiMoveAB(boardState, turnNow, movesDeep) {
     endTurn();
 }
 
+/* // replaced by alpha beta approach, aiMoveAB above
 function aiMove(boardState, turnNow, movesDeep) {
     var moveOptions = movesForBoard(boardState, turnNow);
     // console.log("Pieces with moves " + moveOptions.length);
-/*
-    var randPiece = Math.floor(Math.random() * moveOptions.length);
-    console.log("Piece " + randPiece + " with moves " + moveOptions[randPiece].movesList.length);
-    var randMove = Math.floor(Math.random() * moveOptions[randPiece].movesList.length);
-    var destIdx = tileCoordToIndex(moveOptions[randPiece].movesList[randMove].col,
-        moveOptions[randPiece].movesList[randMove].row);
-*/
+
     var scoredMoves = []; 
     for(var eachPiece = 0; eachPiece < moveOptions.length; eachPiece++){
         for(var eachMove = 0; eachMove < moveOptions[eachPiece].movesList.length; eachMove++){
@@ -794,13 +792,7 @@ function aiMove(boardState, turnNow, movesDeep) {
     }
    
     // no need to fully sort the whole list, we just need highest/lowest value, so scan once in O(n)
-    /*scoredMoves.sort(function compare(m1, m2){return m1.score - m2.score});
-    var bestMove;
-    if(turnNow == false) { 
-        bestMove = scoredMoves[0];
-    } else {
-        bestMove = scoredMoves[scoredMoves.length-1];
-    }*/
+
     var bestMove = scoredMoves[0];
     if(turnNow == false) { // biscuit, favor highest
         for(var i=1;i<scoredMoves.length;i++) { // skip 0 (default best move)
@@ -828,7 +820,7 @@ function aiMove(boardState, turnNow, movesDeep) {
     }
     
 } //end of function
-
+*/
 function stringMove(board, move) {
     var piece = board[move.fromIdx];
     var pieceName = "";
