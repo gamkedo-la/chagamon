@@ -137,6 +137,12 @@ function mouseclicked(evt) {
     return;
   }
 
+  var victor = whoWon(tileGrid);
+  if (victor != WON_NONE) { // disallow piece interactions if game was won or lost
+    selectedPiece = tileOverIdx = -1;
+    return;
+  }
+
 
   let selectedPiece = tileGrid[tileOverIdx];
   let chocolatePiece = false;
@@ -149,13 +155,13 @@ function mouseclicked(evt) {
   }
 
   if(teamATurn){
-    if(selectedPiece = chocolatePiece && selectedIdx ==-1){
+    if(selectedPiece == chocolatePiece && selectedIdx ==-1){
       invalidSound.play();
       return;
     } 
   } 
   if (!teamATurn) {
-    if(selectedPiece = biscuitPiece && selectedIdx ==-1){
+    if(selectedPiece == biscuitPiece && selectedIdx ==-1){
       invalidSound.play();
       return;
     }

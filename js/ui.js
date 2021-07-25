@@ -236,6 +236,7 @@ const menu = new function() {
         if (isGameOver){
             let gameOverBoxWidth = 500;
             let gameOverBoxHeight = 200;
+            canvasContext.globalAlpha = 0.3;
             colorRect( 
                 canvas.width/2 - gameOverBoxWidth/2, 
                 canvas.height/2 - gameOverBoxHeight/2, 
@@ -243,6 +244,7 @@ const menu = new function() {
                 gameOverBoxHeight, 
                 this.gameOverBoxColor
             );
+            canvasContext.globalAlpha = 1.0;
             let textAlignWas = canvasContext.textAlign;
             canvasContext.textAlign = "center";
             colorText(this.gameOverText, canvas.width/2, canvas.height/2, 50, "gold");
