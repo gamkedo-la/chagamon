@@ -647,7 +647,14 @@ function flattenedMovesForBoard(boardState, turnNow) {
 function alphaBeta(node, depth, alpha, beta, maximizingPlayer) {
     var victor = whoWon(node);
     if (depth == 0 || victor != WON_NONE) {
-        return scoreBoard(node);
+        var returnScore = scoreBoard(node);
+        // depth bias as positive or negative to favor choices that will win in fewer moves
+        if(victor == WON_BISCUIT) {
+            returnScore = BISCUIT_WIN - depth*1000;
+        } else if(victor == WON_CHOCOLATE) {
+            returnScore = CHOCOLATE_WIN + depth*1000;
+        }
+        return returnScore;
     }
     var value;
     var nodeChildren = flattenedMovesForBoard(node, maximizingPlayer);

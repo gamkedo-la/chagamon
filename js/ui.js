@@ -234,7 +234,7 @@ const menu = new function() {
         this.gameOverNextText = "Press R or click on Reset button to play again";
 
         if (isGameOver){
-            let gameOverBoxWidth = 400;
+            let gameOverBoxWidth = 500;
             let gameOverBoxHeight = 200;
             colorRect( 
                 canvas.width/2 - gameOverBoxWidth/2, 
