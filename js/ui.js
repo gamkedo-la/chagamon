@@ -229,12 +229,12 @@ const menu = new function() {
     }
 
     this.gameOverMessage = function() {
-        this.gameOverBoxColor = whoWon ? "green" : "purple";
-        this.gameOverText = whoWon ? "BISCUIT WON" : "CHOCOLATE WON";
+        this.gameOverBoxColor = hasWon ? "green" : "purple";
+        this.gameOverText = hasWon ? "BISCUIT WON" : "CHOCOLATE WON";
         this.gameOverNextText = "Press R or click on Reset button to play again";
 
         if (isGameOver){
-            let gameOverBoxWidth = 500;
+            let gameOverBoxWidth = 400;
             let gameOverBoxHeight = 200;
             colorRect( 
                 canvas.width/2 - gameOverBoxWidth/2, 

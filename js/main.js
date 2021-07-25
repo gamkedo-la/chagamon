@@ -99,8 +99,6 @@ var tileGrid = [];
 captured = false;
 var bisPieceScore = 0;
 var choPieceScore = 0;
-var takenBiscuitPieces = 9;
-var takenChocolatePieces = 9;
 
 // One frame delay between starting AI and the AI running, used to display somehow that it's thinking
 const AI_THINKING_NO = 0;
@@ -882,19 +880,6 @@ function moveFromToIdx(fromIdx, toIdx, onBoard) {
             onBoard[TILE_AKEY_START] = AKEY;
             playSoundIfNotJustAI(keyRestartSound,onBoard);
         }
-        if  (takenTile ==  ROOK || takenTile == BISHOP || takenTile == KNIGHT) {
-            takenBiscuitPieces--;
-            if( takenBiscuitPieces == 1) {
-                menu.gameOverMessage();
-                canvasContext.fillText("Biscuit Lost everyone",  canvas.width/2, canvas.height/2);
-            }
-        } else if  (takenTile ==  AROOK || takenTile == ABISHOP || takenTile == AKNIGHT) {
-            takenChocolatePieces--;
-            if( takenChocolatePieces == 1) {
-                menu.gameOverMessage();
-                canvasContext.fillText("Chocolate Lost everyone", canvas.width/2, canvas.height/2);
-            }
-        } 
     }
     onBoard[toIdx] = onBoard[fromIdx]; // put the piece here (overwrite)
     onBoard[fromIdx] = NO_PIECE; // clear the spot where it was sitting
